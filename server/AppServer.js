@@ -27,14 +27,25 @@ var AppServer = function (io) {
 
         console.log("Name, color", name, color);
 
-        self.players[socket.id] = {id: socket.id, name: name, color: color, socket: socket};
-        self.waiting_players.push(self.players[socket.id]);
+        var current_player = {id: socket.id, name: name, color: color, socket: socket};
+
+        self.players[socket.id] = current_player;
+        self.waiting_players.push(current_player);
 
         socket.on('disconnect', function () {
-            self.io.emit('client_left', "Client left: " + name);
-            console.log('Client connection closed');
-        });
+            // if this player is in the waiting queue remove them
+            for (var i = 0, l = self.waiting_players.length; i < l; i++) {
+                var waiting_player = self.waiting_players[i];
+                if (waiting_player.id === current_player.id) {
+                    self.waiting_players.splice(i, 1); // remove waiting player
+                }
+            }
 
+            // remove player from players collection
+            delete self.players[current_player.id];
+
+            console.log('Client connection closed for player: ', current_player.id);
+        });
     });
 
     self.serverTickFast = function appServerTickFast() {
