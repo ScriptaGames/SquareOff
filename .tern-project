@@ -1,7 +1,8 @@
 {
   "ecmaVersion": 6,
-  "libs": ["browser"],
+  "libs": ["browser", "ecma5"],
   "plugins": {
-    "phaser": {}
+    "phaser": {},
+    "node": {}
   }
 }
