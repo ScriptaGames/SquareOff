@@ -33,54 +33,9 @@ class GameState extends Phaser.State {
             console.log("WebSocket connection established and ready.");
         });
 
-        socket.on('server_message', function (msg) {
+        socket.on('instance_tick', function (msg) {
             console.log(msg);
         });
-
-        socket.on('client_joined', function (msg) {
-            console.log(msg);
-        });
-
-        socket.on('client_left', function (msg) {
-            console.log(msg);
-        });
-
-        var binarySentCount = 0;
-
-        function sendBinary() {
-            var buffer = new ArrayBuffer(32);
-            var data_view = new Int32Array(buffer);
-            data_view[0] = ++binarySentCount;
-
-            socket.emit('binary_message', buffer);
-        }
-
-        function sendString() {
-            var now = Date.now();
-            socket.emit('string_message', 'Date.now() = ' + now);
-        }
-
-        setInterval(sendBinary, 500);
-        setInterval(sendString, 500);
-
-
-        var binarySentCount = 0;
-
-        function sendBinary() {
-            var buffer = new ArrayBuffer(32);
-            var data_view = new Int32Array(buffer);
-            data_view[0] = ++binarySentCount;
-
-            socket.emit('binary_message', buffer);
-        }
-
-        function sendString() {
-            var now = Date.now();
-            socket.emit('string_message', 'Date.now() = ' + now);
-        }
-
-        setInterval(sendBinary, 500);
-        setInterval(sendString, 500);
 
         // end network code
 
