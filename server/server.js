@@ -1,7 +1,6 @@
 #!/bin/env node
 //  Sample Node.js WebSocket Client-Server application
 var http            = require('http');
-var express         = require('express');
 var AppServer       = require('./AppServer.js');
 
 // Patch console.x methods in order to add timestamp information
@@ -61,41 +60,17 @@ var MainServer = function () {
     /*  App server functions (main app logic here).                       */
     /*  ================================================================  */
 
-    /**
-     *  Create the routing table entries + handlers for the application.
-     */
-    self.createRoutes = function () {
-        self.routes = {};
-
-        self.routes['/api/example'] = function (req, res) {
-            res.setHeader('Content-Type', 'application/json');
-            res.send("{}");
-        };
-    };
-
 
     /**
      *  Initialize the server (express) and create the routes and register
      *  the handlers.
      */
     self.initializeServer = function () {
-        self.createRoutes();
-        self.app = express();
-        self.httpServer = http.Server(self.app);
+        self.httpServer = http.Server();
         self.io = require('socket.io')(self.httpServer);
 
         // The app server contains all the logic and state of the WebSocket app
         self.appServer = new AppServer(self.io);
-
-        // Set up express static content root
-        self.app.use(express.static(__dirname + '/../' + (process.argv[2] || 'client')));
-
-        //  Add handlers for the app (from the routes).
-        for (var r in self.routes) {
-            if (self.routes.hasOwnProperty(r)) {
-                self.app.get(r, self.routes[r]);
-            }
-        }
     };
 
 

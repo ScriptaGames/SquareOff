@@ -17,8 +17,8 @@ var exec = require('child_process').exec;
 /**
  * Using different folders/file names? Change these constants:
  */
-var PHASER_PATH = './client/bower_components/phaser/build/';
-var PHASER_DEBUG_PATH = './client/bower_components/phaser-debug/dist/';
+var PHASER_PATH = './node_modules/phaser/build/';
+var PHASER_DEBUG_PATH = './node_modules/phaser-debug/dist/';
 var BUILD_PATH = './build';
 var SCRIPTS_PATH = BUILD_PATH + '/scripts';
 var SOURCE_PATH = './client/src';
