@@ -10,8 +10,8 @@ var config = require('./config');
  */
 module.exports = function GameState() {
     var grid = _.chain( new Array(config.BOARD.HEIGHT) )
-        .map( col => new Array(config.BOARD.WIDTH) )
-        .map( row => _.fill(row, 0) )
+        .map( function () { return new Array(config.BOARD.WIDTH) } )
+        .map( function (row) { return _.fill(row, 0) } )
         .value();
 
     return {

@@ -1,5 +1,9 @@
 var NODEJS = typeof module !== 'undefined' && module.exports;
 
+var config    = require('./config');
+var gameState = require('./GameState.js');
+var gameLoop  = require('node-gameloop');
+
 /**
  * This module contains all of the app logic and state,
  * @param io
@@ -53,6 +57,12 @@ var AppServer = function (io) {
             return ab;
         }
     });
+
+    self.serverTickFast = function appServerTickFast() {
+
+    };
+
+    gameLoop.setGameLoop(self.serverTickFast, config.TICK_FAST_INTERVAL);
 };
 
 if (NODEJS) module.exports = AppServer;
