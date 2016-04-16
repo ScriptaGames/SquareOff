@@ -9,8 +9,8 @@ var config = require('./config');
  * GameState() // returns a default gamestate object
  */
 module.exports = function GameState() {
-    var grid = _.chain( new Array(config.BOARD.HEIGHT) )
-        .map( function () { return new Array(config.BOARD.WIDTH) } )
+    var grid = _.chain( new Array(config.GRID.HEIGHT) )
+        .map( function () { return new Array(config.GRID.WIDTH) } )
         .map( function (row) { return _.fill(row, 0) } )
         .value();
 

@@ -1,8 +1,13 @@
 module.exports = {
     PORT: 3100,
-    BOARD: {
+    GRID: {
         WIDTH: 10,
         HEIGHT: 16,
+        PADDING: {
+            VERTICAL: 10,
+            HORIZONTAL: 10,
+        },
+        LINE_WIDTH: 4,
     },
     DISC: {
         DIAMETER: 1, // as a percentage of block height/width

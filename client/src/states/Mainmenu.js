@@ -1,15 +1,15 @@
 class MainmenuState extends Phaser.State {
 
-  preload(){
-    console.log('Mainmenu preload');
-  }
+    preload(){
+        console.log('Mainmenu preload');
+    }
 
-  create() {
-    console.log('Mainmenu create');
+    create() {
+        console.log('Mainmenu create');
 
-    // Call this, when you're ready to move on from the Main Menu
-    this.state.start('GameState');
-  }
+        // Call this, when you're ready to move on from the Main Menu
+        this.state.start('GameState');
+    }
 
 }
 

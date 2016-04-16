@@ -129,7 +129,6 @@ function build() {
     .transform(babelify)
     .bundle().on('error', function(error){
           gutil.log(gutil.colors.red('[Build Error]', error.message));
-          console.log(error);
           this.emit('end');
     })
     .pipe(gulpif(!isProduction(), exorcist(sourcemapPath)))
