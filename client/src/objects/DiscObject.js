@@ -12,6 +12,10 @@ class DiscObject extends Phaser.Sprite {
 
     update() {
         super.update();
+
+        console.log(1);
+        this.body.rotateRight(10);
+        this.body.thrust(40);
     }
 }
 
