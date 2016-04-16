@@ -22,6 +22,7 @@ var GameInstance = function (player_a, player_b) {
 
     // test state delete this later
     self.player_a.score = 1;
+    self.gameState.grid[0][7] = 1;
 
     self.tick = function gameInstanceTick() {
 
@@ -31,8 +32,10 @@ var GameInstance = function (player_a, player_b) {
 
         self.gameState.scores.you = self.player_b.score;
         self.gameState.scores.enemy = self.player_a.score;
-        //TODO: reverse grid here
+        self.gameState.grid.reverse();
         self.player_b.socket.emit("instance_tick", self.gameState);
+        self.gameState.grid.reverse();
+
     }
 };
 
