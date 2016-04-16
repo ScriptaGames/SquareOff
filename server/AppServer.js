@@ -17,7 +17,7 @@ var AppServer = function (io) {
     setInterval(function() {
         // send to all clients
         self.io.emit('server_message', ++updateCount);
-    }, 100);
+    }, 500);
 
     self.io.on('connection', function (socket) {
 

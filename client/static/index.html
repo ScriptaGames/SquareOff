@@ -7,7 +7,7 @@
 </head>
 <body>
 	<div id="content"></div>
-	<script src="scripts/phaser.min.js"></script>
+	<script src="bower_components/phaser/build/phaser.min.js"></script>
 
 
 	<!-- Remove the comments on this line if you want to use the phaser debug plugin, also see Boot.js -->
@@ -18,6 +18,46 @@
 	<!-- <script src="js/phaser-tiled.js"></script> -->
 
 
-	<script src="scripts/game.js"></script>
+    <script src="bower_components/socket.io/socket.io.js"></script>
+
+    <script>
+        var socket = io("http://localhost:8080", {query: 'name=' + Date.now()});
+
+        socket.on('connect', function () {
+            console.log("WebSocket connection established and ready.");
+        });
+
+        socket.on('server_message', function (msg) {
+            console.log(msg);
+        });
+
+        socket.on('client_joined', function (msg) {
+            console.log(msg);
+        });
+
+        socket.on('client_left', function (msg) {
+            console.log(msg);
+        });
+
+        var binarySentCount = 0;
+
+        function sendBinary() {
+            var buffer = new ArrayBuffer(32);
+            var data_view = new Int32Array(buffer);
+            data_view[0] = ++binarySentCount;
+
+            socket.emit('binary_message', buffer);
+        }
+
+        function sendString() {
+            var now = Date.now();
+            socket.emit('string_message', 'Date.now() = ' + now);
+        }
+
+        setInterval(sendBinary, 500);
+        setInterval(sendString, 500);
+    </script>
+
+    <script src="scripts/game.js"></script>
 </body>
 </html>
