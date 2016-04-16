@@ -6,7 +6,9 @@ export default class GridObject extends Phaser.Graphics {
 
         const HEIGHT = game.height - config.GRID.PADDING.VERTICAL*2;
         const WIDTH = HEIGHT * config.GRID.WIDTH / config.GRID.HEIGHT;
-        const hw = config.GRID.LINE_WIDTH / 2;
+        const hlw = config.GRID.LINE_WIDTH / 2;
+        const hw = WIDTH / 2;
+        const hh = HEIGHT / 2;
 
         this.blockWidth = WIDTH / config.GRID.WIDTH;
         this.blockHeight = HEIGHT / config.GRID.HEIGHT;
@@ -14,15 +16,15 @@ export default class GridObject extends Phaser.Graphics {
         this.lineStyle( config.GRID.LINE_WIDTH, 0xffffff, 0.3);
 
         for( let gridX = 0; gridX <= config.GRID.WIDTH; gridX += 1 ) {
-            let x = gridX * this.blockHeight;
-            this.moveTo(x - hw, 0 - hw);
-            this.lineTo(x - hw, HEIGHT + hw);
+            let x = gridX * this.blockWidth;
+            this.moveTo(x - hlw - hw, 0 - hlw - hh);
+            this.lineTo(x - hlw - hw, HEIGHT + hlw - hh);
         }
 
         for( let gridY = 0; gridY <= config.GRID.HEIGHT; gridY += 1 ) {
-            let y = gridY * this.blockWidth;
-            this.moveTo(0 - hw*2, y);
-            this.lineTo(WIDTH, y);
+            let y = gridY * this.blockHeight;
+            this.moveTo(0 - hlw*2 - hw, y - hh);
+            this.lineTo(WIDTH - hw, y - hh);
         }
 
     }

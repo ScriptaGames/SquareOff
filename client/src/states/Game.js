@@ -43,11 +43,13 @@ class GameState extends Phaser.State {
 
         // end network code
 
-        this.grid = new GridObject(this.game, config.GRID.PADDING.HORIZONTAL, config.GRID.PADDING.VERTICAL);
+        let center = { x: this.game.world.centerX, y: this.game.world.centerY };
+
+        this.grid = new GridObject(this.game, center.x, center.y);
 
         this.game.gridGroup.add(this.grid);
 
-        this.disc = new DiscObject( this.game, this.game.world.centerX, this.game.world.centerY, 'disc-sprite', this.grid.blockWidth );
+        this.disc = new DiscObject( this.game, center.x, center.y, 'disc-sprite', this.grid.blockWidth );
 
         this.game.discGroup.add(this.disc);
 
