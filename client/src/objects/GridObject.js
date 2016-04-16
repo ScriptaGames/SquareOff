@@ -1,8 +1,8 @@
 import config from '../config';
 
 class GridObject extends Phaser.Graphics {
-    constructor(game, x, y) {
-        super(game, x, y);
+    constructor(game, center_x, center_y) {
+        super(game, center_x, center_y);
 
         const HEIGHT = game.height - config.GRID.PADDING.VERTICAL*2;
         const WIDTH = HEIGHT * config.GRID.WIDTH / config.GRID.HEIGHT;
@@ -33,6 +33,15 @@ class GridObject extends Phaser.Graphics {
     }
 
     update() {
+    }
+
+    /**
+     * Find the grid coord based on an abosolute x, y position
+     * @param x
+     * @param y
+     */
+    findGridCoord(x, y) {
+
     }
 }
 

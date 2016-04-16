@@ -32,8 +32,6 @@ class GameState extends Phaser.State {
     create() {
         console.log('Game create');
 
-        let game = this;
-
         // start network code
 
         var socket = io("http://localhost:3100", {query: 'name=' + Date.now() + '&color=red'});
@@ -48,11 +46,7 @@ class GameState extends Phaser.State {
             console.log("Enemy color: ", gameInstance.enemy.color);
         });
 
-        socket.on('instance_tick', function (gameState) {
-            // console.log("My score: ", gameState.scores.you);
-            // console.log("Enemy score: ", gameState.scores.enemy);
-            game.applyGameState(gameState);
-        });
+        socket.on('instance_tick', this.applyGameState);
 
         // end network code
 
@@ -64,13 +58,16 @@ class GameState extends Phaser.State {
         this.disc = new DiscObject( this.game, center.x, center.y, 'disc-sprite', this.grid.blockWidth );
         this.game.discGroup.add(this.disc);
 
-        let i = 18;
-        while(i--) {
-            this.addGridBlock(Math.floor(Math.random()*config.GRID.WIDTH), Math.floor(Math.random()*config.GRID.HEIGHT));
-        }
+        //let i = 18;
+        //while(i--) {
+        //    this.addGridBlock(Math.floor(Math.random()*config.GRID.WIDTH), Math.floor(Math.random()*config.GRID.HEIGHT));
+        //}
 
         // for easier debugging
         window.sq = this;
+
+        // capture mouse input
+        this.game.input.mouse.capture = true;
 
     }
 
