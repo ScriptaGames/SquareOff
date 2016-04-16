@@ -1,0 +1,26 @@
+{
+  "name": "SquareOff",
+  "version": "0.0.1",
+  "homepage": "https://github.com/ScriptaGames/SquareOff",
+  "authors": [
+    "Jared Sprague <jared@scripta.co>",
+    "mwcz <mwc@clayto.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "None (closed)",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "socket.io": "git@github.com:socketio/socket.io-client.git#1.4.5"
+  }
+}
