@@ -21,6 +21,10 @@
     "tests"
   ],
   "dependencies": {
-    "socket.io": "git@github.com:socketio/socket.io-client.git#1.4.5"
+    "socket.io": "git@github.com:socketio/socket.io-client.git#1.4.5",
+    "p2.js": "git@github.com:schteppe/p2.js.git#^0.7.1",
+    "phaser": "^2.4.6",
+    "lodash": "^4.11.1",
+    "phaser-debug": "git@github.com:englercj/phaser-debug.git#v1.1.9"
   }
 }

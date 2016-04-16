@@ -12,8 +12,8 @@
     "url": "git@github.com:ScriptaGames/SquareOff.git"
   },
   "dependencies": {
-    "express": "^4.13.4",
     "console-stamp": "~0.2.0",
+    "express": "^4.13.4",
     "socket.io": "~1.4.5"
   },
   "devDependencies": {},
@@ -25,6 +25,6 @@
     "url": "https://github.com/ScriptaGames/SquareOff/issues"
   },
   "scripts": {
-    "start": "node server/server.js"
+    "start": "node server/server.js & gulp"
   }
 }
