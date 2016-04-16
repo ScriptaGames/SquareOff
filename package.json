@@ -1,23 +1,4 @@
 {
-<<<<<<< Updated upstream
-  "name": "squareoff",
-  "version": "0.0.0",
-  "description": "A game we're building for Ludum Dare 35!",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:ScriptaGames/SquareOff.git"
-  },
-  "author": "",
-  "license": "AGPL-3.0",
-  "bugs": {
-    "url": "https://github.com/ScriptaGames/SquareOff/issues"
-  },
-  "homepage": "https://github.com/ScriptaGames/SquareOff#readme"
-=======
   "name": "SquareOff",
   "version": "0.0.1",
   "description": "A game we're building for Ludum Dare 35!",
@@ -28,7 +9,7 @@
   "homepage": "https://github.com/ScriptaGames/SquareOff",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ScriptaGames/SquareOff"
+    "url": "git@github.com:ScriptaGames/SquareOff.git"
   },
   "dependencies": {
     "express": "^4.13.4",
@@ -39,8 +20,11 @@
   "bundleDependencies": [],
   "private": true,
   "main": "server/server.js",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/ScriptaGames/SquareOff/issues"
+  },
   "scripts": {
     "start": "node server/server.js"
   }
->>>>>>> Stashed changes
 }
