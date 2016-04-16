@@ -3,6 +3,7 @@ import GameObject from 'objects/GameObject';
 import io from 'socket.io-client';
 import GridObject from 'objects/GridObject';
 import DiscObject from 'objects/DiscObject';
+import BlockObject from 'objects/BlockObject';
 import _ from 'lodash';
 import config from '../config';
 
@@ -16,7 +17,7 @@ class GameState extends Phaser.State {
         // Create a group for the foreground items, like players, enemies and things like that.
 
         this.game.gridGroup  = this.game.add.group(); // holds grid
-        // this.game.blockGroup = this.game.add.group(); // holds all blocks
+        this.game.blockGroup = this.game.add.group(); // holds all blocks
         this.game.discGroup  = this.game.add.group(); // holds disc and disc particles
 
         // kick off p2 fzx engine
@@ -53,12 +54,13 @@ class GameState extends Phaser.State {
         let center = { x: this.game.world.centerX, y: this.game.world.centerY };
 
         this.grid = new GridObject(this.game, center.x, center.y);
-
         this.game.gridGroup.add(this.grid);
 
         this.disc = new DiscObject( this.game, center.x, center.y, 'disc-sprite', this.grid.blockWidth );
-
         this.game.discGroup.add(this.disc);
+
+        this.testBlock = new BlockObject( this.game, center.x, center.y, 'block-sprite', this.grid.blockWidth );
+        this.game.blockGroup.add(this.testBlock);
 
         // for easier debugging
         window.game = this;
