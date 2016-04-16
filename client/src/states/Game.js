@@ -63,13 +63,6 @@ class GameState extends Phaser.State {
         this.disc = new DiscObject( this.game, center.x, center.y, 'disc-sprite', this.grid.blockWidth );
         this.game.discGroup.add(this.disc);
 
-        this.testBlock = new BlockObject( this.game, this.grid, 0, 1, 'block-sprite', this.grid.blockWidth );
-        this.game.blockGroup.add(this.testBlock);
-        let i = 10;
-        while(i--) {
-            this.game.blockGroup.add(new BlockObject( this.game, this.grid, Math.floor(Math.random()*config.GRID.WIDTH), Math.floor(Math.random()*config.GRID.HEIGHT), 'block-sprite', this.grid.blockWidth ));
-        }
-
         // for easier debugging
         window.sq = this;
 
@@ -83,8 +76,26 @@ class GameState extends Phaser.State {
         // handle gamestate json object here
         this.disc.position.x = gameState.disc.pos.x;
         this.disc.position.y = gameState.disc.pos.y;
+        this.disc.body.velocity.x = gameState.disc.vel.x;
+        this.disc.body.velocity.y = gameState.disc.vel.y;
 
+        this.game.blockGroup.forEach( block => block.body.removeFromWorld() );
         this.game.blockGroup.removeAll();
+
+        _.each(gameState.grid, this.drawRow.bind(this));
+    }
+
+    drawRow(row, y) {
+        let x = row.length;
+        while (x--) {
+            if (row[x] > 0) {
+                this.drawBlock(y, x);
+            }
+        }
+    }
+
+    drawBlock(y, x) {
+        this.game.blockGroup.add(new BlockObject( this.game, this.grid, x, y, 'block-sprite', this.grid.blockWidth ));
     }
 
 }
