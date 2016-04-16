@@ -22,6 +22,8 @@ class GameState extends Phaser.State {
 
         // kick off p2 fzx engine
         this.game.physics.startSystem(Phaser.Physics.P2JS);
+        this.game.physics.p2.restitution = 1.0;
+        this.game.physics.p2.friction = 0;
 
         // Create a group for UI stuff like buttons, texts and menus. It's drawn on top of the foreground.
         // this.game.ui = this.game.add.group();
@@ -59,11 +61,15 @@ class GameState extends Phaser.State {
         this.disc = new DiscObject( this.game, center.x, center.y, 'disc-sprite', this.grid.blockWidth );
         this.game.discGroup.add(this.disc);
 
-        this.testBlock = new BlockObject( this.game, center.x, center.y, 'block-sprite', this.grid.blockWidth );
+        this.testBlock = new BlockObject( this.game, this.grid, 0, 1, 'block-sprite', this.grid.blockWidth );
         this.game.blockGroup.add(this.testBlock);
+        let i = 10;
+        while(i--) {
+            this.game.blockGroup.add(new BlockObject( this.game, this.grid, Math.floor(Math.random()*config.GRID.WIDTH), Math.floor(Math.random()*config.GRID.HEIGHT), 'block-sprite', this.grid.blockWidth ));
+        }
 
         // for easier debugging
-        window.game = this;
+        window.sq = this;
 
     }
 
@@ -73,6 +79,10 @@ class GameState extends Phaser.State {
 
     applyGameState(gamestate){
         // handle gamestate json object here
+        this.disc.position.x = gamestate.disc.pos.x;
+        this.disc.position.y = gamestate.disc.pos.y;
+
+        this.game.blockGroup.removeAll();
     }
 
 }

@@ -1,15 +1,17 @@
 import config from '../config';
 
-class DiscObject extends Phaser.Sprite {
-    constructor(game, x, y, key, blockSize) {
+class BlockObject extends Phaser.Sprite {
+    constructor(game, grid, grid_x, grid_y, key, blockSize) {
+        const x = game.world.centerX - grid.gridWidth / 2 + grid.blockWidth/2 + grid_x*grid.blockWidth;
+        const y = game.world.centerY - grid.gridHeight / 2 + grid.blockHeight/2 + grid_y*grid.blockHeight;
         super(game, x, y, key, 0 );
-        this.anchor.x = 0.5;
-        this.anchor.y = 0.5;
         this.width = this.height = config.DISC.DIAMETER * blockSize;
 
         game.physics.p2.enable(this);
 
         this.body.fixedRotation = true;
+        this.body.static = true;
+
     }
 
     update() {
@@ -38,4 +40,4 @@ class DiscObject extends Phaser.Sprite {
 // }
 
 
-export default DiscObject;
+export default BlockObject;

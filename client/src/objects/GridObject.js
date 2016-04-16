@@ -1,6 +1,6 @@
 import config from '../config';
 
-export default class GridObject extends Phaser.Graphics {
+class GridObject extends Phaser.Graphics {
     constructor(game, x, y) {
         super(game, x, y);
 
@@ -10,10 +10,13 @@ export default class GridObject extends Phaser.Graphics {
         const hw = WIDTH / 2;
         const hh = HEIGHT / 2;
 
-        this.blockWidth = WIDTH / config.GRID.WIDTH;
+        this.blockWidth = WIDTH / config.GRID.WIDTH ;
         this.blockHeight = HEIGHT / config.GRID.HEIGHT;
+        this.gridWidth = WIDTH;
+        this.gridHeight = HEIGHT;
+        this.lineWidth = config.GRID.LINE_WIDTH;
 
-        this.lineStyle( config.GRID.LINE_WIDTH, 0xffffff, 0.3);
+        this.lineStyle( config.GRID.LINE_WIDTH, 0x444444, 1.0);
 
         for( let gridX = 0; gridX <= config.GRID.WIDTH; gridX += 1 ) {
             let x = gridX * this.blockWidth;
@@ -32,3 +35,5 @@ export default class GridObject extends Phaser.Graphics {
     update() {
     }
 }
+
+export default GridObject;

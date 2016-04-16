@@ -7,7 +7,7 @@ module.exports = {
             VERTICAL: 10,
             HORIZONTAL: 10,
         },
-        LINE_WIDTH: 4,
+        LINE_WIDTH: 1,
     },
     DISC: {
         DIAMETER: 0.85, // as a percentage of block height/width
