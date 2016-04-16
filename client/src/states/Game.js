@@ -32,9 +32,10 @@ class GameState extends Phaser.State {
     create() {
         console.log('Game create');
 
+        let game = this;
+
         // start network code
 
-        let game = this;
         var socket = io("http://localhost:3100", {query: 'name=' + Date.now() + '&color=red'});
 
         socket.on('connect', function () {
