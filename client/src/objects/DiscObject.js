@@ -7,15 +7,15 @@ class DiscObject extends Phaser.Sprite {
         this.anchor.y = 0.5;
         this.width = this.height = config.DISC.DIAMETER * blockSize;
 
-        game.physics.p2.enable(this);
+        // game.physics.p2.enable(this);
 
-        this.body.setCircle(this.width/2);
+        // this.body.setCircle(this.width/2);
 
-        this.body.fixedRotation = true;
-        this.body.velocity.x = 60;
-        this.body.velocity.y = -150;
+        // this.body.fixedRotation = true;
+        // this.body.velocity.x = 60;
+        // this.body.velocity.y = -150;
 
-        this.body.damping = 0;
+        // this.body.damping = 0;
 
     }
 

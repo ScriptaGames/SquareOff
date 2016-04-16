@@ -49,8 +49,8 @@ class GameState extends Phaser.State {
         });
 
         socket.on('instance_tick', function (gameState) {
-            console.log("My score: ", gameState.scores.you);
-            console.log("Enemy score: ", gameState.scores.enemy);
+            // console.log("My score: ", gameState.scores.you);
+            // console.log("Enemy score: ", gameState.scores.enemy);
             game.applyGameState(gameState);
         });
 
@@ -64,6 +64,11 @@ class GameState extends Phaser.State {
         this.disc = new DiscObject( this.game, center.x, center.y, 'disc-sprite', this.grid.blockWidth );
         this.game.discGroup.add(this.disc);
 
+        let i = 18;
+        while(i--) {
+            this.addGridBlock(Math.floor(Math.random()*config.GRID.WIDTH), Math.floor(Math.random()*config.GRID.HEIGHT));
+        }
+
         // for easier debugging
         window.sq = this;
 
@@ -75,27 +80,26 @@ class GameState extends Phaser.State {
 
     applyGameState(gameState){
         // handle gamestate json object here
-        this.disc.position.x = gameState.disc.pos.x;
-        this.disc.position.y = gameState.disc.pos.y;
-        this.disc.body.velocity.x = gameState.disc.vel.x;
-        this.disc.body.velocity.y = gameState.disc.vel.y;
+        this.disc.position.set( gameState.disc.pos.x, gameState.disc.pos.y);
+        // this.disc.body.velocity.x = gameState.disc.vel.x;
+        // this.disc.body.velocity.y = gameState.disc.vel.y;
 
         this.game.blockGroup.forEach( block => block.body.removeFromWorld() );
         this.game.blockGroup.removeAll();
 
-        _.each(gameState.grid, this.drawRow.bind(this));
+        _.each(gameState.grid, this.addGridRow.bind(this));
     }
 
-    drawRow(row, y) {
+    addGridRow(row, y) {
         let x = row.length;
         while (x--) {
             if (row[x] > 0) {
-                this.drawBlock(y, x);
+                this.addGridBlock(x, y);
             }
         }
     }
 
-    drawBlock(y, x) {
+    addGridBlock(x, y) {
         this.game.blockGroup.add(new BlockObject( this.game, this.grid, x, y, 'block-sprite', this.grid.blockWidth ));
     }
 

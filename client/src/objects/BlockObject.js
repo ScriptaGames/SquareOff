@@ -16,7 +16,6 @@ class BlockObject extends Phaser.Sprite {
 
     update() {
         super.update();
-        this.body.setZeroVelocity();
     }
 }
 
