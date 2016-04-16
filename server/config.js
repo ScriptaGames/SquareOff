@@ -10,7 +10,7 @@ module.exports = {
         LINE_WIDTH: 4,
     },
     DISC: {
-        DIAMETER: 1, // as a percentage of block height/width
+        DIAMETER: 0.85, // as a percentage of block height/width
         DELAY: 2, // how many seconds the disc sits in the screen center beforemoving
     },
     TICK_FAST_INTERVAL: 500

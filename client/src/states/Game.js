@@ -2,6 +2,7 @@ import RainbowText from 'objects/RainbowText';
 import GameObject from 'objects/GameObject';
 import io from 'socket.io-client';
 import GridObject from 'objects/GridObject';
+import DiscObject from 'objects/DiscObject';
 import _ from 'lodash';
 import config from '../config';
 
@@ -16,7 +17,10 @@ class GameState extends Phaser.State {
 
         this.game.gridGroup  = this.game.add.group(); // holds grid
         // this.game.blockGroup = this.game.add.group(); // holds all blocks
-        // this.game.discGroup  = this.game.add.group(); // holds disc and disc particles
+        this.game.discGroup  = this.game.add.group(); // holds disc and disc particles
+
+        // kick off p2 fzx engine
+        this.game.physics.startSystem(Phaser.Physics.P2JS);
 
         // Create a group for UI stuff like buttons, texts and menus. It's drawn on top of the foreground.
         // this.game.ui = this.game.add.group();
@@ -39,45 +43,25 @@ class GameState extends Phaser.State {
 
         // end network code
 
-        let center = { x: this.game.world.centerX, y: this.game.world.centerY };
-
-        // These are some text object examples
-        // let text = new RainbowText(this.game, center.x, center.y, 'Phaser template for Ludum Dare!');
-        // text.anchor.set(0.5, 1);
-        // this.game.ui.add(text);
-
-        // let text2 = new RainbowText(this.game, center.x, center.y, 'Press directional keys!');
-        // text2.anchor.set(0.5, 0);
-        // this.game.ui.add(text2);
-
-        // This is a game sprite example
         this.grid = new GridObject(this.game, config.GRID.PADDING.HORIZONTAL, config.GRID.PADDING.VERTICAL);
 
         this.game.gridGroup.add(this.grid);
 
-        // for debugging
+        this.disc = new DiscObject( this.game, this.game.world.centerX, this.game.world.centerY, 'disc-sprite', this.grid.blockWidth );
+
+        this.game.discGroup.add(this.disc);
+
+        // for easier debugging
         window.game = this;
 
     }
 
     update(){
         // Do all your game loop stuff here
-        this.checkKeyboard();
     }
 
-    checkKeyboard(){
-        // Separate checking for up/down and left/right
-        // if (this.cursors.up.isDown){
-        //     this.player.y -= 1;
-        // } else if (this.cursors.down.isDown){
-        //     this.player.y += 1;
-        // }
-
-        // if (this.cursors.left.isDown){
-        //     this.player.x -= 1;
-        // } else if (this.cursors.right.isDown){
-        //     this.player.x += 1;
-        // }
+    applyGameState(gamestate){
+        // handle gamestate json object here
     }
 
 }

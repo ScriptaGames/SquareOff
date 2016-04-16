@@ -5,6 +5,8 @@ class PreloadState extends Phaser.State {
 
         // Load your assets (images, sounds, maps) here
         this.game.load.image('plane', 'assets/images/plane.png');
+        this.game.load.image('disc-particle', 'assets/images/disc-particle.png');
+        this.game.load.image('disc-sprite', 'assets/images/disc-sprite.png');
     }
 
     create() {

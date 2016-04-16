@@ -5,7 +5,6 @@ class GameObject extends Phaser.Sprite {
 
     constructor(game, x, y, key, frame){
         super(game, x, y, key, frame);
-        this.game = game;
     }
 
     update(){
