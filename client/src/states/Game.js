@@ -1,5 +1,6 @@
 import RainbowText from 'objects/RainbowText';
 import GameObject from 'objects/GameObject';
+import io from 'socket.io-client';
 
 class GameState extends Phaser.State {
 
@@ -18,7 +19,14 @@ class GameState extends Phaser.State {
 	create() {
 		console.log('Game create');
 
-		let center = { x: this.game.world.centerX, y: this.game.world.centerY };
+        var socket = io("http://localhost:3100", {query: 'name=' + Date.now()});
+
+        socket.on('connect', function () {
+            console.log("WebSocket connection established and ready.");
+        });
+
+
+        let center = { x: this.game.world.centerX, y: this.game.world.centerY };
 
 
 		// These are some text object examples

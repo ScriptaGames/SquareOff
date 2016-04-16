@@ -1,4 +1,5 @@
 module.exports = {
+    PORT: 3100,
     BOARD: {
         WIDTH: 10,
         HEIGHT: 16,
