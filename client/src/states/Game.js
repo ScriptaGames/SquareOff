@@ -46,7 +46,7 @@ class GameState extends Phaser.State {
             console.log("Enemy color: ", gameInstance.enemy.color);
         });
 
-        socket.on('instance_tick', this.applyGameState);
+        socket.on('instance_tick', this.applyGameState.bind(this));
 
         // end network code
 
