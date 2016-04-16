@@ -31,14 +31,21 @@ class GameState extends Phaser.State {
 
         // start network code
 
-        var socket = io("http://localhost:3100", {query: 'name=' + Date.now()});
+        var socket = io("http://localhost:3100", {query: 'name=' + Date.now() + '&color=red'});
 
         socket.on('connect', function () {
             console.log("WebSocket connection established and ready.");
         });
 
-        socket.on('instance_tick', function (msg) {
-            console.log(msg);
+        socket.on('game_start', function (gameInstance) {
+            console.log("Joined Game instance: ", gameInstance.id);
+            console.log("Enemy name: ", gameInstance.enemy.name);
+            console.log("Enemy color: ", gameInstance.enemy.color);
+        });
+
+        socket.on('instance_tick', function (gameState) {
+            console.log("My score: ", gameState.scores.you);
+            console.log("Enemy score: ", gameState.scores.enemy);
         });
 
         // end network code
