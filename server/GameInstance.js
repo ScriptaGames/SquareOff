@@ -22,7 +22,13 @@ var GameInstance = function (player_a, player_b) {
 
     // test state delete this later
     self.player_a.score = 1;
+    self.gameState.grid[0][0] = 1;
     self.gameState.grid[0][7] = 1;
+    self.gameState.grid[2][2] = 1;
+    self.gameState.grid[3][1] = 1;
+    self.gameState.grid[13][3] = 1;
+    self.gameState.grid[14][5] = 1;
+    self.gameState.grid[15][9] = 1;
 
     self.tick = function gameInstanceTick() {
 
