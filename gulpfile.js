@@ -12,6 +12,7 @@ var exorcist = require('exorcist');
 var babelify = require('babelify');
 var browserify = require('browserify');
 var browserSync = require('browser-sync');
+var exec = require('child_process').exec;
 
 /**
  * Using different folders/file names? Change these constants:
@@ -164,6 +165,12 @@ function serve() {
     // Watches for changes in files inside the './static' folder. Also sets 'keepFiles' to true (see cleanBuild()).
     gulp.watch(STATIC_PATH + '/**/*', ['watch-static']).on('change', function() {
         keepFiles = true;
+    });
+
+    exec('node server/server.js', function (err, stdout, stderr) {
+        console.log(stdout);
+        console.log(stderr);
+        cb(err);
     });
 
 }

@@ -39,8 +39,8 @@
     "url": "https://github.com/ScriptaGames/SquareOff/issues"
   },
   "scripts": {
-    "start": "node server/server.js & gulp",
-    "production": "node server/server.js & gulp --production"
+    "start": "gulp",
+    "production": "gulp --production"
   }
 }
 
