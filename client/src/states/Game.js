@@ -34,6 +34,7 @@ class GameState extends Phaser.State {
 
         // start network code
 
+        let game = this;
         var socket = io("http://localhost:3100", {query: 'name=' + Date.now() + '&color=red'});
 
         socket.on('connect', function () {
@@ -49,6 +50,7 @@ class GameState extends Phaser.State {
         socket.on('instance_tick', function (gameState) {
             console.log("My score: ", gameState.scores.you);
             console.log("Enemy score: ", gameState.scores.enemy);
+            game.applyGameState(gameState);
         });
 
         // end network code
@@ -77,10 +79,10 @@ class GameState extends Phaser.State {
         // Do all your game loop stuff here
     }
 
-    applyGameState(gamestate){
+    applyGameState(gameState){
         // handle gamestate json object here
-        this.disc.position.x = gamestate.disc.pos.x;
-        this.disc.position.y = gamestate.disc.pos.y;
+        this.disc.position.x = gameState.disc.pos.x;
+        this.disc.position.y = gameState.disc.pos.y;
 
         this.game.blockGroup.removeAll();
     }
