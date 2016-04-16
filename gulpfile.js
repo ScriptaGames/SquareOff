@@ -166,13 +166,6 @@ function serve() {
     gulp.watch(STATIC_PATH + '/**/*', ['watch-static']).on('change', function() {
         keepFiles = true;
     });
-
-    exec('node server/server.js', function (err, stdout, stderr) {
-        console.log(stdout);
-        console.log(stderr);
-        cb(err);
-    });
-
 }
 
 
