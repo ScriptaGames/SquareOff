@@ -12,6 +12,10 @@ class MainmenuState extends Phaser.State {
 
         console.log('Mainmenu create');
 
+        // Show the ui
+        var ui = window.document.getElementById('main_menu');
+        ui.style.display = 'block';
+
         let socket = io("http://localhost:3100");
 
         socket.on('connect', function () {
@@ -32,10 +36,16 @@ class MainmenuState extends Phaser.State {
             self.state.start('WaitState', false, false, socket, nick.value);
         };
 
-        var inviteFriendButton = window.document.getElementById('enter_queue_button');
+        //TODO: Implement invite friend button
+        //var inviteFriendButton = window.document.getElementById('enter_queue_button');
 
     }
 
+    shutdown() {
+        // Hide the ui
+        var ui = window.document.getElementById('main_menu');
+        ui.style.display = 'none';
+    }
 }
 
 export default MainmenuState;
