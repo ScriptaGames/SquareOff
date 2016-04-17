@@ -81,9 +81,16 @@ class GameState extends Phaser.State {
         var px = gameState.disc.pos.x * this.grid.gridWidth / config.GRID.WIDTH + this.game.width / 2;
         var py = gameState.disc.pos.y * this.grid.gridHeight / config.GRID.HEIGHT + this.game.height / 2;
         this.disc.position.set( px, py );
+        // this.disc.body.velocity.x = gameState.disc.vel.x * this.grid.gridWidth / config.GRID.WIDTH;
+        // this.disc.body.velocity.y = gameState.disc.vel.y * this.grid.gridHeight / config.GRID.HEIGHT;
 
-        // this.disc.body.velocity.x = gameState.disc.vel.x;
-        // this.disc.body.velocity.y = gameState.disc.vel.y;
+        // this.disc.body.data.position[0] = px; // doesn't work
+        // this.disc.body.data.position[1] = py; // doesn't work
+
+        // var xdiff = px - this.disc.position.x;
+        // var ydiff = py - this.disc.position.y;
+
+        // this.disc.body.dirty = true;
 
         this.game.blockGroup.forEach( block => block.body.removeFromWorld() );
         this.game.blockGroup.removeAll();

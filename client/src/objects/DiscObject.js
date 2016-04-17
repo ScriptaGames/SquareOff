@@ -12,8 +12,8 @@ class DiscObject extends Phaser.Sprite {
         // this.body.setCircle(this.width/2);
 
         // this.body.fixedRotation = true;
-        // this.body.velocity.x = 60;
-        // this.body.velocity.y = -150;
+        // this.body.velocity.x = 0;
+        // this.body.velocity.y = 0;
 
         // this.body.damping = 0;
 
