@@ -4,6 +4,7 @@ import io from 'socket.io-client';
 import GridObject from 'objects/GridObject';
 import DiscObject from 'objects/DiscObject';
 import BlockObject from 'objects/BlockObject';
+import ButtonObject from 'objects/ButtonObject';
 import _ from 'lodash';
 import config from '../config';
 
@@ -19,6 +20,7 @@ class GameState extends Phaser.State {
         this.game.gridGroup  = this.game.add.group(); // holds grid
         this.game.blockGroup = this.game.add.group(); // holds all blocks
         this.game.discGroup  = this.game.add.group(); // holds disc and disc particles
+        this.game.buttonGroup = this.game.add.group(); // holds all the grid buttons
 
         // kick off p2 fzx engine
         this.game.physics.startSystem(Phaser.Physics.P2JS);
@@ -57,6 +59,14 @@ class GameState extends Phaser.State {
 
         this.disc = new DiscObject( this.game, center.x, center.y, 'disc-sprite', this.grid.blockWidth );
         this.game.discGroup.add(this.disc);
+
+        // add grid buttons for capturing mouse events
+        for (var i = 0; i < config.GRID.HEIGHT; i++) {
+            for (var j = 0; j < config.GRID.WIDTH; j++) {
+                this.game.buttonGroup.add(new ButtonObject( this.game, this.grid, j, i, this.grid.blockWidth ));
+            }
+        }
+
 
         //let i = 18;
         //while(i--) {

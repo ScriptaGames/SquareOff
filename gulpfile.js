@@ -12,7 +12,7 @@ var exorcist = require('exorcist');
 var babelify = require('babelify');
 var browserify = require('browserify');
 var browserSync = require('browser-sync');
-var exec = require('child_process').exec;
+
 
 /**
  * Using different folders/file names? Change these constants:
