@@ -1,8 +1,8 @@
 module.exports = {
     PORT: 3100,
     GRID: {
-        WIDTH: 10,
-        HEIGHT: 16,
+        WIDTH: 12,
+        HEIGHT: 20,
         PADDING: {
             VERTICAL: 10,
             HORIZONTAL: 10,
@@ -11,9 +11,9 @@ module.exports = {
         WALL_DEPTH: 100,
     },
     DISC: {
-        DIAMETER: 0.85, // as a percentage of block height/width
+        DIAMETER: 1.95, // as a percentage of block height/width
         DELAY: 2, // how many seconds the disc sits in the screen center beforemoving
-        BOUNCE_SPEEDUP: 0.01, // increase speed by this factor after each bounce
+        BOUNCE_SPEEDUP: 0.00, // increase speed by this factor after each bounce
     },
-    TICK_FAST_INTERVAL: 50
+    TICK_FAST_INTERVAL: 40,
 };
