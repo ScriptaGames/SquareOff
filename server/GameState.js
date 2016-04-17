@@ -19,6 +19,7 @@ module.exports = function GameState() {
         disc: {
             pos: { x: 0, y: 0 },
             vel: { x: 0, y: 0 },
+            angle: 0,
         },
         hover_block: { x: -1, y: -1 },
         scores: {
