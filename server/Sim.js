@@ -13,6 +13,8 @@ function Sim(gameState) {
 
     this.reset();
 
+    this.initBlocks(gameState.grid);
+
     // simulation
 
     // var fixedTimeStep = 1/60;
@@ -39,8 +41,21 @@ function Sim(gameState) {
 
 }
 
+Sim.prototype.initBlocks = function SimInitBlocks(grid) {
+    var y = grid.length;
+    while (y--) {
+        var row = grid[y];
+        var x = row.length;
+        while (x--) {
+            if (row[x] > 0) {
+                this.addBlock(x, y);
+            }
+        }
+    }
+};
+
 Sim.prototype.update = function SimUpdate(timescale) {
-    console.log("SIM UPDATE TIMESCALE NOT HONORED");
+    // TODO SIM UPDATE TIMESCALE NOT HONORED
     this.world.step(1/60);
 
     this.gameState.disc.pos.x = this.discBody.position[0];
@@ -94,13 +109,22 @@ Sim.prototype.reset = function SimReset() {
     this.world.enableBodyCollision();
 };
 
-Sim.prototype.addBlock = function SimAddBlock() {
-    console.log("SIM ADDBLOCK NOT IMPLEMENTED");
+Sim.prototype.addBlock = function SimAddBlock(x, y) {
+    var blockShape = new p2.Box({ width: 1, height: 1 });
+    blockShape.material = this.bounceMaterial;
+
+    var px = -1 * config.GRID.WIDTH/2 + 1/2 + x;
+    var py = -1 * config.GRID.HEIGHT/2 + 1/2 + y;
+
+    var blockBody = new p2.Body({ position: [px, py] });
+    blockBody.addShape(blockShape);
+
+    this.world.addBody(blockBody);
+    return blockBody;
 };
 
 Sim.prototype.onScore = function SimOnScore(callback) {
     this.scoreHandler = callback;
-    console.log("SIM ONSCORE NOT IMPLEMENTED");
 };
 
 Sim.prototype.makeWall = function SimMakeWall(position, size) {

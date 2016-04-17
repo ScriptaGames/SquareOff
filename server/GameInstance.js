@@ -16,14 +16,10 @@ var GameInstance = function (player_a, player_b) {
 
     self.gameState = GameState();
 
-    // set up game simulation
-    self.sim = new Sim(self.gameState);
-    self.sim.onScore( self.addScore );
-
     // Setup player A socket
     self.player_a.socket.on('mouse_click', function (grid_x, grid_y) {
         // TODO: validate block is in allowed player region
-        // console.log("Player A clicked block: ", grid_x, grid_y);
+        console.log("Player A clicked block: ", grid_x, grid_y);
         self.sim.addBlock( grid_x, grid_y );
     });
     self.player_a.socket.on("hover_change", function (grid_x, grid_y) {
@@ -36,7 +32,7 @@ var GameInstance = function (player_a, player_b) {
         // reverse y for player b
         var true_y = (config.GRID.HEIGHT - 1) - grid_y;
         // TODO: validate block is in allowed player region
-        // console.log("Player B clicked block: ", grid_x, true_y);
+        console.log("Player B clicked block: ", grid_x, true_y);
         self.sim.addBlock( grid_x, true_y );
     });
     self.player_b.socket.on("hover_change", function (grid_x, grid_y) {
@@ -61,6 +57,10 @@ var GameInstance = function (player_a, player_b) {
     self.gameState.grid[13][3] = 1;
     self.gameState.grid[14][5] = 1;
     self.gameState.grid[15][9] = 1;
+
+    // set up game simulation
+    self.sim = new Sim(self.gameState);
+    self.sim.onScore( self.addScore );
 
 };
 
