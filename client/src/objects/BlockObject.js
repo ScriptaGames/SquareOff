@@ -5,7 +5,7 @@ class BlockObject extends Phaser.Sprite {
         const x = game.world.centerX - grid.gridWidth / 2 + grid.blockWidth/2 + grid_x*grid.blockWidth;
         const y = game.world.centerY - grid.gridHeight / 2 + grid.blockHeight/2 + grid_y*grid.blockHeight;
         super(game, x, y, key, 0 );
-        this.width = this.height = config.DISC.DIAMETER * blockSize;
+        this.width = this.height = blockSize;
 
         game.physics.p2.enable(this);
 
