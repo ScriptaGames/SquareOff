@@ -88,7 +88,13 @@ class GameState extends Phaser.State {
 
     applyGameState(gameState){
         // handle gamestate json object here
-        this.disc.position.set( gameState.disc.pos.x, gameState.disc.pos.y);
+
+        // disc x and y are based on p2 coordinate system which has 0,0 at the
+        // center.  translate to phaser coordinate system
+        var px = gameState.disc.pos.x * this.grid.gridWidth / config.GRID.WIDTH + this.game.width / 2;
+        var py = gameState.disc.pos.y * this.grid.gridHeight / config.GRID.HEIGHT + this.game.height / 2;
+        this.disc.position.set( px, py );
+
         // this.disc.body.velocity.x = gameState.disc.vel.x;
         // this.disc.body.velocity.y = gameState.disc.vel.y;
 
