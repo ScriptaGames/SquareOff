@@ -61,12 +61,6 @@ class GameState extends Phaser.State {
             }
         }
 
-
-        //let i = 18;
-        //while(i--) {
-        //    this.addGridBlock(Math.floor(Math.random()*config.GRID.WIDTH), Math.floor(Math.random()*config.GRID.HEIGHT));
-        //}
-
         // for easier debugging
         window.sq = this;
 

@@ -17,27 +17,9 @@ function Sim(gameState) {
 
     // simulation
 
-    // var fixedTimeStep = 1/60;
-    // var maxSubSteps = 10;
-    // var lastTime;
-    // var stepCount = 0;
-
-    // function step(time) {
-    //     time = time || process.hrtime()[1] / 1e6;
-    //     var deltaTime = lastTime ? (time - lastTime) / 1000 : 0;
-
-    //     stepCount++;
-
-    //     world.step( fixedTimeStep, deltaTime, maxSubSteps );
-
-    //     var prettypos = [
-    //         circleBody.interpolatedPosition[0].toFixed(4),
-    //         circleBody.interpolatedPosition[1].toFixed(4),
-    //     ];
-    //     console.log(`${stepCount}: ${prettypos.join(' ')}`);
-
-    //     lastTime = time;
-    // }
+    this.fixedTimeStep = 1/60;
+    this.maxSubSteps = 10;
+    this.lastTime = process.hrtime();
 
 }
 
@@ -54,12 +36,16 @@ Sim.prototype.initBlocks = function SimInitBlocks(grid) {
     }
 };
 
-Sim.prototype.update = function SimUpdate(timescale) {
-    // TODO SIM UPDATE TIMESCALE NOT HONORED
-    this.world.step(1/60);
+Sim.prototype.update = function SimUpdate() {
 
-    this.gameState.disc.pos.x = this.discBody.position[0];
-    this.gameState.disc.pos.y = this.discBody.position[1];
+    var deltaTime = process.hrtime(this.lastTime);
+
+    this.lastTime = process.hrtime();
+
+    this.world.step( this.fixedTimeStep, deltaTime[1]/1e9, this.maxSubSteps );
+
+    this.gameState.disc.pos.x = this.discBody.interpolatedPosition[0];
+    this.gameState.disc.pos.y = this.discBody.interpolatedPosition[1];
 };
 
 Sim.prototype.reset = function SimReset() {
