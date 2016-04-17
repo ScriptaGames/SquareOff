@@ -37,6 +37,14 @@ var AppServer = function (io) {
         });
 
         socket.on('disconnect', function () {
+            // Remove this player from any running game instance that they are in
+            for (var i = 0, l = self.game_instances.length; i < l; i++) {
+                var gameInstance = self.game_instances[i];
+                if (gameInstance.hasPlayer(current_player)) {
+                    gameInstance.removePlayer(current_player);
+                }
+            }
+
             // if this player is in the waiting queue remove them
             for (var i = 0, l = self.waiting_players.length; i < l; i++) {
                 var waiting_player = self.waiting_players[i];
@@ -60,14 +68,26 @@ var AppServer = function (io) {
             var player_b = self.waiting_players.shift();
 
             console.log("Creating new game instance");
-            self.game_instances.push(new GameInstance(player_a, player_b));
+            var gameInstance = new GameInstance(player_a, player_b);
+            gameInstance.onPlayerLeave = function (player) {
+                // put the player that left back in the waiting queue
+                self.waiting_players.push(player);
+            };
+            self.game_instances.push(gameInstance);
         }
 
-        // Iterate over each game instance and call tick()
-        for (var i = 0, l = self.game_instances.length; i < l; i++) {
-            self.game_instances[i].tick();
+        // Iterate over each game instance
+        for (var i = 0, l = self.game_instances.length; i < l; ++i) {
+            var gi = self.game_instances[i];
+            if (gi.state === 'active') {
+                gi.tick();
+            }
+            else if (!gi.hasConnectedPlayers()) {
+                // this is an empty dead game instance lets clean it up
+                console.log("Destroying game instance: ", gi.id);
+                self.game_instances.splice(i, 1);
+            }
         }
-
     };
 
     gameLoop.setGameLoop(self.serverTickFast, config.TICK_FAST_INTERVAL);

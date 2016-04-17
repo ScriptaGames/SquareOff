@@ -15,5 +15,6 @@ module.exports = {
         DELAY: 2, // how many seconds the disc sits in the screen center beforemoving
         BOUNCE_SPEEDUP: 0.00, // increase speed by this factor after each bounce
     },
-    TICK_FAST_INTERVAL: 40,
+    TICK_FAST_INTERVAL: 50,
+    WINNING_SCORE: 7
 };

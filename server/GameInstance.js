@@ -4,6 +4,7 @@ var uuid      = require('node-uuid');
 var GameState = require('./GameState.js');
 var config    = require('./config');
 var Sim       = require('./Sim');
+var _         = require('lodash');
 
 var GameInstance = function (player_a, player_b) {
     var self = this;
@@ -11,8 +12,13 @@ var GameInstance = function (player_a, player_b) {
     self.player_a = player_a;
     self.player_b = player_b;
 
+    self.player_a.connected = true;
+    self.player_b.connected = true;
+
     self.player_a.score = 0;
     self.player_b.score = 0;
+
+    self.state = 'active';
 
     self.gameState = GameState();
 
@@ -25,6 +31,11 @@ var GameInstance = function (player_a, player_b) {
     self.player_a.socket.on("hover_change", function (grid_x, grid_y) {
         self.player_a.hover_block = {x: grid_x, y: grid_y};
         console.log("Player A hover block: ", grid_x, grid_y);
+    });
+    self.player_a.socket.on("leave_instance", function () {
+        self.player_a.connected = false;
+        self.state = 'finished';
+        self.onPlayerLeave(self.player_a);
     });
 
     // Setup player B socket
@@ -40,6 +51,11 @@ var GameInstance = function (player_a, player_b) {
         self.player_b.hover_block = {x: grid_x, y: true_y};
         console.log("Player B hover block: ", grid_x, true_y);
     });
+    self.player_b.socket.on("leave_instance", function () {
+        self.player_b.connected = false;
+        self.state = 'finished';
+        self.onPlayerLeave(self.player_b);
+    });
 
 
     var enemy = {nick: self.player_b.nick, color: self.player_b.color};
@@ -52,6 +68,8 @@ var GameInstance = function (player_a, player_b) {
     self.sim = new Sim(self.gameState);
     self.sim.onScore( self.addScore );
 
+    //TODO: remove this when done testing
+    //setInterval(_.partial(self.addScore.bind(this), 'a', 1), 1000);
 };
 
 GameInstance.prototype.tick = function gameInstanceTick() {
@@ -77,8 +95,32 @@ GameInstance.prototype.tick = function gameInstanceTick() {
 };
 
 GameInstance.prototype.addScore = function gameInstanceTick(player_letter, amount) {
-    console.log("ADDSCORE NOT IMPLEMENTED");
-    // this['player_'+player_letter].score += amount;
+    this['player_'+player_letter].score += amount;
+
+    if (this['player_'+player_letter].score >= config.WINNING_SCORE) {
+        console.log("player_" + player_letter + " WON!");
+
+        this.state = 'finished';
+    }
+};
+
+GameInstance.prototype.hasPlayer = function gameInstanceHasPlayer(player) {
+    return (this.player_a.id === player.id) || (this.player_b.id === player.id);
+};
+
+GameInstance.prototype.removePlayer = function gameInstanceRemovePlayer(player) {
+    if (this.player_a.id === player.id) {
+        this.player_a.connected = false;
+        this.state = 'finished';
+    }
+    else if (this.player_b.id === player.id) {
+        this.player_b.connected = false;
+        this.state = 'finished';
+    }
+};
+
+GameInstance.prototype.hasConnectedPlayers = function gameInstanceHasPlayers() {
+    return this.player_a.connected || this.player_b.connected;
 };
 
 if (NODEJS) module.exports = GameInstance;
