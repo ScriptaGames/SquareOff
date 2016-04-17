@@ -114,7 +114,7 @@ Sim.prototype.addBlock = function SimAddBlock(x, y) {
 
     // add block to sim
 
-    var blockShape = new p2.Box({ width: 1.25, height: 1.25 });
+    var blockShape = new p2.Box({ width: 1.00, height: 1.00 });
     blockShape.material = this.bounceMaterial;
 
     var px = -1 * config.GRID.WIDTH/2 + 1/2 + x;
