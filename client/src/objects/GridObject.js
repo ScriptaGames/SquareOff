@@ -34,15 +34,6 @@ class GridObject extends Phaser.Graphics {
 
     update() {
     }
-
-    /**
-     * Find the grid coord based on an abosolute x, y position
-     * @param x
-     * @param y
-     */
-    findGridCoord(x, y) {
-
-    }
 }
 
 export default GridObject;
