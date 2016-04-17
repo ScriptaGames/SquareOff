@@ -1,7 +1,8 @@
 var NODEJS = typeof module !== 'undefined' && module.exports;
 
-var uuid = require('node-uuid');
+var uuid      = require('node-uuid');
 var GameState = require('./GameState.js');
+var config    = require('./config');
 
 var GameInstance = function (player_a, player_b) {
     var self = this;
@@ -13,6 +14,30 @@ var GameInstance = function (player_a, player_b) {
     self.player_b.score = 0;
 
     self.gameState = GameState();
+
+    // Setup player A socket
+    self.player_a.socket.on('mouse_click', function (grid_x, grid_y) {
+        // TODO: validate and send click event to simulation
+        console.log("Player A clicked block: ", grid_x, grid_y);
+    });
+    self.player_a.socket.on("hover_change", function (grid_x, grid_y) {
+        self.player_a.hover_block = {x: grid_x, y: grid_y};
+        console.log("Player A hover block: ", grid_x, grid_y);
+    });
+
+    // Setup player B socket
+    self.player_b.socket.on('mouse_click', function (grid_x, grid_y) {
+        // reverse y for player b
+        var true_y = (config.GRID.HEIGHT - 1) - grid_y;
+        // TODO: validate and send click event to simulation
+        console.log("Player B clicked block: ", grid_x, true_y);
+    });
+    self.player_b.socket.on("hover_change", function (grid_x, grid_y) {
+        var true_y = (config.GRID.HEIGHT - 1) - grid_y;
+        self.player_b.hover_block = {x: grid_x, y: true_y};
+        console.log("Player B hover block: ", grid_x, true_y);
+    });
+
 
     var enemy = {name: self.player_b.name, color: self.player_b.color};
     self.player_a.socket.emit('game_start', {id: self.id, enemy: enemy});
@@ -34,10 +59,12 @@ var GameInstance = function (player_a, player_b) {
 
         self.gameState.scores.you = self.player_a.score;
         self.gameState.scores.enemy = self.player_b.score;
+        self.gameState.hover_block = self.player_b.hover_block;
         self.player_a.socket.emit("instance_tick", self.gameState);
 
         self.gameState.scores.you = self.player_b.score;
         self.gameState.scores.enemy = self.player_a.score;
+        self.gameState.hover_block = self.player_a.hover_block;
         self.gameState.grid.reverse();
         self.player_b.socket.emit("instance_tick", self.gameState);
         self.gameState.grid.reverse();

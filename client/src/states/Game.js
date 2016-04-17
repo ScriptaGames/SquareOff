@@ -36,7 +36,7 @@ class GameState extends Phaser.State {
 
         // start network code
 
-        var socket = io("http://localhost:3100", {query: 'name=' + Date.now() + '&color=red'});
+        let socket = io("http://localhost:3100", {query: 'name=' + Date.now() + '&color=red'});
 
         socket.on('connect', function () {
             console.log("WebSocket connection established and ready.");
@@ -63,7 +63,8 @@ class GameState extends Phaser.State {
         // add grid buttons for capturing mouse events
         for (var i = 0; i < config.GRID.HEIGHT; i++) {
             for (var j = 0; j < config.GRID.WIDTH; j++) {
-                this.game.buttonGroup.add(new ButtonObject( this.game, this.grid, j, i, this.grid.blockWidth ));
+                let buttonObject = new ButtonObject(this.game, this.grid, j, i, this.grid.blockWidth, socket);
+                this.game.buttonGroup.add(buttonObject);
             }
         }
 
