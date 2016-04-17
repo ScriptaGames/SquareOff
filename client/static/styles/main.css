@@ -12,8 +12,24 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  background: black;
+  color: white;
 }
 
 .pdebug{
   left: 0px;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+#main_menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 20;
 }

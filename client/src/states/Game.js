@@ -1,6 +1,5 @@
 import RainbowText from 'objects/RainbowText';
 import GameObject from 'objects/GameObject';
-import io from 'socket.io-client';
 import GridObject from 'objects/GridObject';
 import DiscObject from 'objects/DiscObject';
 import BlockObject from 'objects/BlockObject';
@@ -9,6 +8,12 @@ import _ from 'lodash';
 import config from '../config';
 
 class GameState extends Phaser.State {
+
+    init(socket) {
+        console.log("Init GameState socket.id: ", socket.id);
+
+        this.socket = socket;
+    }
 
     preload() {
         console.log('Game preload');
@@ -36,19 +41,7 @@ class GameState extends Phaser.State {
 
         // start network code
 
-        let socket = io("http://localhost:3100", {query: 'name=' + Date.now() + '&color=red'});
-
-        socket.on('connect', function () {
-            console.log("WebSocket connection established and ready.");
-        });
-
-        socket.on('game_start', function (gameInstance) {
-            console.log("Joined Game instance: ", gameInstance.id);
-            console.log("Enemy name: ", gameInstance.enemy.name);
-            console.log("Enemy color: ", gameInstance.enemy.color);
-        });
-
-        socket.on('instance_tick', this.applyGameState.bind(this));
+        this.socket.on('instance_tick', this.applyGameState.bind(this));
 
         // end network code
 
@@ -63,7 +56,7 @@ class GameState extends Phaser.State {
         // add grid buttons for capturing mouse events
         for (var i = 0; i < config.GRID.HEIGHT; i++) {
             for (var j = 0; j < config.GRID.WIDTH; j++) {
-                let buttonObject = new ButtonObject(this.game, this.grid, j, i, this.grid.blockWidth, socket);
+                let buttonObject = new ButtonObject(this.game, this.grid, j, i, this.grid.blockWidth, this.socket);
                 this.game.buttonGroup.add(buttonObject);
             }
         }

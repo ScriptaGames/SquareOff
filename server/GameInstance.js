@@ -42,10 +42,10 @@ var GameInstance = function (player_a, player_b) {
     });
 
 
-    var enemy = {name: self.player_b.name, color: self.player_b.color};
+    var enemy = {nick: self.player_b.nick, color: self.player_b.color};
     self.player_a.socket.emit('game_start', {id: self.id, enemy: enemy});
 
-    enemy = {name: self.player_a.name, color: self.player_a.color};
+    enemy = {nick: self.player_a.nick, color: self.player_a.color};
     self.player_b.socket.emit('game_start', {id: self.id, enemy: enemy});
 
     // test state delete this later

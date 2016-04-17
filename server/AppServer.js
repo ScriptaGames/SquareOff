@@ -22,15 +22,19 @@ var AppServer = function (io) {
 
         console.log('Client connected headers:', JSON.stringify(socket.handshake));
 
-        var name = socket.handshake.query.name;
-        var color = socket.handshake.query.color;
+        // Send server status how many people and games to display on main menu
+        var status = {player_count: Object.keys(self.players).length, game_count: self.game_instances.length};
+        socket.emit('game_status', status);
 
-        console.log("Name, color", name, color);
+        var current_player = {id: socket.id, socket: socket};
 
-        var current_player = {id: socket.id, name: name, color: color, socket: socket};
+        socket.on('player_ready', function (nick) {
+            current_player.nick = nick;
+            //current_player.color = color; //TODO: add custom color?
 
-        self.players[socket.id] = current_player;
-        self.waiting_players.push(current_player);
+            self.players[socket.id] = current_player;
+            self.waiting_players.push(current_player);
+        });
 
         socket.on('disconnect', function () {
             // if this player is in the waiting queue remove them

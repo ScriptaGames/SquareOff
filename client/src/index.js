@@ -2,6 +2,7 @@ import PreloadState from 'states/Preload';
 import BootState from 'states/Boot';
 import GameState from 'states/Game';
 import MainmenuState from 'states/Mainmenu';
+import WaitState from 'states/Wait';
 
 class Game extends Phaser.Game {
 
@@ -13,6 +14,7 @@ class Game extends Phaser.Game {
         this.state.add('PreloadState', PreloadState, false);
         this.state.add('GameState', GameState, false);
         this.state.add('MainmenuState', MainmenuState, false);
+        this.state.add('WaitState', WaitState, false);
 
         // Start with the bootstate
         this.state.start('BootState');
