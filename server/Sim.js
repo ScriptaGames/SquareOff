@@ -77,7 +77,7 @@ Sim.prototype.reset = function SimReset() {
 
     var bounceContactMaterial = new p2.ContactMaterial(this.bounceMaterial, this.discMaterial, {
         friction : 0,
-        restitution: 1.0,
+        restitution: 1.0 + config.DISC.BOUNCE_SPEEDUP,
     });
     this.world.addContactMaterial(bounceContactMaterial);
 
@@ -89,6 +89,7 @@ Sim.prototype.reset = function SimReset() {
         mass:1,
         position:[0, 0],
         angularVelocity: 0,
+        fixedRotation: true,
         velocity: [Math.random()*20 - 10, Math.random()*20 - 10],
     });
     this.discBody.addShape(discShape);
@@ -110,6 +111,9 @@ Sim.prototype.reset = function SimReset() {
 };
 
 Sim.prototype.addBlock = function SimAddBlock(x, y) {
+
+    // add block to sim
+
     var blockShape = new p2.Box({ width: 1, height: 1 });
     blockShape.material = this.bounceMaterial;
 
@@ -120,6 +124,11 @@ Sim.prototype.addBlock = function SimAddBlock(x, y) {
     blockBody.addShape(blockShape);
 
     this.world.addBody(blockBody);
+
+    // update gameState grid as well
+
+    this.gameState.grid[y][x] += 1;
+
     return blockBody;
 };
 
