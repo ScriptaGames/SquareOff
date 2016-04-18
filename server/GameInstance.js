@@ -151,12 +151,24 @@ GameInstance.prototype.destroy = function gameInstanceDestroy() {
     this.state = 'dead';
 };
 
-GameInstance.prototype.isValidBlock = function gameInstanceIsValidBlock() {
+GameInstance.prototype.isValidBlock = function gameInstanceIsValidBlock(grid_y, player_letter) {
+    // check that the block being placed not in the other players safe zone
+    if (player_letter === 'b') {
+        if (grid_y > (config.GRID.HEIGHT - 1) - config.GOAL_SAFE_ZONE) {
+            return false; // inside player b's safe zone
+        }
+    }
+    else if (player_letter === 'a') {
+        if (grid_y < config.GOAL_SAFE_ZONE) {
+            return false; // inside player b's safe zone
+        }
+    }
+
     return true; //TODO: implement
 };
 
 GameInstance.prototype.handleClick = function gameInstanceHandleClick(player, grid_x, grid_y, player_letter) {
-    if (this.isValidBlock(grid_x, grid_y)) {
+    if (this.isValidBlock(grid_y, player_letter)) {
         console.log('Valid block: ', grid_x, grid_y);
 
         // add the latest block
