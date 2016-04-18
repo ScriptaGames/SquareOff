@@ -103,6 +103,8 @@ GameInstance.prototype.addScore = function gameInstanceAddScore(player_letter) {
     var scoringPlayer = this['player_'+player_letter];
     scoringPlayer.score += 1;
 
+    this.sim.reset();
+
     console.log('Player ' + player_letter.toUpperCase() + ' scored. New score: ', scoringPlayer.score);
 
     if (scoringPlayer.score >= config.WINNING_SCORE) {

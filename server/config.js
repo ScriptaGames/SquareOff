@@ -15,8 +15,10 @@ module.exports = {
     },
     DISC: {
         DIAMETER: 1.95, // as a percentage of block height/width
-        DELAY: 2, // how many seconds the disc sits in the screen center beforemoving
-        BOUNCE_SPEEDUP: 0.00, // increase speed by this factor after each bounce
+        BOUNCE_SPEEDUP: 0.55, // add this amount to disc speed after each bounce
+        INITIAL_SPEED: 2.00,
+        MAX_SPEED: 20.00,
+        MOVE_DELAY: 750, // delay before moving; in ms
     },
     TICK_FAST_INTERVAL: 50,
     WINNING_SCORE: 7,

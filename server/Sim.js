@@ -9,9 +9,6 @@ function Sim(gameState) {
     this.scoreHandler = _.noop;
     this.destroyBlockHandler = _.noop;
 
-    // var self = this;
-    // setInterval( function() { self.scoreHandler(); }, 500 );
-
     this.reset();
 
     this.initBlocks(gameState.grid);
@@ -67,6 +64,7 @@ Sim.prototype.reset = function SimReset() {
     this.world.applySpringForces = false;
     this.world.applyDamping = false;
     this.world.on('beginContact', this.handleCollision.bind(this));
+    this.world.on('endContact', this.handleEndCollision.bind(this));
 
     // create materials with no friction and perfect bounce
 
@@ -75,7 +73,7 @@ Sim.prototype.reset = function SimReset() {
 
     var bounceContactMaterial = new p2.ContactMaterial(this.bounceMaterial, this.discMaterial, {
         friction : 0.0,
-        restitution: 1.0 + config.DISC.BOUNCE_SPEEDUP,
+        restitution: 1.0,
     });
     bounceContactMaterial.stiffness = 1e12;
     // bounceContactMaterial.relaxation = 1;
@@ -92,9 +90,14 @@ Sim.prototype.reset = function SimReset() {
         angularDamping: 0,
         damping: 0,
         fixedRotation: true,
-        velocity: [Math.random()*20 - 10, Math.random()*20 - 10],
+        velocity: [0, 0],
         allowSleep: false,
     });
+    // start moving in random direction
+    setTimeout( function() {
+        p2.vec2.set( this.discBody.velocity, config.DISC.INITIAL_SPEED, 0 );
+        p2.vec2.rotate( this.discBody.velocity, this.discBody.velocity, Math.random() * Math.PI * 2 );
+    }.bind(this), config.DISC.MOVE_DELAY);
     this.discBody.customType = 'disc';
     this.discBody.addShape(discShape);
     this.world.addBody(this.discBody);
@@ -188,6 +191,27 @@ Sim.prototype.onScore = function SimOnScore(callback) {
 
 Sim.prototype.onDestroyBlock = function simOnDestroyBlock(callback) {
     this.destroyBlockHandler = callback;
+};
+
+Sim.prototype.handleEndCollision = function SimHandleEndCollision(evt) {
+    var obj1 = evt.bodyA;
+    var obj2 = evt.bodyB;
+    var disc;
+    var vel;
+    var speed;
+    if (obj1.customType === 'disc') { disc = obj1; }
+    if (obj2.customType === 'disc') { disc = obj2; }
+    if (disc) {
+        vel = p2.vec2.clone( disc.velocity );
+        p2.vec2.normalize( vel, vel );
+        p2.vec2.scale( vel, vel, config.DISC.BOUNCE_SPEEDUP );
+        p2.vec2.add( disc.velocity, disc.velocity, vel );
+        speed = p2.vec2.length(disc.velocity);
+        if (speed > config.DISC.MAX_SPEED) {
+            p2.vec2.normalize( disc.velocity, disc.velocity );
+            p2.vec2.scale( disc.velocity, disc.velocity, config.DISC.MAX_SPEED );
+        }
+    }
 };
 
 Sim.prototype.handleCollision = function SimHandleCollision(evt) {
