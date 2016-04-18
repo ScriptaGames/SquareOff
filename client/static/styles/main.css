@@ -14,6 +14,8 @@ body {
     align-items: center;
     background: black;
     color: white;
+    font-family: 'Bowlby One SC';
+    font-size: 1.6em;
 }
 
 .pdebug{
@@ -40,7 +42,9 @@ body {
     animation-name: spin;
     animation-iteration-count: infinite;
     animation-timing-function: cubic-bezier(.62,.28,.23,.99);
+    animation-delay: 0.36s;
     height: 7vh;
     width: 7vh;
     background: white;
+    margin: 6vh auto;
 }
