@@ -122,14 +122,7 @@ Sim.prototype.reset = function SimReset() {
     this.world.enableBodyCollision();
 };
 
-Sim.prototype.addBlock = function SimAddBlock(x, y, player) {
-
-    // add block to sim
-
-    if (this.gameState.grid[y][x] > 0) {
-        return false;
-    }
-
+Sim.prototype.createBlock = function SimCreateBlock(x, y, player) {
     var blockShape = new p2.Box({ width: 1.00, height: 1.00 });
     blockShape.material = this.bounceMaterial;
 
@@ -141,6 +134,19 @@ Sim.prototype.addBlock = function SimAddBlock(x, y, player) {
     blockBody.customPlayer = player;
     blockBody.customType = 'block';
     blockBody.customGridPosition = [x,y];
+
+    return blockBody;
+};
+
+Sim.prototype.addBlock = function SimAddBlock(x, y, player) {
+
+    // add block to sim
+
+    if (this.gameState.grid[y][x] > 0) {
+        return false;
+    }
+
+    var blockBody = this.createBlock(x, y, player);
 
     this.world.addBody(blockBody);
 
