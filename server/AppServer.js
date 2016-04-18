@@ -30,7 +30,7 @@ var AppServer = function (io) {
 
         socket.on('player_ready', function (nick) {
             current_player.nick = nick;
-            //current_player.color = color; //TODO: add custom color?
+            current_player.color = 'red'; //TODO: add custom color?
 
             self.players[socket.id] = current_player;
             self.waiting_players.push(current_player);
@@ -69,10 +69,6 @@ var AppServer = function (io) {
 
             console.log("Creating new game instance");
             var gameInstance = new GameInstance(player_a, player_b);
-            gameInstance.onPlayerLeave = function (player) {
-                // put the player that left back in the waiting queue
-                self.waiting_players.push(player);
-            };
             self.game_instances.push(gameInstance);
         }
 

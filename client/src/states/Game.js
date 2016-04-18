@@ -9,10 +9,11 @@ import config from '../config';
 
 class GameState extends Phaser.State {
 
-    init(socket) {
+    init(socket, nick) {
         console.log("Init GameState socket.id: ", socket.id);
 
         this.socket = socket;
+        this.player_nick = nick;
     }
 
     preload() {
@@ -39,11 +40,33 @@ class GameState extends Phaser.State {
     create() {
         console.log('Game create');
 
+        var self = this;
+
         document.querySelector('#phaser-canvas').style.display = 'block';
 
         // start network code
 
-        this.socket.on('instance_tick', this.applyGameState.bind(this));
+        self.socket.on('instance_tick', this.applyGameState.bind(this));
+        self.socket.on('victory', function () {
+            console.log('Victory!');
+
+            var style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+            self.end_text = self.game.add.text(self.game.world.centerX, self.game.world.centerY, "YOU WON!", style);
+
+            //TODO: stay in same game if playing a friend
+
+            self.leaveGameTimout();
+        });
+        this.socket.on('defeat', function () {
+            console.log('Defeat :(');
+
+            var style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+            self.end_text = self.game.add.text(self.game.world.centerX, self.game.world.centerY, "YOU LOST!", style);
+
+            //TODO: stay in same game if playing a friend
+
+            self.leaveGameTimout();
+        });
 
         // end network code
 
@@ -73,6 +96,18 @@ class GameState extends Phaser.State {
 
     update(){
         // Do all your game loop stuff here
+    }
+
+    shutdown() {
+        this.end_text.destroy();
+
+        // destroy all game display elements
+        this.game.gridGroup.destroy(true);
+        this.game.blockGroup.destroy(true);
+        this.game.discGroup.destroy(true);
+        this.game.buttonGroup.destroy(true);
+
+        document.querySelector('#phaser-canvas').style.display = 'none';
     }
 
     applyGameState(gameState){
@@ -113,8 +148,13 @@ class GameState extends Phaser.State {
         this.game.blockGroup.add(new BlockObject( this.game, this.grid, x, y, 'block-sprite', this.grid.blockWidth ));
     }
 
-    shutdown() {
-        document.querySelector('#phaser-canvas').style.display = 'none';
+
+    leaveGameTimout() {
+        var self = this;
+        setTimeout(function () {
+            self.socket.emit('leave_instance');
+            self.state.start('WaitState', false, false, self.socket, self.player_nick);
+        }, config.WIN_SCREEN_TIMEOUT);
     }
 
 }

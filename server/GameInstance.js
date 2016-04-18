@@ -30,12 +30,11 @@ var GameInstance = function (player_a, player_b) {
     });
     self.player_a.socket.on("hover_change", function (grid_x, grid_y) {
         self.player_a.hover_block = {x: grid_x, y: grid_y};
-        console.log("Player A hover block: ", grid_x, grid_y);
     });
     self.player_a.socket.on("leave_instance", function () {
+        console.log("Player A leaving instance");
         self.player_a.connected = false;
-        self.state = 'finished';
-        self.onPlayerLeave(self.player_a);
+        self.state = 'almost_dead';
     });
 
     // Setup player B socket
@@ -49,12 +48,11 @@ var GameInstance = function (player_a, player_b) {
     self.player_b.socket.on("hover_change", function (grid_x, grid_y) {
         var true_y = (config.GRID.HEIGHT - 1) - grid_y;
         self.player_b.hover_block = {x: grid_x, y: true_y};
-        console.log("Player B hover block: ", grid_x, true_y);
     });
     self.player_b.socket.on("leave_instance", function () {
+        console.log("Player B leaving instance");
         self.player_b.connected = false;
-        self.state = 'finished';
-        self.onPlayerLeave(self.player_b);
+        self.state = 'almost_dead';
     });
 
 
@@ -98,9 +96,7 @@ GameInstance.prototype.addScore = function gameInstanceTick(player_letter, amoun
     this['player_'+player_letter].score += amount;
 
     if (this['player_'+player_letter].score >= config.WINNING_SCORE) {
-        console.log("player_" + player_letter + " WON!");
-
-        this.state = 'finished';
+        this.endMatch(this['player_'+player_letter]);
     }
 };
 
@@ -111,16 +107,31 @@ GameInstance.prototype.hasPlayer = function gameInstanceHasPlayer(player) {
 GameInstance.prototype.removePlayer = function gameInstanceRemovePlayer(player) {
     if (this.player_a.id === player.id) {
         this.player_a.connected = false;
-        this.state = 'finished';
+        this.endMatch(this.player_b);
     }
     else if (this.player_b.id === player.id) {
         this.player_b.connected = false;
-        this.state = 'finished';
+        this.endMatch(this.player_a);
     }
 };
 
 GameInstance.prototype.hasConnectedPlayers = function gameInstanceHasPlayers() {
     return this.player_a.connected || this.player_b.connected;
+};
+
+GameInstance.prototype.endMatch = function gameInstanceEndMatch(winning_player) {
+    this.state = 'match_end';
+
+    if (winning_player.id === this.player_a.id) {
+        console.log("Player A Won");
+        this.player_a.socket.emit("victory");
+        this.player_b.socket.emit("defeat");
+    }
+    else {
+        console.log("Player B Won");
+        this.player_a.socket.emit("defeat");
+        this.player_b.socket.emit("victory");
+    }
 };
 
 if (NODEJS) module.exports = GameInstance;

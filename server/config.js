@@ -16,5 +16,6 @@ module.exports = {
         BOUNCE_SPEEDUP: 0.00, // increase speed by this factor after each bounce
     },
     TICK_FAST_INTERVAL: 50,
-    WINNING_SCORE: 7
+    WINNING_SCORE: 7,
+    WIN_SCREEN_TIMEOUT: 7000,  // time that the player stays on the win/loss scree before starting new game
 };
