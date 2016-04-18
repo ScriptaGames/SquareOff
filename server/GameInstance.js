@@ -145,12 +145,9 @@ GameInstance.prototype.endMatch = function gameInstanceEndMatch(winning_player) 
         losing_player = this.player_a;
     }
 
-    this.gameState.scores.you = winning_player.score;
-    this.gameState.scores.enemy = losing_player.score;
-    winning_player.socket.emit("victory", this.gameState);
+    this.tick();
 
-    this.gameState.scores.you = losing_player.score;
-    this.gameState.scores.enemy = winning_player.score;
+    winning_player.socket.emit("victory", this.gameState);
     losing_player.socket.emit("defeat", this.gameState);
 };
 
