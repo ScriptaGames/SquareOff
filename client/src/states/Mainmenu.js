@@ -45,11 +45,11 @@ class MainmenuState extends Phaser.State {
 
         var enterQueueButton = window.document.getElementById('enter_queue_button');
         enterQueueButton.onclick = () => {
-            var nick = window.document.getElementById('nick');
-            console.log("enter queue, nick: ", nick.value);
+            var nick = window.document.getElementById('nick').value || 'Anonymous';
+            console.log("enter queue, nick: ", nick);
 
             // start wait queue state
-            this.state.start('WaitState', false, false, socket, nick.value, player_color);
+            this.state.start('WaitState', false, false, socket, nick, player_color);
         };
 
         //TODO: Implement invite friend button

@@ -1,3 +1,4 @@
+import ScoreText from 'objects/ScoreText';
 import GridObject from 'objects/GridObject';
 import DiscObject from 'objects/DiscObject';
 import BlockObject from 'objects/BlockObject';
@@ -24,10 +25,11 @@ class GameState extends Phaser.State {
         // I add these to the game object, so they're easily accessed inside different objects.
         // Create a group for the foreground items, like players, enemies and things like that.
 
-        this.game.gridGroup  = this.game.add.group(); // holds grid
-        this.game.blockGroup = this.game.add.group(); // holds all blocks
-        this.game.discGroup  = this.game.add.group(); // holds disc and disc particles
+        this.game.gridGroup   = this.game.add.group(); // holds grid
+        this.game.blockGroup  = this.game.add.group(); // holds all blocks
+        this.game.discGroup   = this.game.add.group(); // holds disc and disc particles
         this.game.buttonGroup = this.game.add.group(); // holds all the grid buttons
+        this.game.uiGroup     = this.game.add.group(); // holds all the grid buttons
 
         // kick off p2 fzx engine
         this.game.physics.startSystem(Phaser.Physics.P2JS);
@@ -91,6 +93,22 @@ class GameState extends Phaser.State {
             }
         }
 
+        // add score text
+
+        const textSize = 35;
+        let enemyNameText    = new ScoreText(this.game, center.x - this.grid.gridWidth/2 - textSize, 0, this.enemy_nick, this.enemy_color, textSize);
+        let playerNameText   = new ScoreText(this.game, center.x - this.grid.gridWidth/2 - textSize, center.y + this.grid.gridHeight/2, this.player_nick, this.player_color, textSize);
+        this.enemyScoreText  = new ScoreText(this.game, center.x - this.grid.gridWidth/2 - textSize, 0 + textSize*2, '', this.enemy_color, 3*textSize);
+        this.playerScoreText = new ScoreText(this.game, center.x - this.grid.gridWidth/2 - textSize, center.y + this.grid.gridHeight/2 - textSize*2, '', this.player_color, 3*textSize);
+        enemyNameText.anchor.set(1.0, 0.0);
+        playerNameText.anchor.set(1.0, 1.0);
+        this.enemyScoreText.anchor.set(1.0, 0.0);
+        this.playerScoreText.anchor.set(1.0, 1.0);
+        this.game.uiGroup.add(enemyNameText);
+        this.game.uiGroup.add(playerNameText);
+        this.game.uiGroup.add(this.enemyScoreText);
+        this.game.uiGroup.add(this.playerScoreText);
+
         // for easier debugging
         window.sq = this;
 
@@ -99,9 +117,9 @@ class GameState extends Phaser.State {
 
     }
 
-    update(){
-        // Do all your game loop stuff here
-    }
+    // update(){
+    //     // Do all your game loop stuff here
+    // }
 
     shutdown() {
         this.end_text.destroy();
@@ -111,6 +129,7 @@ class GameState extends Phaser.State {
         this.game.blockGroup.destroy(true);
         this.game.discGroup.destroy(true);
         this.game.buttonGroup.destroy(true);
+        this.game.uiGroup.destroy(true);
 
         document.querySelector('#phaser-canvas').style.display = 'none';
     }
@@ -136,6 +155,11 @@ class GameState extends Phaser.State {
 
         this.game.blockGroup.forEach( block => block.body.removeFromWorld() );
         this.game.blockGroup.removeAll();
+
+        // update scores
+
+        this.enemyScoreText.text = gameState.scores.enemy;
+        this.playerScoreText.text = gameState.scores.you;
 
         _.each(gameState.grid, this.addGridRow.bind(this));
     }
