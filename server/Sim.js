@@ -215,13 +215,11 @@ Sim.prototype.handleCollision = function SimHandleCollision(evt) {
     var obj1 = evt.bodyA;
     var obj2 = evt.bodyB;
     if (obj1.customType === 'disc' && obj2.customType === 'block') {
-        console.log('Removing block ' + obj2.customGridPosition);
         this.destroyBlockHandler({ x: obj2.customGridPosition[0], y: obj2.customGridPosition[1] }, obj2.customPlayer);
         this.pendingRemoval.push(obj2);
         this.gameState.grid[obj2.customGridPosition[1]][obj2.customGridPosition[0]] = 0;
     }
     else if (obj2.customType === 'disc' && obj1.customType === 'block') {
-        console.log('Removing block ' + obj1.customGridPosition);
         this.destroyBlockHandler({ x: obj1.customGridPosition[0], y: obj1.customGridPosition[1] }, obj1.customPlayer);
         this.pendingRemoval.push(obj1);
         this.gameState.grid[obj1.customGridPosition[1]][obj1.customGridPosition[0]] = 0;

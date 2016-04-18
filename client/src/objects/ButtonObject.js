@@ -7,7 +7,6 @@ class ButtonObject extends Phaser.Button {
 
         // configure button
         super(game, x, y, 'hover-sprite', function () {
-            console.log("button clicked: ", grid_x, grid_y);
             socket.emit("mouse_click", grid_x, grid_y);
         }, null, 1, 0, 0, 0);
         this.onInputOver.add(function () {

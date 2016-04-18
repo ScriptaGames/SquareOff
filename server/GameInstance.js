@@ -53,7 +53,6 @@ function GameInstance(player_a, player_b) {
     self.player_b.socket.on('mouse_click', function (grid_x, grid_y) {
         // reverse y for player b
         var true_y = (config.GRID.HEIGHT - 1) - grid_y;
-        console.log("Player B clicked block: ", grid_x, true_y, self.player_b.socket.id);
         self.handleClick(self.player_b, grid_x, true_y, 'b');
     });
     self.player_b.socket.on("hover_change", function (grid_x, grid_y) {
@@ -195,7 +194,6 @@ GameInstance.prototype.isValidBlock = function gameInstanceIsValidBlock(grid_y, 
 
 GameInstance.prototype.handleClick = function gameInstanceHandleClick(player, grid_x, grid_y, player_letter) {
     if (this.isValidBlock(grid_y, player_letter)) {
-        console.log('Valid block: ', grid_x, grid_y);
 
         // add the latest block
         player.blocks.push({x: grid_x, y: grid_y});
@@ -205,7 +203,6 @@ GameInstance.prototype.handleClick = function gameInstanceHandleClick(player, gr
             // remove oldest block
             var removed_block = player.blocks.shift();
 
-            console.log('Remove old block: ', removed_block.x, removed_block.y);
             this.sim.removeBlock(removed_block.x, removed_block.y);
         }
     }

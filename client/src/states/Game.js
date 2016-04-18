@@ -135,8 +135,12 @@ class GameState extends Phaser.State {
     // }
 
     shutdown() {
-        this.end_text.destroy();
-        this.end_text_bg.destroy();
+        if (this.end_text) {
+            this.end_text.destroy();
+        }
+        if (this.end_text_bg) {
+            this.end_text_bg.destroy();
+        }
 
         // destroy all game display elements
         this.game.gridGroup.destroy(true);
