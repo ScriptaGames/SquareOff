@@ -60,6 +60,13 @@ input, button {
     margin: 6vh auto;
 }
 
+#enter_queue_button {
+    margin: 0 auto;
+    width: 200px;
+    height: 200px;
+    display: block;
+}
+
 .color-picker * {
     float: left;
     width: 7vh;
