@@ -163,20 +163,20 @@ Sim.prototype.addBlock = function SimAddBlock(x, y) {
 Sim.prototype.removeBlock = function SimRemoveBlock(x, y) {
 
     // find the block at x,y
-    let block = _.find(this.world.bodies, { customGridPosition: [x,y] });
-    let xy;
+    var block = _.find(this.world.bodies, { customGridPosition: [x,y] });
+    var xy;
 
     // remove it from the world if it exists
     if (block) {
         this.pendingRemoval.push(block);
         xy = block.customGridPosition;
+
+        // report back the destruction
+        this.destroyBlockHandler({ x: xy[0], y: xy[1] });
     }
 
     // update gameState grid as well
     this.gameState.grid[y][x] = 0;
-
-    // report back the destruction
-    this.destroyBlockHandler(xy);
 
     return block;
 };
@@ -195,11 +195,13 @@ Sim.prototype.handleCollision = function SimHandleCollision(evt) {
     if (obj1.customType === 'disc' && obj2.customType === 'block') {
         console.log('Removing block ' + obj2.customGridPosition);
         this.pendingRemoval.push(obj2);
+        this.destroyBlockHandler({ x: obj2.customGridPosition[0], y: obj2.customGridPosition[1] });
         this.gameState.grid[obj2.customGridPosition[1]][obj2.customGridPosition[0]] -= 1;
     }
     else if (obj2.customType === 'disc' && obj1.customType === 'block') {
         console.log('Removing block ' + obj1.customGridPosition);
         this.pendingRemoval.push(obj1);
+        this.destroyBlockHandler({ x: obj1.customGridPosition[0], y: obj1.customGridPosition[1] });
         this.gameState.grid[obj1.customGridPosition[1]][obj1.customGridPosition[0]] -= 1;
     }
     else if ([obj1.customGoal, obj2.customGoal].indexOf('a') >= 0) {
