@@ -6,7 +6,7 @@ var config    = require('./config');
 var Sim       = require('./Sim');
 var _         = require('lodash');
 
-var GameInstance = function (player_a, player_b) {
+function GameInstance(player_a, player_b) {
     var self = this;
     self.id = uuid.v1(); // Unique ID for this game instance
     self.player_a = player_a;
@@ -64,7 +64,7 @@ var GameInstance = function (player_a, player_b) {
 
     // set up game simulation
     self.sim = new Sim(self.gameState);
-    self.sim.onScore( self.addScore );
+    self.sim.onScore( self.addScore.bind(self) );
 
     //TODO: remove this when done testing
     //setInterval(_.partial(self.addScore.bind(this), 'a', 1), 1000);
@@ -92,8 +92,8 @@ GameInstance.prototype.tick = function gameInstanceTick() {
 
 };
 
-GameInstance.prototype.addScore = function gameInstanceTick(player_letter, amount) {
-    this['player_'+player_letter].score += amount;
+GameInstance.prototype.addScore = function gameInstanceAddScore(player_letter) {
+    this['player_'+player_letter].score += 1;
 
     if (this['player_'+player_letter].score >= config.WINNING_SCORE) {
         this.endMatch(this['player_'+player_letter]);

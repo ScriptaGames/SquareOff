@@ -110,6 +110,26 @@ Sim.prototype.reset = function SimReset() {
     this.world.addBody( rightWall  );
     this.world.addBody( leftWall   );
 
+    // add goals
+
+    var topGoalShape = new p2.Line({ length: config.GOAL.WIDTH });
+    var bottomGoalShape = new p2.Line({ length: config.GOAL.WIDTH });
+    topGoalShape.sensor = true;
+    bottomGoalShape.sensor = true;
+    topGoalBody = new p2.Body({ position: [0, config.GRID.HEIGHT/2] });
+    botGoalBody = new p2.Body({ position: [0, -config.GRID.HEIGHT/2] });
+    topGoalBody.addShape(topGoalShape);
+    botGoalBody.addShape(bottomGoalShape);
+    topGoalBody.damping = 0;
+    botGoalBody.damping = 0;
+    topGoalBody.customType = 'goal';
+    botGoalBody.customType = 'goal';
+    topGoalBody.customPlayer = 'a';
+    botGoalBody.customPlayer = 'b';
+
+    this.world.addBody(topGoalBody);
+    this.world.addBody(botGoalBody);
+
     this.world.enableBodyCollision();
 };
 
@@ -145,12 +165,22 @@ Sim.prototype.handleCollision = function SimHandleCollision(evt) {
     var A = evt.bodyA;
     var B = evt.bodyB;
     if (A.customType === 'disc' && B.customType === 'block') {
+        console.log('Removing block ' + B.customGridPosition);
         this.pendingRemoval.push(B);
         this.gameState.grid[B.customGridPosition[1]][B.customGridPosition[0]] -= 1;
     }
     else if (B.customType === 'disc' && A.customType === 'block') {
+        console.log('Removing block ' + A.customGridPosition);
         this.pendingRemoval.push(A);
         this.gameState.grid[A.customGridPosition[1]][A.customGridPosition[0]] -= 1;
+    }
+    else if (A.customType === 'goal') {
+        console.log('Player ' + A.customPlayer + ' scored!');
+        this.scoreHandler(A.customPlayer);
+    }
+    else if (B.customType === 'goal') {
+        console.log('Player ' + B.customPlayer + ' scored!');
+        this.scoreHandler(B.customPlayer);
     }
     // console.log(A, B);
 };

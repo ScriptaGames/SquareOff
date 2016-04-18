@@ -10,6 +10,9 @@ module.exports = {
         LINE_WIDTH: 1,
         WALL_DEPTH: 100,
     },
+    GOAL: {
+        WIDTH: 8, // number of grid squares
+    },
     DISC: {
         DIAMETER: 1.95, // as a percentage of block height/width
         DELAY: 2, // how many seconds the disc sits in the screen center beforemoving
