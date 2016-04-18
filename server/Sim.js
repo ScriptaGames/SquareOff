@@ -73,7 +73,7 @@ Sim.prototype.reset = function SimReset() {
     this.bounceMaterial = new p2.Material();
 
     var bounceContactMaterial = new p2.ContactMaterial(this.bounceMaterial, this.discMaterial, {
-        friction : 1.0,
+        friction : 0.0,
         restitution: 1.0 + config.DISC.BOUNCE_SPEEDUP,
     });
     bounceContactMaterial.stiffness = 1e12;
@@ -87,9 +87,12 @@ Sim.prototype.reset = function SimReset() {
     this.discBody = new p2.Body({
         mass:1,
         position:[0, 0],
-        // angularVelocity: 0,
+        angularVelocity: 0,
+        angularDamping: 0,
+        damping: 0,
         fixedRotation: true,
         velocity: [Math.random()*20 - 10, Math.random()*20 - 10],
+        allowSleep: false,
     });
     this.discBody.customType = 'disc';
     this.discBody.addShape(discShape);
