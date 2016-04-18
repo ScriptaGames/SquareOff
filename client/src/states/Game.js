@@ -54,8 +54,11 @@ class GameState extends Phaser.State {
         self.socket.removeAllListeners('defeat');
 
         self.socket.on('instance_tick', this.applyGameState.bind(this));
-        self.socket.on('victory', function () {
+        self.socket.on('victory', function (gameState) {
             console.log('Victory!');
+
+            // apply the final game state
+            self.applyGameState(gameState);
 
             var style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
             self.end_text = self.game.add.text(self.game.world.centerX, self.game.world.centerY, "YOU WON!", style);
@@ -64,8 +67,11 @@ class GameState extends Phaser.State {
 
             self.leaveGameTimout();
         });
-        this.socket.on('defeat', function () {
+        this.socket.on('defeat', function (gameState) {
             console.log('Defeat :(');
+
+            // apply the final game state
+            self.applyGameState(gameState);
 
             var style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
             self.end_text = self.game.add.text(self.game.world.centerX, self.game.world.centerY, "YOU LOST!", style);
@@ -134,7 +140,7 @@ class GameState extends Phaser.State {
         document.querySelector('#phaser-canvas').style.display = 'none';
     }
 
-    applyGameState(gameState){
+    applyGameState(gameState) {
         // handle gamestate json object here
 
         // disc x and y are based on p2 coordinate system which has 0,0 at the

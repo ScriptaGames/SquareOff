@@ -132,16 +132,24 @@ GameInstance.prototype.hasConnectedPlayers = function gameInstanceHasPlayers() {
 GameInstance.prototype.endMatch = function gameInstanceEndMatch(winning_player) {
     this.state = 'match_end';
 
+    var losing_player;
+
     if (winning_player.id === this.player_a.id) {
         console.log("Player A Won");
-        this.player_a.socket.emit("victory");
-        this.player_b.socket.emit("defeat");
+        losing_player = this.player_b;
     }
     else {
         console.log("Player B Won");
-        this.player_a.socket.emit("defeat");
-        this.player_b.socket.emit("victory");
+        losing_player = this.player_a;
     }
+
+    this.gameState.scores.you = winning_player.score;
+    this.gameState.scores.enemy = losing_player.score;
+    winning_player.socket.emit("victory", this.gameState);
+
+    this.gameState.scores.you = losing_player.score;
+    this.gameState.scores.enemy = winning_player.score;
+    losing_player.socket.emit("defeat", this.gameState);
 };
 
 GameInstance.prototype.destroy = function gameInstanceDestroy() {
