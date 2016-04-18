@@ -7,7 +7,7 @@ import WaitState from 'states/Wait';
 class Game extends Phaser.Game {
 
     constructor() {
-        super(window.innerWidth, window.innerHeight, Phaser.AUTO, 'content', null, false, false);
+        super(window.innerWidth, window.innerHeight, Phaser.AUTO, 'phaser-canvas', null, false, false);
 
         // Create the game states
         this.state.add('BootState', BootState, false);

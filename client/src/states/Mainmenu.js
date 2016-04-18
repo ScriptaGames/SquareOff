@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import io from 'socket.io-client';
 
 class MainmenuState extends Phaser.State {
@@ -8,32 +9,35 @@ class MainmenuState extends Phaser.State {
     }
 
     create() {
-        let self = this;
-
         console.log('Mainmenu create');
 
-        // Show the ui
-        var ui = window.document.getElementById('main_menu');
-        ui.style.display = 'block';
+        document.querySelector('#main-menu').style.display = 'block';
 
         let socket = io("http://localhost:3100");
 
-        socket.on('connect', function () {
+        socket.on('connect', () => {
             console.log("WebSocket connection established and ready.");
+            this.enableButtons(true);
         });
 
-        socket.on('game_status', function (status) {
+        socket.on('disconnect', status => {
+            console.log("Server connection lost! :(");
+            this.enableButtons(false);
+            this.state.start('MainmenuState');
+        });
+
+        socket.on('game_status', (status) => {
             console.log("Number of players online: ", status.player_count);
             console.log("Number of games in progress: ", status.game_count);
         });
 
         var enterQueueButton = window.document.getElementById('enter_queue_button');
-        enterQueueButton.onclick = function () {
+        enterQueueButton.onclick = () => {
             var nick = window.document.getElementById('nick');
             console.log("enter queue, nick: ", nick.value);
 
             // start wait queue state
-            self.state.start('WaitState', false, false, socket, nick.value);
+            this.state.start('WaitState', false, false, socket, nick.value);
         };
 
         //TODO: Implement invite friend button
@@ -41,10 +45,14 @@ class MainmenuState extends Phaser.State {
 
     }
 
+    enableButtons(bool) {
+        // enable the play buttons
+        let buttons = document.querySelectorAll('#main-menu button');
+        _.each(_.toArray(buttons), el => { el.disabled = false } );
+    }
+
     shutdown() {
-        // Hide the ui
-        var ui = window.document.getElementById('main_menu');
-        ui.style.display = 'none';
+        document.querySelector('#main-menu').style.display = 'none';
     }
 }
 

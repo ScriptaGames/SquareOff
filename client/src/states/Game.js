@@ -39,6 +39,8 @@ class GameState extends Phaser.State {
     create() {
         console.log('Game create');
 
+        document.querySelector('#phaser-canvas').style.display = 'block';
+
         // start network code
 
         this.socket.on('instance_tick', this.applyGameState.bind(this));
@@ -109,6 +111,10 @@ class GameState extends Phaser.State {
 
     addGridBlock(x, y) {
         this.game.blockGroup.add(new BlockObject( this.game, this.grid, x, y, 'block-sprite', this.grid.blockWidth ));
+    }
+
+    shutdown() {
+        document.querySelector('#phaser-canvas').style.display = 'none';
     }
 
 }

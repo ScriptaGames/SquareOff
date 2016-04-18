@@ -12,23 +12,27 @@ class WaitState extends Phaser.State {
     }
 
     create() {
-        let self = this;
+        document.getElementById('waiting').style.display = 'block';
 
         console.log('Wate state create');
 
         // Inform the server the player is ready to join a game
         this.socket.emit('player_ready', this.nick);
 
-        this.socket.on('game_start', function (gameInstance) {
+        this.socket.on('game_start', gameInstance => {
             console.log("Entering Game instance: ", gameInstance.id);
             console.log("Enemy nick: ", gameInstance.enemy.nick);
             console.log("Enemy color: ", gameInstance.enemy.color);
 
-            self.state.start('GameState', false, false, self.socket);
+            this.state.start('GameState', false, false, this.socket);
         });
 
         //TODO: add invite friend button to wait state for those tired of waiting
         //var inviteFriendButton = window.document.getElementById('enter_queue_button');
+    }
+
+    shutdown() {
+        document.getElementById('waiting').style.display = 'none';
     }
 }
 

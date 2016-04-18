@@ -2,20 +2,25 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Ludum Dare Phaser Template!</title>
+	<title>Square Off!</title>
 	<link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
 
-<div id="main_menu">
+<div id="main-menu">
     <h1>SquareOff</h1>
     <input type="text" name="nick" id="nick" placeholder="Optional nickname"/>
     <br/><br/>
-    <button name="button" id="enter_queue_button">Search for opponent</button>
-    <button name="button" id="invite_friend_button">Play with friend</button>
+    <button disabled name="button" id="enter_queue_button">Search for opponent</button>
+    <button disabled name="button" id="invite_friend_button">Play with friend</button>
 </div>
 
-<div id="content"></div>
+<div id="waiting">
+    <div class="loading-spinner"></div>
+    <p>Searching...</p>
+</div>
+
+<div id="phaser-canvas"></div>
 
 <script src="scripts/phaser.min.js"></script>
 
