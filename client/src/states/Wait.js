@@ -1,7 +1,7 @@
 class WaitState extends Phaser.State {
 
     init(socket, nick, color) {
-        console.log("Wait init: ", socket.id, nick);
+        console.log("Wait init: ", socket.id, nick, color);
 
         this.socket = socket;
         this.player_nick = nick;
