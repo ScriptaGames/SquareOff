@@ -30,6 +30,13 @@ class GridObject extends Phaser.Graphics {
             this.lineTo(WIDTH - hw, y - hh);
         }
 
+        const RIM = WIDTH * ( config.GRID.WIDTH - config.GOAL.WIDTH ) / config.GRID.WIDTH / 2;
+        this.lineStyle( config.GRID.LINE_WIDTH*4, 0xff0000, 0.8);
+        this.moveTo(0 - hlw*2 - hw + RIM, 0 - hh);
+        this.lineTo(WIDTH - hw - RIM, 0 - hh);
+        this.moveTo(0 - hlw*2 - hw + RIM, config.GRID.HEIGHT * this.blockHeight - hh);
+        this.lineTo(WIDTH - hw - RIM, config.GRID.HEIGHT * this.blockHeight - hh);
+
     }
 
     update() {
