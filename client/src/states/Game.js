@@ -31,6 +31,9 @@ class GameState extends Phaser.State {
         this.game.buttonGroup = this.game.add.group(); // holds all the grid buttons
         this.game.uiGroup     = this.game.add.group(); // holds all the grid buttons
 
+        this.lastPlayerScore = 0;
+        this.lastEnemyScore = 0;
+
         // kick off p2 fzx engine
         // this.game.physics.startSystem(Phaser.Physics.P2JS);
         // this.game.physics.p2.restitution = 1.0;
@@ -167,6 +170,18 @@ class GameState extends Phaser.State {
         this.game.blockGroup.removeAll(true);
 
         // update scores
+
+        if (this.lastPlayerScore !== gameState.scores.you) {
+            console.log('you scored, exploding', this.lastPlayerScore, gameState.scores.you);
+            this.disc.explode(1);
+        }
+        else if (this.lastEnemyScore !== gameState.scores.enemy) {
+            console.log('enemy scored, exploding', this.lastEnemyScore, gameState.scores.you);
+            this.disc.explode(-1);
+        }
+
+        this.lastPlayerScore = gameState.scores.you;
+        this.lastEnemyScore = gameState.scores.enemy;
 
         this.enemyScoreText.text = gameState.scores.enemy;
         this.playerScoreText.text = gameState.scores.you;
