@@ -32,9 +32,9 @@ class GameState extends Phaser.State {
         this.game.uiGroup     = this.game.add.group(); // holds all the grid buttons
 
         // kick off p2 fzx engine
-        this.game.physics.startSystem(Phaser.Physics.P2JS);
-        this.game.physics.p2.restitution = 1.0;
-        this.game.physics.p2.friction = 0;
+        // this.game.physics.startSystem(Phaser.Physics.P2JS);
+        // this.game.physics.p2.restitution = 1.0;
+        // this.game.physics.p2.friction = 0;
 
         // Create a group for UI stuff like buttons, texts and menus. It's drawn on top of the foreground.
         // this.game.ui = this.game.add.group();
@@ -159,8 +159,9 @@ class GameState extends Phaser.State {
 
         // this.disc.body.dirty = true;
 
-        this.game.blockGroup.forEach( block => block.body.removeFromWorld() );
-        this.game.blockGroup.removeAll();
+        // don't need this with physics disabled
+        // this.game.blockGroup.forEach( block => block.body.removeFromWorld() );
+        this.game.blockGroup.removeAll(true);
 
         // update scores
 

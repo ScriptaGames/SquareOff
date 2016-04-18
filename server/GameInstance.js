@@ -106,6 +106,8 @@ GameInstance.prototype.addScore = function gameInstanceAddScore(player_letter) {
     scoringPlayer.score += 1;
 
     this.sim.reset();
+    // cheap way to reinstantiate grid
+    this.gameState.grid = GameState().grid;
 
     console.log('Player ' + player_letter.toUpperCase() + ' scored. New score: ', scoringPlayer.score);
 

@@ -5,14 +5,16 @@ class BlockObject extends Phaser.Sprite {
         const x = game.world.centerX - grid.gridWidth / 2 + grid.blockWidth/2 + grid_x*grid.blockWidth;
         const y = game.world.centerY - grid.gridHeight / 2 + grid.blockHeight/2 + grid_y*grid.blockHeight;
         super(game, x, y, key, 0 );
+        this.anchor.x = 0.5;
+        this.anchor.y = 0.5;
         this.width = this.height = blockSize;
 
         this.tint = color;
 
-        game.physics.p2.enable(this);
+        // game.physics.p2.enable(this);
 
-        this.body.fixedRotation = true;
-        this.body.static = true;
+        // this.body.fixedRotation = true;
+        // this.body.static = true;
 
     }
 
