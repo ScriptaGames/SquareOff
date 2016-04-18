@@ -23,10 +23,13 @@ function GameInstance(player_a, player_b) {
     self.gameState = GameState();
 
     // Setup player A socket
+    self.player_a.socket.removeAllListeners('mouse_click');
+    self.player_a.socket.removeAllListeners('hover_change');
+    self.player_a.socket.removeAllListeners('leave_instance');
     self.player_a.socket.on('mouse_click', function (grid_x, grid_y) {
         // TODO: validate block is in allowed player region
-        console.log("Player A clicked block: ", grid_x, grid_y);
-        self.sim.addBlock( grid_x, grid_y );
+        console.log("Player A clicked block: ", grid_x, grid_y, self.player_a.socket.id);
+        self.sim.addBlock(grid_x, grid_y);
     });
     self.player_a.socket.on("hover_change", function (grid_x, grid_y) {
         self.player_a.hover_block = {x: grid_x, y: grid_y};
@@ -38,12 +41,15 @@ function GameInstance(player_a, player_b) {
     });
 
     // Setup player B socket
+    self.player_b.socket.removeAllListeners('mouse_click');
+    self.player_b.socket.removeAllListeners('hover_change');
+    self.player_b.socket.removeAllListeners('leave_instance');
     self.player_b.socket.on('mouse_click', function (grid_x, grid_y) {
         // reverse y for player b
         var true_y = (config.GRID.HEIGHT - 1) - grid_y;
         // TODO: validate block is in allowed player region
-        console.log("Player B clicked block: ", grid_x, true_y);
-        self.sim.addBlock( grid_x, true_y );
+        console.log("Player B clicked block: ", grid_x, true_y, self.player_b.socket.id);
+        self.sim.addBlock(grid_x, true_y);
     });
     self.player_b.socket.on("hover_change", function (grid_x, grid_y) {
         var true_y = (config.GRID.HEIGHT - 1) - grid_y;
@@ -55,7 +61,6 @@ function GameInstance(player_a, player_b) {
         self.state = 'almost_dead';
     });
 
-
     var enemy = {nick: self.player_b.nick, color: self.player_b.color};
     self.player_a.socket.emit('game_start', {id: self.id, enemy: enemy});
 
@@ -65,9 +70,6 @@ function GameInstance(player_a, player_b) {
     // set up game simulation
     self.sim = new Sim(self.gameState);
     self.sim.onScore( self.addScore.bind(self) );
-
-    //TODO: remove this when done testing
-    //setInterval(_.partial(self.addScore.bind(this), 'a', 1), 1000);
 };
 
 GameInstance.prototype.tick = function gameInstanceTick() {
@@ -93,10 +95,13 @@ GameInstance.prototype.tick = function gameInstanceTick() {
 };
 
 GameInstance.prototype.addScore = function gameInstanceAddScore(player_letter) {
-    this['player_'+player_letter].score += 1;
+    var scoringPlayer = this['player_'+player_letter];
+    scoringPlayer.score += 1;
 
-    if (this['player_'+player_letter].score >= config.WINNING_SCORE) {
-        this.endMatch(this['player_'+player_letter]);
+    console.log('Player ' + player_letter.toUpperCase() + ' scored. New score: ', scoringPlayer.score);
+
+    if (scoringPlayer.score >= config.WINNING_SCORE) {
+        this.endMatch(scoringPlayer);
     }
 };
 
@@ -132,6 +137,11 @@ GameInstance.prototype.endMatch = function gameInstanceEndMatch(winning_player) 
         this.player_a.socket.emit("defeat");
         this.player_b.socket.emit("victory");
     }
+};
+
+GameInstance.prototype.destroy = function gameInstanceDestroy() {
+    // put any tear down stuff here
+    this.state = 'dead';
 };
 
 if (NODEJS) module.exports = GameInstance;

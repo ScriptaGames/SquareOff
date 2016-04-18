@@ -32,8 +32,13 @@ var AppServer = function (io) {
             current_player.nick = nick;
             current_player.color = 'red'; //TODO: add custom color?
 
+            console.log("Player ready: ", current_player.id, current_player.nick, current_player.color);
+
             self.players[socket.id] = current_player;
             self.waiting_players.push(current_player);
+
+            console.log("Num players: ", Object.keys(self.players).length);
+            console.log("Wait queue length: ", self.waiting_players.length);
         });
 
         socket.on('disconnect', function () {
@@ -68,6 +73,8 @@ var AppServer = function (io) {
             var player_b = self.waiting_players.shift();
 
             console.log("Creating new game instance");
+            console.log("Player A: ", player_a.id);
+            console.log("Player B: ", player_b.id);
             var gameInstance = new GameInstance(player_a, player_b);
             self.game_instances.push(gameInstance);
         }
@@ -75,12 +82,20 @@ var AppServer = function (io) {
         // Iterate over each game instance
         for (var i = 0, l = self.game_instances.length; i < l; ++i) {
             var gi = self.game_instances[i];
+            if (!gi) {
+                console.log("Removing undefined game instance");
+                self.game_instances.splice(i, 1);
+                continue;
+            }
+
             if (gi.state === 'active') {
                 gi.tick();
             }
             else if (!gi.hasConnectedPlayers()) {
                 // this is an empty dead game instance lets clean it up
                 console.log("Destroying game instance: ", gi.id);
+                gi.destroy();
+                gi = undefined;
                 self.game_instances.splice(i, 1);
             }
         }
