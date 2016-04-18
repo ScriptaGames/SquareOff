@@ -15,6 +15,9 @@ function GameInstance(player_a, player_b) {
     self.player_a_connected = true;
     self.player_b_connected = true;
 
+    self.player_a.hover_block = {x: 0, y: 0};
+    self.player_b.hover_block = {x: 0, y: config.GRID.HEIGHT - 1};
+
     self.player_a.score = 0;
     self.player_b.score = 0;
 
@@ -34,7 +37,8 @@ function GameInstance(player_a, player_b) {
         self.handleClick(self.player_a, grid_x, grid_y, 'a');
     });
     self.player_a.socket.on("hover_change", function (grid_x, grid_y) {
-        self.player_a.hover_block = {x: grid_x, y: grid_y};
+        var true_y = (config.GRID.HEIGHT - 1) - grid_y;
+        self.player_a.hover_block = {x: grid_x, y: true_y};
     });
     self.player_a.socket.on("leave_instance", function () {
         console.log("Player A leaving instance");

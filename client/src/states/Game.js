@@ -92,9 +92,12 @@ class GameState extends Phaser.State {
         this.game.discGroup.add(this.disc);
 
         // add grid buttons for capturing mouse events
+        this.hover_buttons = [];
         for (var i = 0; i < config.GRID.HEIGHT; i++) {
+            this.hover_buttons.push([]);
             for (var j = 0; j < config.GRID.WIDTH; j++) {
                 let buttonObject = new ButtonObject(this.game, this.grid, j, i, this.grid.blockWidth, this.socket);
+                this.hover_buttons[i].push(buttonObject);
                 this.game.buttonGroup.add(buttonObject);
             }
         }
@@ -167,6 +170,29 @@ class GameState extends Phaser.State {
 
         this.enemyScoreText.text = gameState.scores.enemy;
         this.playerScoreText.text = gameState.scores.you;
+
+        // add enemy hover
+        let hover_block = gameState.hover_block;
+        if (hover_block && hover_block.x && hover_block.y) {
+            let new_hover_button = this.hover_buttons[hover_block.y][hover_block.x];
+            if (!this.current_hover_button && new_hover_button) {
+                this.current_hover_button = {x: hover_block.x, y: hover_block.y};
+            }
+            if (new_hover_button) {
+                let button_changed = (hover_block.x != this.current_hover_button.x || hover_block.y != this.current_hover_button.y);
+
+                if (button_changed) {
+                    // reset the image for the old hover button
+                    this.hover_buttons[this.current_hover_button.y][this.current_hover_button.x].setFrames(1, 0, 0, 0);
+
+                    // set the button to hover frame
+                    new_hover_button.setFrames(0, 1, 1, 1);
+
+                    // save current hover position
+                    this.current_hover_button = {x: hover_block.x, y: hover_block.y};
+                }
+            }
+        }
 
         _.each(gameState.grid, _.curry(this.addGridRow.bind(this))(gameState.pos));
     }
