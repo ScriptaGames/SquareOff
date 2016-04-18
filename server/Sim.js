@@ -7,6 +7,7 @@ function Sim(gameState) {
     this.gameState = gameState;
 
     this.scoreHandler = _.noop;
+    this.destroyBlockHandler = _.noop;
 
     // var self = this;
     // setInterval( function() { self.scoreHandler(); }, 500 );
@@ -163,20 +164,29 @@ Sim.prototype.removeBlock = function SimRemoveBlock(x, y) {
 
     // find the block at x,y
     let block = _.find(this.world.bodies, { customGridPosition: [x,y] });
+    let xy;
 
     // remove it from the world if it exists
     if (block) {
         this.pendingRemoval.push(block);
+        xy = block.customGridPosition;
     }
 
     // update gameState grid as well
     this.gameState.grid[y][x] = 0;
+
+    // report back the destruction
+    this.destroyBlockHandler(xy);
 
     return block;
 };
 
 Sim.prototype.onScore = function SimOnScore(callback) {
     this.scoreHandler = callback;
+};
+
+Sim.prototype.onDestroyBlock = function simOnDestroyBlock(callback) {
+    this.destroyBlockHandler = callback;
 };
 
 Sim.prototype.handleCollision = function SimHandleCollision(evt) {
