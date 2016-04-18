@@ -173,11 +173,9 @@ Sim.prototype.handleCollision = function SimHandleCollision(evt) {
         this.gameState.grid[obj1.customGridPosition[1]][obj1.customGridPosition[0]] -= 1;
     }
     else if ([obj1.customGoal, obj2.customGoal].indexOf('a') >= 0) {
-        console.log('Player a scored!');
         this.scoreHandler('a');
     }
     else if ([obj1.customGoal, obj2.customGoal].indexOf('b') >= 0) {
-        console.log('Player b scored!');
         this.scoreHandler('b');
     }
 };

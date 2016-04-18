@@ -21,6 +21,7 @@ class WaitState extends Phaser.State {
         // Inform the server the player is ready to join a game
         this.socket.emit('player_ready', this.player_nick);
 
+        this.socket.removeAllListeners('game_start');
         this.socket.on('game_start', gameInstance => {
             console.log("Entering Game instance: ", gameInstance.id);
             console.log("Enemy nick: ", gameInstance.enemy.nick);

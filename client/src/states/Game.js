@@ -46,6 +46,10 @@ class GameState extends Phaser.State {
 
         // start network code
 
+        self.socket.removeAllListeners('instance_tick');
+        self.socket.removeAllListeners('victory');
+        self.socket.removeAllListeners('defeat');
+
         self.socket.on('instance_tick', this.applyGameState.bind(this));
         self.socket.on('victory', function () {
             console.log('Victory!');
@@ -156,7 +160,6 @@ class GameState extends Phaser.State {
             self.state.start('WaitState', false, false, self.socket, self.player_nick);
         }, config.WIN_SCREEN_TIMEOUT);
     }
-
 }
 
 export default GameState;

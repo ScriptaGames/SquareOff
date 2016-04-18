@@ -53,6 +53,12 @@ var AppServer = function (io) {
             // if this player is in the waiting queue remove them
             for (var i = 0, l = self.waiting_players.length; i < l; i++) {
                 var waiting_player = self.waiting_players[i];
+
+                if (!waiting_player) {
+                    self.waiting_players.splice(i, 1);
+                    continue;
+                }
+
                 if (waiting_player.id === current_player.id) {
                     self.waiting_players.splice(i, 1); // remove waiting player
                 }
