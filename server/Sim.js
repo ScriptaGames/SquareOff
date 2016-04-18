@@ -11,8 +11,6 @@ function Sim(gameState) {
 
     this.reset();
 
-    this.initBlocks(gameState.grid);
-
     // simulation
 
     this.fixedTimeStep = 1/60;
@@ -20,19 +18,6 @@ function Sim(gameState) {
     this.lastTime = process.hrtime();
 
 }
-
-Sim.prototype.initBlocks = function SimInitBlocks(grid) {
-    var y = grid.length;
-    while (y--) {
-        var row = grid[y];
-        var x = row.length;
-        while (x--) {
-            if (row[x] > 0) {
-                this.addBlock(x, y);
-            }
-        }
-    }
-};
 
 Sim.prototype.update = function SimUpdate() {
 
@@ -159,7 +144,7 @@ Sim.prototype.addBlock = function SimAddBlock(x, y, player) {
 
     // update gameState grid as well
 
-    this.gameState.grid[y][x] += 1;
+    this.gameState.grid[y][x] = player === 'a' ? 1 : 2;
 
     return blockBody;
 };
@@ -221,13 +206,13 @@ Sim.prototype.handleCollision = function SimHandleCollision(evt) {
         console.log('Removing block ' + obj2.customGridPosition);
         this.destroyBlockHandler({ x: obj2.customGridPosition[0], y: obj2.customGridPosition[1] }, obj2.customPlayer);
         this.pendingRemoval.push(obj2);
-        this.gameState.grid[obj2.customGridPosition[1]][obj2.customGridPosition[0]] -= 1;
+        this.gameState.grid[obj2.customGridPosition[1]][obj2.customGridPosition[0]] = 0;
     }
     else if (obj2.customType === 'disc' && obj1.customType === 'block') {
         console.log('Removing block ' + obj1.customGridPosition);
         this.destroyBlockHandler({ x: obj1.customGridPosition[0], y: obj1.customGridPosition[1] }, obj1.customPlayer);
         this.pendingRemoval.push(obj1);
-        this.gameState.grid[obj1.customGridPosition[1]][obj1.customGridPosition[0]] -= 1;
+        this.gameState.grid[obj1.customGridPosition[1]][obj1.customGridPosition[0]] = 0;
     }
     else if ([obj1.customGoal, obj2.customGoal].indexOf('a') >= 0) {
         this.scoreHandler('a');

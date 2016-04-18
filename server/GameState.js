@@ -25,6 +25,7 @@ module.exports = function GameState() {
         scores: {
             you: 0,
             enemy: 0,
-        }
+        },
+        pos: 1,
     };
 };

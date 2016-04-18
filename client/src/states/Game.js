@@ -167,20 +167,21 @@ class GameState extends Phaser.State {
         this.enemyScoreText.text = gameState.scores.enemy;
         this.playerScoreText.text = gameState.scores.you;
 
-        _.each(gameState.grid, this.addGridRow.bind(this));
+        _.each(gameState.grid, _.curry(this.addGridRow.bind(this))(gameState.pos));
     }
 
-    addGridRow(row, y) {
+    addGridRow(player_pos, row, y) {
         let x = row.length;
         while (x--) {
             if (row[x] > 0) {
-                this.addGridBlock(x, y);
+                this.addGridBlock(x, y, row, player_pos);
             }
         }
     }
 
-    addGridBlock(x, y) {
-        this.game.blockGroup.add(new BlockObject( this.game, this.grid, x, y, 'block-sprite', this.grid.blockWidth ));
+    addGridBlock(x, y, row, player_pos) {
+        const color = row[x] === player_pos ? this.player_color : this.enemy_color;
+        this.game.blockGroup.add(new BlockObject( this.game, this.grid, x, y, 'block-sprite', this.grid.blockWidth, color ));
     }
 
 

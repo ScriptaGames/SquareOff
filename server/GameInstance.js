@@ -82,6 +82,7 @@ GameInstance.prototype.tick = function gameInstanceTick() {
     this.gameState.scores.you = this.player_a.score;
     this.gameState.scores.enemy = this.player_b.score;
     this.gameState.hover_block = this.player_b.hover_block;
+    this.gameState.pos = 1;
     this.player_a.socket.emit("instance_tick", this.gameState);
 
     this.gameState.scores.you = this.player_b.score;
@@ -90,6 +91,7 @@ GameInstance.prototype.tick = function gameInstanceTick() {
     this.gameState.disc.pos.y *= -1;
     this.gameState.disc.vel.y *= -1;
     this.gameState.grid.reverse();
+    this.gameState.pos = 2;
     this.player_b.socket.emit("instance_tick", this.gameState);
     this.gameState.grid.reverse();
     this.gameState.disc.pos.y *= -1;

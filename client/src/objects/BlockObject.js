@@ -1,11 +1,13 @@
 import config from '../config';
 
 class BlockObject extends Phaser.Sprite {
-    constructor(game, grid, grid_x, grid_y, key, blockSize) {
+    constructor(game, grid, grid_x, grid_y, key, blockSize, color) {
         const x = game.world.centerX - grid.gridWidth / 2 + grid.blockWidth/2 + grid_x*grid.blockWidth;
         const y = game.world.centerY - grid.gridHeight / 2 + grid.blockHeight/2 + grid_y*grid.blockHeight;
         super(game, x, y, key, 0 );
         this.width = this.height = blockSize;
+
+        this.tint = color;
 
         game.physics.p2.enable(this);
 
