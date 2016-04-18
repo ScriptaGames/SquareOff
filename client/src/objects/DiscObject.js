@@ -61,6 +61,11 @@ class DiscObject extends Phaser.Sprite {
             this.emitter.emitY = this.position.y;
         }
     }
+
+    destroy(destroyChildren) {
+        super.destroy();
+        this.emitter.destroy();
+    }
 }
 
 export default DiscObject;
