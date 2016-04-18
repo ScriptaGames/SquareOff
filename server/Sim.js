@@ -161,15 +161,15 @@ Sim.prototype.addBlock = function SimAddBlock(x, y) {
 
 Sim.prototype.removeBlock = function SimRemoveBlock(x, y) {
 
-    // remove block from sim
-
     // find the block at x,y
     let block = _.find(this.world.bodies, { customGridPosition: [x,y] });
 
-    this.pendingRemoval.push(block);
+    // remove it from the world if it exists
+    if (block) {
+        this.pendingRemoval.push(block);
+    }
 
     // update gameState grid as well
-
     this.gameState.grid[y][x] = 0;
 
     return block;
