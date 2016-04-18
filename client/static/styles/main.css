@@ -26,7 +26,7 @@ input, button {
 }
 
 #nick {
-    width: 100%;
+    width: 40vh;
 }
 
 .pdebug{
@@ -62,30 +62,33 @@ input, button {
 
 #enter_queue_button {
     margin: 0 auto;
-    width: 200px;
-    height: 200px;
+    width: 20vh;
+    height: 20vh;
     display: block;
+    background: white;
+    border: none;
+    font-size: 2em;
 }
 
+.color-picker {
+    width: 40vh;
+    margin: 10px 0;
+}
 .color-picker * {
     float: left;
-    width: 7vh;
-    height: 7vh;
-    border: 3px solid black;
-    margin-right: 1px;
-}
-.color-picker *:first-child {
-    margin-left: -3px;
-}
-.color-picker *:last-child {
-    margin-right: 0;
+    width: 6.665vh;
+    height: 6.6657vh;
+    position: relative;
+    z-index: 20;
 }
 
 .color-picker *:hover {
-    border: 3px solid grey;
+    outline: 1px dashed #ccc;
+    z-index: 30;
 }
 .color-picker *.active {
-    border: 3px solid white;
+    outline: 1px solid white;
+    z-index: 40;
 }
 
 .color-picker .pink   { background-color: #D70060; }
@@ -94,3 +97,14 @@ input, button {
 .color-picker .green  { background-color: #61AE24; }
 .color-picker .blue   { background-color: #00A1CB; }
 .color-picker .teal   { background-color: #16E1E1; }
+
+#logo {
+    height: 40vh;
+    width: 40vh;
+    margin: 10px 0;
+    display: block;
+}
+
+#about {
+    display: none;
+}

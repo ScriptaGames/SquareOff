@@ -32,7 +32,7 @@ class MainmenuState extends Phaser.State {
                 this.startGame();
             }
             else {
-                window.Sounds.colorPick.play();
+                window.Sounds.nameType.play();
             }
         });
 
