@@ -18,6 +18,11 @@ body {
     font-size: 1.6em;
 }
 
+input, button {
+    font-family: 'Bowlby One SC';
+    font-size: 1em;
+}
+
 .pdebug{
     left: 0px;
 }
