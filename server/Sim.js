@@ -148,6 +148,15 @@ Sim.prototype.addBlock = function SimAddBlock(x, y, player) {
 
     var blockBody = this.createBlock(x, y, player);
 
+    var distToDisk = p2.vec2.dist( this.discBody.position, blockBody.position );
+
+    var h = Math.sqrt(Math.pow(blockBody.shapes[0].width, 2) + Math.pow(blockBody.shapes[0].height, 2));
+    var min_dist = (h / 2) + this.discBody.shapes[0].radius - 0.2;
+
+    if (distToDisk < min_dist) {
+        return;
+    }
+
     this.world.addBody(blockBody);
 
     // update gameState grid as well
