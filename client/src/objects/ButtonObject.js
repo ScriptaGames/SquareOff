@@ -1,7 +1,7 @@
 import config from '../config';
 
 class ButtonObject extends Phaser.Button {
-    constructor(game, grid, grid_x, grid_y, blockSize, socket) {
+    constructor(game, grid, grid_x, grid_y, blockSize, socket, color) {
         const x = game.world.centerX - grid.gridWidth / 2 + grid_x*grid.blockWidth;
         const y = game.world.centerY - grid.gridHeight / 2 + grid_y*grid.blockHeight;
 
@@ -15,6 +15,7 @@ class ButtonObject extends Phaser.Button {
         });
         this.width = this.height = blockSize;
         this.input.useHandCursor = false;
+        this.tint = color;
     }
 }
 
