@@ -12,8 +12,8 @@ function GameInstance(player_a, player_b) {
     self.player_a = player_a;
     self.player_b = player_b;
 
-    self.player_a.connected = true;
-    self.player_b.connected = true;
+    self.player_a_connected = true;
+    self.player_b_connected = true;
 
     self.player_a.score = 0;
     self.player_b.score = 0;
@@ -36,7 +36,7 @@ function GameInstance(player_a, player_b) {
     });
     self.player_a.socket.on("leave_instance", function () {
         console.log("Player A leaving instance");
-        self.player_a.connected = false;
+        self.player_a_connected = false;
         self.state = 'almost_dead';
     });
 
@@ -57,7 +57,7 @@ function GameInstance(player_a, player_b) {
     });
     self.player_b.socket.on("leave_instance", function () {
         console.log("Player B leaving instance");
-        self.player_b.connected = false;
+        self.player_b_connected = false;
         self.state = 'almost_dead';
     });
 
@@ -70,7 +70,7 @@ function GameInstance(player_a, player_b) {
     // set up game simulation
     self.sim = new Sim(self.gameState);
     self.sim.onScore( self.addScore.bind(self) );
-};
+}
 
 GameInstance.prototype.tick = function gameInstanceTick() {
 
@@ -111,17 +111,17 @@ GameInstance.prototype.hasPlayer = function gameInstanceHasPlayer(player) {
 
 GameInstance.prototype.removePlayer = function gameInstanceRemovePlayer(player) {
     if (this.player_a.id === player.id) {
-        this.player_a.connected = false;
+        this.player_a_connected = false;
         this.endMatch(this.player_b);
     }
     else if (this.player_b.id === player.id) {
-        this.player_b.connected = false;
+        this.player_b_connected = false;
         this.endMatch(this.player_a);
     }
 };
 
 GameInstance.prototype.hasConnectedPlayers = function gameInstanceHasPlayers() {
-    return this.player_a.connected || this.player_b.connected;
+    return this.player_a_connected || this.player_b_connected;
 };
 
 GameInstance.prototype.endMatch = function gameInstanceEndMatch(winning_player) {
@@ -141,6 +141,8 @@ GameInstance.prototype.endMatch = function gameInstanceEndMatch(winning_player) 
 
 GameInstance.prototype.destroy = function gameInstanceDestroy() {
     // put any tear down stuff here
+    this.player_a_connected = false;
+    this.player_b_connected = false;
     this.state = 'dead';
 };
 
