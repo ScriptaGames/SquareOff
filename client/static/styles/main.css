@@ -74,11 +74,11 @@ input, button {
     margin-right: 0;
 }
 
-.color-picker *:active {
-    border: 3px solid white;
-}
 .color-picker *:hover {
     border: 3px solid grey;
+}
+.color-picker *.active {
+    border: 3px solid white;
 }
 
 .color-picker .pink   { background-color: #D70060; }

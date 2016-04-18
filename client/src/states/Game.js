@@ -1,5 +1,3 @@
-import RainbowText from 'objects/RainbowText';
-import GameObject from 'objects/GameObject';
 import GridObject from 'objects/GridObject';
 import DiscObject from 'objects/DiscObject';
 import BlockObject from 'objects/BlockObject';

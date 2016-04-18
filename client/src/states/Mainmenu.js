@@ -18,6 +18,9 @@ class MainmenuState extends Phaser.State {
         var player_color = parseInt(_.sample(colorButtons).dataset.color.replace('#', ''), 16);
         _.each(colorButtons, function (button) {
             button.addEventListener('click', function (evt) {
+                // reset all border colors and then set border color on this btn
+                _.each(colorButtons, (btn) => btn.classList.remove('active') );
+                this.classList.add('active');
                 player_color = parseInt(this.dataset.color.replace('#', ''), 16);
             });
         });
