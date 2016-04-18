@@ -63,8 +63,8 @@ class GameState extends Phaser.State {
             // apply the final game state
             self.applyGameState(gameState);
 
-            var style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
-            self.end_text = self.game.add.text(self.game.world.centerX, self.game.world.centerY, "YOU WON!", style);
+            // display message box
+            self.displayEndMessage('VICTORY!');
 
             //TODO: stay in same game if playing a friend
 
@@ -76,8 +76,8 @@ class GameState extends Phaser.State {
             // apply the final game state
             self.applyGameState(gameState);
 
-            var style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
-            self.end_text = self.game.add.text(self.game.world.centerX, self.game.world.centerY, "YOU LOST!", style);
+            // display message box
+            self.displayEndMessage('DEFEAT!');
 
             //TODO: stay in same game if playing a friend
 
@@ -135,6 +135,7 @@ class GameState extends Phaser.State {
 
     shutdown() {
         this.end_text.destroy();
+        this.end_text_bg.destroy();
 
         // destroy all game display elements
         this.game.gridGroup.destroy(true);
@@ -233,6 +234,19 @@ class GameState extends Phaser.State {
             self.socket.emit('leave_instance');
             self.state.start('WaitState', false, false, self.socket, self.player_nick, self.player_color);
         }, config.WIN_SCREEN_TIMEOUT);
+    }
+
+    displayEndMessage(msg) {
+        this.end_text_bg = this.game.add.graphics();
+        this.end_text_bg.beginFill(0x464646, 1);
+        this.end_text_bg.drawRect(this.game.world.centerX - 250, this.game.world.centerY - 100, 500, 200);
+        let template = '#000000';
+        let colorValue = this.player_color.toString(16);
+        let colorString = template.substring(0, template.length - colorValue.length) + colorValue;
+        console.log('color string', colorString);
+        var style = { font: "bold 48px Bowlby One SC", fill: colorString, boundsAlignH: "center", boundsAlignV: "middle" };
+        this.end_text = this.game.add.text(this.game.world.centerX, this.game.world.centerY, msg, style);
+        this.end_text.anchor.set(0.5, 0.5);
     }
 }
 
