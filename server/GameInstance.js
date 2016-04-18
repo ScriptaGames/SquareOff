@@ -79,6 +79,12 @@ function GameInstance(player_a, player_b) {
         var owner = self['player_' + player_letter];
         _.remove(owner.blocks, blockObj);
     });
+    self.sim.onBounce( function() {
+        self.gameState.bounce = true;
+    });
+    self.sim.onBlockPlaced( function () {
+        self.gameState.blockPlaced = true
+    });
 }
 
 GameInstance.prototype.tick = function gameInstanceTick() {
@@ -100,6 +106,9 @@ GameInstance.prototype.tick = function gameInstanceTick() {
     this.gameState.grid.reverse();
     this.gameState.disc.pos.y *= -1;
     this.gameState.disc.vel.y *= -1;
+
+    this.gameState.bounce = false;
+    this.gameState.blockPlaced = false;
 
     this.sim.update();
 

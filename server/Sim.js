@@ -8,6 +8,8 @@ function Sim(gameState) {
 
     this.scoreHandler = _.noop;
     this.destroyBlockHandler = _.noop;
+    this.bounceHandler = _.noop;
+    this.blockPlacedHandler = _.noop;
 
     this.reset();
 
@@ -146,6 +148,8 @@ Sim.prototype.addBlock = function SimAddBlock(x, y, player) {
 
     this.gameState.grid[y][x] = player === 'a' ? 1 : 2;
 
+    this.blockPlacedHandler();
+
     return blockBody;
 };
 
@@ -170,6 +174,9 @@ Sim.prototype.removeBlock = function SimRemoveBlock(x, y) {
     return block;
 };
 
+Sim.prototype.onBlockPlaced = function SimOnBlockPlaced(callback) {
+    this.blockPlacedHandler = callback;
+};
 Sim.prototype.onScore = function SimOnScore(callback) {
     this.scoreHandler = callback;
 };
@@ -197,7 +204,12 @@ Sim.prototype.handleEndCollision = function SimHandleEndCollision(evt) {
             p2.vec2.scale( disc.velocity, disc.velocity, config.DISC.MAX_SPEED );
         }
     }
+    this.bounceHandler();
 };
+
+Sim.prototype.onBounce = function SimOnBounce(callback) {
+    this.bounceHandler = callback;
+}
 
 Sim.prototype.handleCollision = function SimHandleCollision(evt) {
     var obj1 = evt.bodyA;

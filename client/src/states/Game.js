@@ -34,6 +34,15 @@ class GameState extends Phaser.State {
         this.lastPlayerScore = 0;
         this.lastEnemyScore = 0;
 
+        this.sounds = {
+            blockPlace : this.game.add.audio('blockPlace'),
+            bounce     : this.game.add.audio('bounce'),
+            colorPick  : this.game.add.audio('colorPick'),
+            goal       : this.game.add.audio('goal'),
+            nameType   : this.game.add.audio('nameType'),
+            play       : this.game.add.audio('play'),
+        };
+
         // kick off p2 fzx engine
         // this.game.physics.startSystem(Phaser.Physics.P2JS);
         // this.game.physics.p2.restitution = 1.0;
@@ -179,6 +188,14 @@ class GameState extends Phaser.State {
         else if (this.lastEnemyScore !== gameState.scores.enemy) {
             console.log('enemy scored, exploding', this.lastEnemyScore, gameState.scores.you);
             this.disc.explode(-1);
+        }
+
+        // check for disc bounce and play sound if so
+        if (gameState.bounce) {
+            this.sounds.bounce.play();
+        }
+        if (gameState.blockPlaced) {
+            this.sounds.blockPlace.play();
         }
 
         this.lastPlayerScore = gameState.scores.you;
