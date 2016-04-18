@@ -116,16 +116,14 @@ Sim.prototype.reset = function SimReset() {
     var bottomGoalShape = new p2.Line({ length: config.GOAL.WIDTH });
     topGoalShape.sensor = true;
     bottomGoalShape.sensor = true;
-    topGoalBody = new p2.Body({ position: [0, config.GRID.HEIGHT/2] });
-    botGoalBody = new p2.Body({ position: [0, -config.GRID.HEIGHT/2] });
+    topGoalBody = new p2.Body({ position: [0, -config.GRID.HEIGHT/2] });
+    botGoalBody = new p2.Body({ position: [0, config.GRID.HEIGHT/2] });
     topGoalBody.addShape(topGoalShape);
     botGoalBody.addShape(bottomGoalShape);
     topGoalBody.damping = 0;
     botGoalBody.damping = 0;
-    topGoalBody.customType = 'goal';
-    botGoalBody.customType = 'goal';
-    topGoalBody.customPlayer = 'a';
-    botGoalBody.customPlayer = 'b';
+    topGoalBody.customGoal = 'a';
+    botGoalBody.customGoal = 'b';
 
     this.world.addBody(topGoalBody);
     this.world.addBody(botGoalBody);
@@ -162,27 +160,26 @@ Sim.prototype.onScore = function SimOnScore(callback) {
 };
 
 Sim.prototype.handleCollision = function SimHandleCollision(evt) {
-    var A = evt.bodyA;
-    var B = evt.bodyB;
-    if (A.customType === 'disc' && B.customType === 'block') {
-        console.log('Removing block ' + B.customGridPosition);
-        this.pendingRemoval.push(B);
-        this.gameState.grid[B.customGridPosition[1]][B.customGridPosition[0]] -= 1;
+    var obj1 = evt.bodyA;
+    var obj2 = evt.bodyB;
+    if (obj1.customType === 'disc' && obj2.customType === 'block') {
+        console.log('Removing block ' + obj2.customGridPosition);
+        this.pendingRemoval.push(obj2);
+        this.gameState.grid[obj2.customGridPosition[1]][obj2.customGridPosition[0]] -= 1;
     }
-    else if (B.customType === 'disc' && A.customType === 'block') {
-        console.log('Removing block ' + A.customGridPosition);
-        this.pendingRemoval.push(A);
-        this.gameState.grid[A.customGridPosition[1]][A.customGridPosition[0]] -= 1;
+    else if (obj2.customType === 'disc' && obj1.customType === 'block') {
+        console.log('Removing block ' + obj1.customGridPosition);
+        this.pendingRemoval.push(obj1);
+        this.gameState.grid[obj1.customGridPosition[1]][obj1.customGridPosition[0]] -= 1;
     }
-    else if (A.customType === 'goal') {
-        console.log('Player ' + A.customPlayer + ' scored!');
-        this.scoreHandler(A.customPlayer);
+    else if ([obj1.customGoal, obj2.customGoal].indexOf('a') >= 0) {
+        console.log('Player a scored!');
+        this.scoreHandler('a');
     }
-    else if (B.customType === 'goal') {
-        console.log('Player ' + B.customPlayer + ' scored!');
-        this.scoreHandler(B.customPlayer);
+    else if ([obj1.customGoal, obj2.customGoal].indexOf('b') >= 0) {
+        console.log('Player b scored!');
+        this.scoreHandler('b');
     }
-    // console.log(A, B);
 };
 
 Sim.prototype.makeWall = function SimMakeWall(position, size) {
