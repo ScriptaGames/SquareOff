@@ -109,6 +109,7 @@ GameInstance.prototype.tick = function gameInstanceTick() {
 
     this.gameState.bounce = false;
     this.gameState.blockPlaced = false;
+    this.gameState.score = false;
 
     this.sim.update();
 
@@ -121,6 +122,7 @@ GameInstance.prototype.addScore = function gameInstanceAddScore(player_letter) {
     this.sim.reset();
     // cheap way to reinstantiate grid
     this.gameState.grid = GameState().grid;
+    this.gameState.score = true;
 
     console.log('Player ' + player_letter.toUpperCase() + ' scored. New score: ', scoringPlayer.score);
 

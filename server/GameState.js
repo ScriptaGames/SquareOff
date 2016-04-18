@@ -29,5 +29,6 @@ module.exports = function GameState() {
         pos: 1,
         bounce: false, // did the disc bounce?
         blockPlaced: false, // was a block placed?
+        score: false, // did anyone score?
     };
 };

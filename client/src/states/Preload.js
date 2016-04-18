@@ -24,6 +24,16 @@ class PreloadState extends Phaser.State {
     create() {
         console.log('Preload create');
 
+        // GOTTA FINISH LD35!!!
+        window.Sounds = {
+            blockPlace : this.game.add.audio('blockPlace'),
+            bounce     : this.game.add.audio('bounce'),
+            colorPick  : this.game.add.audio('colorPick'),
+            goal       : this.game.add.audio('goal'),
+            nameType   : this.game.add.audio('nameType'),
+            play       : this.game.add.audio('play'),
+        };
+
         // Call this, when you've loaded everything and are ready to move on to the main menu
         this.state.start('MainmenuState');
     }
