@@ -135,6 +135,10 @@ Sim.prototype.addBlock = function SimAddBlock(x, y) {
 
     // add block to sim
 
+    if (this.gameState.grid[y][x] > 0) {
+        return false;
+    }
+
     var blockShape = new p2.Box({ width: 1.00, height: 1.00 });
     blockShape.material = this.bounceMaterial;
 
@@ -153,6 +157,22 @@ Sim.prototype.addBlock = function SimAddBlock(x, y) {
     this.gameState.grid[y][x] += 1;
 
     return blockBody;
+};
+
+Sim.prototype.removeBlock = function SimRemoveBlock(x, y) {
+
+    // remove block from sim
+
+    // find the block at x,y
+    let block = _.find(this.world.bodies, { customGridPosition: [x,y] });
+
+    this.pendingRemoval.push(block);
+
+    // update gameState grid as well
+
+    this.gameState.grid[y][x] = 0;
+
+    return block;
 };
 
 Sim.prototype.onScore = function SimOnScore(callback) {
