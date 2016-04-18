@@ -16,7 +16,7 @@ module.exports = {
     DISC: {
         DIAMETER: 1.95, // as a percentage of block height/width
         BOUNCE_SPEEDUP: 0.55, // add this amount to disc speed after each bounce
-        INITIAL_SPEED: 30.00,
+        INITIAL_SPEED: 2.00,
         MAX_SPEED: 26.00,
         MOVE_DELAY: 750, // delay before moving; in ms
     },
