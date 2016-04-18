@@ -21,6 +21,12 @@ body {
 input, button {
     font-family: 'Bowlby One SC';
     font-size: 1em;
+    padding: 10px 13px;
+    box-sizing: border-box;
+}
+
+#nick {
+    width: 100%;
 }
 
 .pdebug{
@@ -53,3 +59,31 @@ input, button {
     background: white;
     margin: 6vh auto;
 }
+
+.color-picker * {
+    float: left;
+    width: 7vh;
+    height: 7vh;
+    border: 3px solid black;
+    margin-right: 1px;
+}
+.color-picker *:first-child {
+    margin-left: -3px;
+}
+.color-picker *:last-child {
+    margin-right: 0;
+}
+
+.color-picker *:active {
+    border: 3px solid white;
+}
+.color-picker *:hover {
+    border: 3px solid grey;
+}
+
+.color-picker .pink   { background-color: #D70060; }
+.color-picker .red    { background-color: #E5282E; }
+.color-picker .orange { background-color: #F18D05; }
+.color-picker .green  { background-color: #61AE24; }
+.color-picker .blue   { background-color: #00A1CB; }
+.color-picker .teal   { background-color: #16E1E1; }

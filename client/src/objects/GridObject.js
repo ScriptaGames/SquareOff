@@ -1,7 +1,7 @@
 import config from '../config';
 
 class GridObject extends Phaser.Graphics {
-    constructor(game, center_x, center_y) {
+    constructor(game, center_x, center_y, player_color, enemy_color) {
         super(game, center_x, center_y);
 
         const HEIGHT = game.height - config.GRID.PADDING.VERTICAL*2;
@@ -31,9 +31,10 @@ class GridObject extends Phaser.Graphics {
         }
 
         const RIM = WIDTH * ( config.GRID.WIDTH - config.GOAL.WIDTH ) / config.GRID.WIDTH / 2;
-        this.lineStyle( config.GRID.LINE_WIDTH*4, 0xff0000, 0.8);
+        this.lineStyle( config.GRID.LINE_WIDTH*4, enemy_color, 0.8);
         this.moveTo(0 - hlw*2 - hw + RIM, 0 - hh);
         this.lineTo(WIDTH - hw - RIM, 0 - hh);
+        this.lineStyle( config.GRID.LINE_WIDTH*4, player_color, 0.8);
         this.moveTo(0 - hlw*2 - hw + RIM, config.GRID.HEIGHT * this.blockHeight - hh);
         this.lineTo(WIDTH - hw - RIM, config.GRID.HEIGHT * this.blockHeight - hh);
 

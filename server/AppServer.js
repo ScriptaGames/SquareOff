@@ -28,9 +28,9 @@ var AppServer = function (io) {
 
         var current_player = {id: socket.id, socket: socket};
 
-        socket.on('player_ready', function (nick) {
+        socket.on('player_ready', function (nick, color) {
             current_player.nick = nick;
-            current_player.color = 'red'; //TODO: add custom color?
+            current_player.color = color;
 
             console.log("Player ready: ", current_player.id, current_player.nick, current_player.color);
 

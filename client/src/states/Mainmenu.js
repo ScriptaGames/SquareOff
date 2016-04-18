@@ -13,6 +13,15 @@ class MainmenuState extends Phaser.State {
 
         document.querySelector('#main-menu').style.display = 'block';
 
+        // attach color button handlers
+        var colorButtons = _.toArray(document.querySelectorAll('.color-picker *'));
+        var player_color = parseInt(_.sample(colorButtons).dataset.color.replace('#', ''), 16);
+        _.each(colorButtons, function (button) {
+            button.addEventListener('click', function (evt) {
+                player_color = parseInt(this.dataset.color.replace('#', ''), 16);
+            });
+        });
+
         let socket = io("http://localhost:3100");
 
         socket.on('connect', () => {
@@ -37,7 +46,7 @@ class MainmenuState extends Phaser.State {
             console.log("enter queue, nick: ", nick.value);
 
             // start wait queue state
-            this.state.start('WaitState', false, false, socket, nick.value);
+            this.state.start('WaitState', false, false, socket, nick.value, player_color);
         };
 
         //TODO: Implement invite friend button

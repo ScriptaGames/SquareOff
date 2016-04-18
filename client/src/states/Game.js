@@ -9,11 +9,14 @@ import config from '../config';
 
 class GameState extends Phaser.State {
 
-    init(socket, nick) {
+    init(socket, nick, color, enemy_nick, enemy_color) {
         console.log("Init GameState socket.id: ", socket.id);
 
         this.socket = socket;
         this.player_nick = nick;
+        this.player_color = color;
+        this.enemy_nick = enemy_nick;
+        this.enemy_color = enemy_color;
     }
 
     preload() {
@@ -76,7 +79,7 @@ class GameState extends Phaser.State {
 
         let center = { x: this.game.world.centerX, y: this.game.world.centerY };
 
-        this.grid = new GridObject(this.game, center.x, center.y);
+        this.grid = new GridObject(this.game, center.x, center.y, this.player_color, this.enemy_color);
         this.game.gridGroup.add(this.grid);
 
         this.disc = new DiscObject( this.game, center.x, center.y, 'disc-sprite', this.grid.blockWidth );
@@ -157,7 +160,7 @@ class GameState extends Phaser.State {
         var self = this;
         setTimeout(function () {
             self.socket.emit('leave_instance');
-            self.state.start('WaitState', false, false, self.socket, self.player_nick);
+            self.state.start('WaitState', false, false, self.socket, self.player_nick, self.player_color);
         }, config.WIN_SCREEN_TIMEOUT);
     }
 }
