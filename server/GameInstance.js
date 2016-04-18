@@ -18,6 +18,9 @@ function GameInstance(player_a, player_b) {
     self.player_a.score = 0;
     self.player_b.score = 0;
 
+    self.player_a.blocks = [];
+    self.player_b.blocks = [];
+
     self.state = 'active';
 
     self.gameState = GameState();
@@ -27,9 +30,8 @@ function GameInstance(player_a, player_b) {
     self.player_a.socket.removeAllListeners('hover_change');
     self.player_a.socket.removeAllListeners('leave_instance');
     self.player_a.socket.on('mouse_click', function (grid_x, grid_y) {
-        // TODO: validate block is in allowed player region
         console.log("Player A clicked block: ", grid_x, grid_y, self.player_a.socket.id);
-        self.sim.addBlock(grid_x, grid_y);
+        self.handleClick(self.player_a, grid_x, grid_y, 'a');
     });
     self.player_a.socket.on("hover_change", function (grid_x, grid_y) {
         self.player_a.hover_block = {x: grid_x, y: grid_y};
@@ -47,9 +49,8 @@ function GameInstance(player_a, player_b) {
     self.player_b.socket.on('mouse_click', function (grid_x, grid_y) {
         // reverse y for player b
         var true_y = (config.GRID.HEIGHT - 1) - grid_y;
-        // TODO: validate block is in allowed player region
         console.log("Player B clicked block: ", grid_x, true_y, self.player_b.socket.id);
-        self.sim.addBlock(grid_x, true_y);
+        self.handleClick(self.player_b, grid_x, true_y, 'b');
     });
     self.player_b.socket.on("hover_change", function (grid_x, grid_y) {
         var true_y = (config.GRID.HEIGHT - 1) - grid_y;
@@ -70,6 +71,10 @@ function GameInstance(player_a, player_b) {
     // set up game simulation
     self.sim = new Sim(self.gameState);
     self.sim.onScore( self.addScore.bind(self) );
+    self.sim.onDestroyBlock(function (blockObj, player_letter) {
+        var owner = self['player_' + player_letter];
+        _.remove(owner.blocks, blockObj);
+    });
 }
 
 GameInstance.prototype.tick = function gameInstanceTick() {
@@ -144,6 +149,31 @@ GameInstance.prototype.destroy = function gameInstanceDestroy() {
     this.player_a_connected = false;
     this.player_b_connected = false;
     this.state = 'dead';
+};
+
+GameInstance.prototype.isValidBlock = function gameInstanceIsValidBlock() {
+    return true; //TODO: implement
+};
+
+GameInstance.prototype.handleClick = function gameInstanceHandleClick(player, grid_x, grid_y, player_letter) {
+    if (this.isValidBlock(grid_x, grid_y)) {
+        console.log('Valid block: ', grid_x, grid_y);
+
+        // add the latest block
+        player.blocks.push({x: grid_x, y: grid_y});
+        this.sim.addBlock(grid_x, grid_y, player_letter);
+
+        if (player.blocks.length > config.MAX_PLACED_BLOCKS) {
+            // remove oldest block
+            var removed_block = player.blocks.shift();
+
+            console.log('Remove old block: ', removed_block.x, removed_block.y);
+            this.sim.removeBlock(removed_block.x, removed_block.y);
+        }
+    }
+    else {
+        console.log("Invalid block: ", grid_x, grid_y);
+    }
 };
 
 if (NODEJS) module.exports = GameInstance;
