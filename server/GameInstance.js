@@ -179,12 +179,12 @@ GameInstance.prototype.destroy = function gameInstanceDestroy() {
 GameInstance.prototype.isValidBlock = function gameInstanceIsValidBlock(grid_y, player_letter) {
     // check that the block being placed not in the other players safe zone
     if (player_letter === 'b') {
-        if (grid_y > (config.GRID.HEIGHT - 1) - config.GOAL_SAFE_ZONE) {
+        if (grid_y > (config.GRID.HEIGHT - 1) - config.GOAL.SAFE_ZONE) {
             return false; // inside player b's safe zone
         }
     }
     else if (player_letter === 'a') {
-        if (grid_y < config.GOAL_SAFE_ZONE) {
+        if (grid_y < config.GOAL.SAFE_ZONE) {
             return false; // inside player b's safe zone
         }
     }

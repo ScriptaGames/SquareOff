@@ -12,6 +12,7 @@ module.exports = {
     },
     GOAL: {
         WIDTH: 8, // number of grid squares
+        SAFE_ZONE: 5,
     },
     DISC: {
         DIAMETER: 1.95, // as a percentage of block height/width
@@ -24,5 +25,4 @@ module.exports = {
     WINNING_SCORE: 7,
     WIN_SCREEN_TIMEOUT: 7000,  // time that the player stays on the win/loss scree before starting new game
     MAX_PLACED_BLOCKS: 3,
-    GOAL_SAFE_ZONE: 5,
 };

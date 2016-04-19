@@ -26,6 +26,15 @@ class GridObject extends Phaser.Graphics {
 
         for( let gridY = 0; gridY <= config.GRID.HEIGHT; gridY += 1 ) {
             let y = gridY * this.blockHeight;
+            if (gridY === config.GRID.HEIGHT - config.GOAL.SAFE_ZONE) {
+                this.lineStyle( config.GRID.LINE_WIDTH, player_color, 0.6);
+            }
+            else if (gridY === config.GOAL.SAFE_ZONE) {
+                this.lineStyle( config.GRID.LINE_WIDTH, enemy_color, 0.6);
+            }
+            else {
+                this.lineStyle( config.GRID.LINE_WIDTH, 0x444444, 1.0);
+            }
             this.moveTo(0 - hlw*2 - hw, y - hh);
             this.lineTo(WIDTH - hw, y - hh);
         }
