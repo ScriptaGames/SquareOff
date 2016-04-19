@@ -1,6 +1,6 @@
 # SquareOff
 
-A game we're building for Ludum Dare 35!
+A game we built for Ludum Dare 35!  Play now at [sqoff.com](http://sqoff.com).
 
 ## Usage
 ```
