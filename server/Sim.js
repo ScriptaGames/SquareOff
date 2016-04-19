@@ -34,7 +34,7 @@ Sim.prototype.update = function SimUpdate() {
 
     this.gameState.disc.pos.x = this.discBody.interpolatedPosition[0];
     this.gameState.disc.pos.y = this.discBody.interpolatedPosition[1];
-    this.gameState.disc.angle = this.discBody.interpolatedAngle;;
+    this.gameState.disc.angle = this.discBody.interpolatedAngle;
     this.gameState.disc.vel.x = this.discBody.velocity[0];
     this.gameState.disc.vel.y = this.discBody.velocity[1];
 };
@@ -172,15 +172,13 @@ Sim.prototype.removeBlock = function SimRemoveBlock(x, y) {
 
     // find the block at x,y
     var block = _.find(this.world.bodies, { customGridPosition: [x,y] });
-    var xy;
 
     // remove it from the world if it exists
     if (block) {
         this.pendingRemoval.push(block);
-        xy = block.customGridPosition;
 
         // report back the destruction
-        this.destroyBlockHandler({ x: xy[0], y: xy[1] }, block.customPlayer);
+        this.destroyBlockHandler({ x: x, y: y }, block.customPlayer);
     }
 
     // update gameState grid as well
