@@ -37,6 +37,24 @@ Sim.prototype.update = function SimUpdate() {
     this.gameState.disc.angle = this.discBody.interpolatedAngle;
     this.gameState.disc.vel.x = this.discBody.velocity[0];
     this.gameState.disc.vel.y = this.discBody.velocity[1];
+
+    // sync the game grid with only the bodies that are in the world, to prevent ghost blocks in the grid
+    for (var y = 0; y < config.GRID.HEIGHT; ++y) {
+        for (var x = 0; x < config.GRID.WIDTH; ++x) {
+            var grid_block = this.gameState.grid[y][x];
+
+            if (grid_block > 0) {
+
+                // make sure this block that is set in the grid is actually in the world, if not set to 0
+                var block = _.find(this.world.bodies, { customGridPosition: [x, y] });
+
+                if (!block) {
+                    console.log("ERROR: gameState grid out of sync with sim world, block in grid but not in world: ", x, y);
+                    this.gameState.grid[y][x] = 0;
+                }
+            }
+        }
+    }
 };
 
 Sim.prototype.reset = function SimReset() {
