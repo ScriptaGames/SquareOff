@@ -13,6 +13,13 @@ class MainmenuState extends Phaser.State {
 
         document.querySelector('#main-menu').style.display = 'block';
 
+        document.querySelector('#show-about').addEventListener('click', function() {
+            document.querySelector('#about').style.display = 'block';
+        });
+        document.querySelector('#hide-about').addEventListener('click', function() {
+            document.querySelector('#about').style.display = 'none';
+        });
+
         // attach color button handlers
         var colorButtons = _.toArray(document.querySelectorAll('.color-picker *'));
         var self = this;

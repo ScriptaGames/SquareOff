@@ -23,10 +23,12 @@ input, button {
     font-size: 1em;
     padding: 10px 13px;
     box-sizing: border-box;
+    cursor: pointer;
 }
 
 #nick {
     width: 40vh;
+    border: none;
 }
 
 .pdebug{
@@ -80,6 +82,7 @@ input, button {
     height: 6.6657vh;
     position: relative;
     z-index: 20;
+    cursor: pointer;
 }
 
 .color-picker *:hover {
@@ -107,4 +110,37 @@ input, button {
 
 #about {
     display: none;
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    right: 40px;
+    bottom: 40px;
+    background: rgba(0,0,0,0.9);
+    z-index: 50;
+}
+
+a { color: white; }
+a:visited { color: white; }
+a:active { color: white; }
+
+#hide-about,
+#show-about {
+    font-size: 1.4rem;
+    border: 3px solid white;
+    opacity: 0.4;
+    position: absolute;
+    cursor: pointer;
+}
+
+#hide-about {
+    top: 0;
+    right: 0;
+}
+#show-about {
+    right: 10px;
+    bottom: 10px;
+}
+#hide-about:hover,
+#show-about:hover {
+    opacity: 1;
 }
