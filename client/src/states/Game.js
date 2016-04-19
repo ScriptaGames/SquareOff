@@ -58,11 +58,8 @@ class GameState extends Phaser.State {
         self.socket.removeAllListeners('defeat');
 
         self.socket.on('instance_tick', this.applyGameState.bind(this));
-        self.socket.on('victory', function (gameState) {
+        self.socket.on('victory', function () {
             console.log('Victory!');
-
-            // apply the final game state
-            self.applyGameState(gameState);
 
             // display message box
             self.displayEndMessage('VICTORY!');
@@ -71,11 +68,8 @@ class GameState extends Phaser.State {
 
             self.leaveGameTimout();
         });
-        this.socket.on('defeat', function (gameState) {
+        this.socket.on('defeat', function () {
             console.log('Defeat :(');
-
-            // apply the final game state
-            self.applyGameState(gameState);
 
             // display message box
             self.displayEndMessage('DEFEAT!');

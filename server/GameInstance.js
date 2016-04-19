@@ -165,8 +165,8 @@ GameInstance.prototype.endMatch = function gameInstanceEndMatch(winning_player) 
 
     this.tick();
 
-    winning_player.socket.emit("victory", this.gameState);
-    losing_player.socket.emit("defeat", this.gameState);
+    winning_player.socket.emit("victory");
+    losing_player.socket.emit("defeat");
 };
 
 GameInstance.prototype.destroy = function gameInstanceDestroy() {
