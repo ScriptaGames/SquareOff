@@ -135,13 +135,20 @@ GameInstance.prototype.hasPlayer = function gameInstanceHasPlayer(player) {
 };
 
 GameInstance.prototype.removePlayer = function gameInstanceRemovePlayer(player) {
+    var winning_player;
+
     if (this.player_a.id === player.id) {
         this.player_a_connected = false;
-        this.endMatch(this.player_b);
+        winning_player = this.player_b;
     }
     else if (this.player_b.id === player.id) {
         this.player_b_connected = false;
-        this.endMatch(this.player_a);
+        winning_player = this.player_a;
+    }
+
+    if (this.state === 'active') {
+        // end the match and the player who didn't disconnect wins by default
+        this.endMatch(winning_player);
     }
 };
 
