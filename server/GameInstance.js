@@ -33,7 +33,6 @@ function GameInstance(player_a, player_b) {
     self.player_a.socket.removeAllListeners('hover_change');
     self.player_a.socket.removeAllListeners('leave_instance');
     self.player_a.socket.on('mouse_click', function (grid_x, grid_y) {
-        console.log("Player A clicked block: ", grid_x, grid_y, self.player_a.socket.id);
         self.handleClick(self.player_a, grid_x, grid_y, 'a');
     });
     self.player_a.socket.on("hover_change", function (grid_x, grid_y) {
@@ -123,7 +122,7 @@ GameInstance.prototype.addScore = function gameInstanceAddScore(player_letter) {
     this.gameState.grid = GameState().grid;
     this.gameState.score = true;
 
-    console.log('Player ' + player_letter.toUpperCase() + ' scored. New score: ', scoringPlayer.score);
+    console.log('Player ' + player_letter.toUpperCase() + ' scored! New score: ' + scoringPlayer.score + ' Socket: ' + scoringPlayer.socket.id);
 
     if (scoringPlayer.score >= config.WINNING_SCORE) {
         this.endMatch(scoringPlayer);
