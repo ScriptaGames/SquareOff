@@ -122,6 +122,9 @@ GameInstance.prototype.addScore = function gameInstanceAddScore(player_letter) {
     this.gameState.grid = GameState().grid;
     this.gameState.score = true;
 
+    this.player_a.blocks = [];
+    this.player_b.blocks = [];
+
     console.log('Player ' + player_letter.toUpperCase() + ' scored! New score: ' + scoringPlayer.score + ' Socket: ' + scoringPlayer.socket.id);
 
     if (scoringPlayer.score >= config.WINNING_SCORE) {
