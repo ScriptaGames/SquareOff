@@ -37,24 +37,6 @@ Sim.prototype.update = function SimUpdate() {
     this.gameState.disc.angle = this.discBody.interpolatedAngle;
     this.gameState.disc.vel.x = this.discBody.velocity[0];
     this.gameState.disc.vel.y = this.discBody.velocity[1];
-
-    // sync the game grid with only the bodies that are in the world, to prevent ghost blocks in the grid
-    for (var y = 0; y < config.GRID.HEIGHT; ++y) {
-        for (var x = 0; x < config.GRID.WIDTH; ++x) {
-            var grid_block = this.gameState.grid[y][x];
-
-            if (grid_block > 0) {
-
-                // make sure this block that is set in the grid is actually in the world, if not set to 0
-                var block = _.find(this.world.bodies, { customGridPosition: [x, y] });
-
-                if (!block) {
-                    console.log("ERROR: gameState grid out of sync with sim world, block in grid but not in world: ", x, y);
-                    this.gameState.grid[y][x] = 0;
-                }
-            }
-        }
-    }
 };
 
 Sim.prototype.reset = function SimReset() {
@@ -156,11 +138,15 @@ Sim.prototype.createBlock = function SimCreateBlock(x, y, player) {
     return blockBody;
 };
 
+Sim.prototype.findBlock = function SimBlockExists(x, y) {
+    return _.find(this.world.bodies, { customGridPosition: [x,y] });
+};
+
 Sim.prototype.addBlock = function SimAddBlock(x, y, player) {
 
     // add block to sim
 
-    if (this.gameState.grid[y][x] > 0) {
+    if (this.findBlock(x, y)) {
         return false;
     }
 
@@ -189,7 +175,7 @@ Sim.prototype.addBlock = function SimAddBlock(x, y, player) {
 Sim.prototype.removeBlock = function SimRemoveBlock(x, y) {
 
     // find the block at x,y
-    var block = _.find(this.world.bodies, { customGridPosition: [x,y] });
+    var block = this.findBlock(x,y);
 
     // remove it from the world if it exists
     if (block) {
