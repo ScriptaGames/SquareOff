@@ -107,6 +107,17 @@ var AppServer = function (io) {
         }
     };
 
+    /**
+     * Checks first two people in the queue and make sure it's not jared or mwcz
+     * @param queue
+     */
+    self.isScriptaMatchup = function appIsScriptaMatchup(queue) {
+        var nick_a = queue[0].nick;
+        var nick_b = queue[1].nick;
+
+        return ((nick_a != nick_b) && (nick_a === 'mwcz' || nick_a === 'Jared') && (nick_b === 'mwcz' || nick_b === 'Jared'))
+    };
+
     gameLoop.setGameLoop(self.serverTickFast, config.TICK_FAST_INTERVAL);
 };
 
