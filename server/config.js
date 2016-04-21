@@ -25,4 +25,5 @@ module.exports = {
     WINNING_SCORE: 7,
     WIN_SCREEN_TIMEOUT: 7000,  // time that the player stays on the win/loss scree before starting new game
     MAX_PLACED_BLOCKS: 3,
+    MAX_INACTIVE_TIME: 45000,
 };

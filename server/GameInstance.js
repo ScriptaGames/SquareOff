@@ -18,6 +18,9 @@ function GameInstance(player_a, player_b) {
     self.player_a.hover_block = {x: 0, y: 0};
     self.player_b.hover_block = {x: 0, y: config.GRID.HEIGHT - 1};
 
+    self.player_a.lastActionTime = Date.now();
+    self.player_b.lastActionTime = Date.now();
+
     self.player_a.score = 0;
     self.player_b.score = 0;
 
@@ -38,6 +41,7 @@ function GameInstance(player_a, player_b) {
     self.player_a.socket.on("hover_change", function (grid_x, grid_y) {
         var true_y = (config.GRID.HEIGHT - 1) - grid_y;
         self.player_a.hover_block = {x: grid_x, y: true_y};
+        self.player_a.lastActionTime = Date.now();
     });
     self.player_a.socket.on("leave_instance", function () {
         console.log("Player A leaving instance");
@@ -57,6 +61,7 @@ function GameInstance(player_a, player_b) {
     self.player_b.socket.on("hover_change", function (grid_x, grid_y) {
         var true_y = (config.GRID.HEIGHT - 1) - grid_y;
         self.player_b.hover_block = {x: grid_x, y: true_y};
+        self.player_b.lastActionTime = Date.now();
     });
     self.player_b.socket.on("leave_instance", function () {
         console.log("Player B leaving instance");
@@ -87,6 +92,8 @@ function GameInstance(player_a, player_b) {
 
 GameInstance.prototype.tick = function gameInstanceTick() {
 
+    this.checkPlayerActivity();
+
     this.gameState.scores.you = this.player_a.score;
     this.gameState.scores.enemy = this.player_b.score;
     this.gameState.hover_block = this.player_b.hover_block;
@@ -110,6 +117,21 @@ GameInstance.prototype.tick = function gameInstanceTick() {
     this.gameState.score = false;
 
     this.sim.update();
+};
+
+GameInstance.prototype.checkPlayerActivity = function () {
+    var nowTime = Date.now();
+    var player_a_delay = nowTime - this.player_a.lastActionTime;
+    var player_b_delay = nowTime - this.player_b.lastActionTime;
+
+    if (player_a_delay >= config.MAX_INACTIVE_TIME) {
+        console.log("Disconnecting Player A for inactivity", this.player_a.id, player_a_delay);
+        this.player_a.socket.disconnect();
+    }
+    else if (player_b_delay >= config.MAX_INACTIVE_TIME) {
+        console.log("Disconnecting Player B for inactivity", this.player_b.id, player_a_delay);
+        this.player_b.socket.disconnect();
+    }
 
 };
 
@@ -207,6 +229,8 @@ GameInstance.prototype.isValidBlock = function gameInstanceIsValidBlock(grid_x, 
 };
 
 GameInstance.prototype.handleClick = function gameInstanceHandleClick(player, grid_x, grid_y, player_letter) {
+    this['player_' + player_letter].lastActionTime = Date.now();
+
     if (this.isValidBlock(grid_x, grid_y, player_letter)) {
 
         // add the latest block
