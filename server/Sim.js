@@ -156,15 +156,39 @@ Sim.prototype.createBlock = function SimCreateBlock(x, y, player) {
     return blockBody;
 };
 
+/**
+ * Find block in world. Returns block if found, if not found returns false.
+ * @return {*}
+ */
 Sim.prototype.findBlock = function SimBlockExists(x, y) {
-    return _.find(this.world.bodies, { customGridPosition: [x,y] });
+
+    // fast loop
+    var bodyNames = Object.getOwnPropertyNames(this.world.bodies);
+    for (var i = 0, l = bodyNames.length; i < l; ++i) {
+        var body = this.world.bodies[bodyNames[i]];
+
+        if (body && body.customGridPosition) {
+            if (body.customGridPosition[0] === x && body.customGridPosition[1] === y) {
+                return body;
+            }
+        }
+    }
+
+    return false;
 };
 
+/**
+ * Add block to the world.  If block already in world, return false, else returns body created.
+ * @return {*}
+ */
 Sim.prototype.addBlock = function SimAddBlock(x, y, player) {
 
     // add block to sim
 
-    if (this.findBlock(x, y)) {
+    var theBlock = this.findBlock(x, y);
+    if (theBlock) {
+        console.log("ERROR: Trying to add block already in world: ", x, y, theBlock.customGridPosition);
+
         return false;
     }
 

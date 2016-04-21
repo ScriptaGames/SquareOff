@@ -220,9 +220,6 @@ GameInstance.prototype.handleClick = function gameInstanceHandleClick(player, gr
             this.sim.removeBlock(removed_block.x, removed_block.y);
         }
     }
-    else {
-        console.log("Invalid block: ", grid_x, grid_y);
-    }
 };
 
 if (NODEJS) module.exports = GameInstance;
