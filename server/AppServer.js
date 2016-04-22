@@ -35,10 +35,23 @@ var AppServer = function (io) {
             console.log("Player ready: ", current_player.id, current_player.nick, current_player.color);
 
             self.players[socket.id] = current_player;
-            self.waiting_players.push(current_player);
+
+            // Try to find a match for the player, if we can't, put them in the wait queue
+            var matchedPlayer = self.findMatch(current_player);
+            if (matchedPlayer) {
+                console.log("Creating new game instance");
+                console.log("Player A: ", matchedPlayer.id);
+                console.log("Player B: ", current_player.id);
+                var gameInstance = new GameInstance(matchedPlayer, current_player);
+                self.game_instances.push(gameInstance);
+            }
+            else {
+                self.waiting_players.push(current_player);
+            }
 
             console.log("Num players: ", Object.keys(self.players).length);
             console.log("Wait queue length: ", self.waiting_players.length);
+            console.log("Game instances: ", self.game_instances.length);
         });
 
         socket.on('disconnect', function () {
@@ -72,21 +85,8 @@ var AppServer = function (io) {
     });
 
     self.serverTickFast = function appServerTickFast() {
-        // check for waiting players
-        while (self.waiting_players.length % 2 === 0 && self.waiting_players.length > 0) {
-            // Add the first to players in line to a game instance
-            var player_a = self.waiting_players.shift();
-            var player_b = self.waiting_players.shift();
-
-            console.log("Creating new game instance");
-            console.log("Player A: ", player_a.id);
-            console.log("Player B: ", player_b.id);
-            var gameInstance = new GameInstance(player_a, player_b);
-            self.game_instances.push(gameInstance);
-        }
-
         // Iterate over each game instance
-        for (var i = 0, l = self.game_instances.length; i < l; ++i) {
+        for (var i = 0; i < self.game_instances.length; ++i) {
             var gi = self.game_instances[i];
             if (!gi) {
                 console.log("Removing undefined game instance");
@@ -105,6 +105,45 @@ var AppServer = function (io) {
                 self.game_instances.splice(i, 1);
             }
         }
+    };
+
+    /**
+     * Search for a match for the given player from the waiting queue
+     * @param player
+     */
+    self.findMatch = function appFindMatch(player) {
+        var match = false;
+
+        console.log("Searching for match for player: ", player.id, player.nick);
+
+        for (var i = 0; i < self.waiting_players.length; ++i) {
+            var waitingPlayer = self.waiting_players[i];
+
+            // Put any matching logic here
+
+            // Don't match up mwcz or jared
+            if (waitingPlayer && !self.isScriptaMatchup(player, waitingPlayer)) {
+                match = waitingPlayer;
+                self.waiting_players.splice(i, 1);
+                console.log("Found match: ", match.id, match.nick);
+                break;  // found a match
+            }
+        }
+
+        return match;
+    };
+
+    /**
+     * Checks first two people in the queue and make sure it's not jared or mwcz
+     * @param player_a
+     * @param player_b
+     *
+     */
+    self.isScriptaMatchup = function appIsScriptaMatchup(player_a, player_b) {
+        var nick_a = player_a.nick.toUpperCase();
+        var nick_b = player_b.nick.toUpperCase();
+
+        return ((nick_a != nick_b) && (nick_a === 'MWCZ' || nick_a === 'JARED') && (nick_b === 'MWCZ' || nick_b === 'JARED'))
     };
 
     gameLoop.setGameLoop(self.serverTickFast, config.TICK_FAST_INTERVAL);
