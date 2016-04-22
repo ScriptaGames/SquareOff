@@ -63,17 +63,18 @@ input, button {
 }
 
 #enter_queue_button {
-    margin: 0 auto;
+    margin: 10px auto;
     width: 20vh;
     height: 20vh;
     display: block;
     background: white;
     border: none;
-    font-size: 2em;
+    font-size: 5vh;
 }
 
 .color-picker {
     width: 40vh;
+    height: 6.665vh;
     margin: 10px 0;
 }
 .color-picker * {
