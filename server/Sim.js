@@ -125,8 +125,8 @@ Sim.prototype.reset = function SimReset() {
     var bottomGoalShape = new p2.Line({ length: config.GOAL.WIDTH });
     topGoalShape.sensor = true;
     bottomGoalShape.sensor = true;
-    topGoalBody = new p2.Body({ position: [0, -config.GRID.HEIGHT/2] });
-    botGoalBody = new p2.Body({ position: [0, config.GRID.HEIGHT/2] });
+    var topGoalBody = new p2.Body({ position: [0, -config.GRID.HEIGHT/2] });
+    var botGoalBody = new p2.Body({ position: [0, config.GRID.HEIGHT/2] });
     topGoalBody.addShape(topGoalShape);
     botGoalBody.addShape(bottomGoalShape);
     topGoalBody.damping = 0;
@@ -268,7 +268,7 @@ Sim.prototype.handleEndCollision = function SimHandleEndCollision(evt) {
 
 Sim.prototype.onBounce = function SimOnBounce(callback) {
     this.bounceHandler = callback;
-}
+};
 
 Sim.prototype.handleCollision = function SimHandleCollision(evt) {
     var obj1 = evt.bodyA;
