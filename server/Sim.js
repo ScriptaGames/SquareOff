@@ -55,7 +55,7 @@ Sim.prototype.update = function SimUpdate() {
             if (grid_block > 0) {
 
                 // make sure this block that is set in the grid is actually in the world, if not set to 0
-                var block = _.find(this.world.bodies, { customType: 'block', customGridPosition: { x: x, y: y } });
+                var block = this.findBlock(x, y);
 
                 if (!block) {
                     console.log("ERROR: gameState grid out of sync with sim world, block in grid but not in world: ", x, y);
