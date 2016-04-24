@@ -234,14 +234,16 @@ GameInstance.prototype.handleClick = function gameInstanceHandleClick(player, gr
     if (this.isValidBlock(grid_x, grid_y, player_letter)) {
 
         // add the latest block
-        player.blocks.push({x: grid_x, y: grid_y});
-        this.sim.addBlock(grid_x, grid_y, player_letter);
+        var addedBlock = this.sim.addBlock(grid_x, grid_y, player_letter);
 
-        if (player.blocks.length > config.MAX_PLACED_BLOCKS) {
-            // remove oldest block
-            var removed_block = player.blocks.shift();
+        if (addedBlock) {
+            player.blocks.push({x: grid_x, y: grid_y});
+            if (player.blocks.length > config.MAX_PLACED_BLOCKS) {
+                // remove oldest block
+                var removed_block = player.blocks.shift();
 
-            this.sim.removeBlock(removed_block.x, removed_block.y);
+                this.sim.removeBlock(removed_block.x, removed_block.y);
+            }
         }
     }
 };
