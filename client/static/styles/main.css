@@ -29,6 +29,7 @@ input, button {
 #nick {
     width: 40vh;
     border: none;
+    font-size: 1rem;
 }
 
 .pdebug{
