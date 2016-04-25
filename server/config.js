@@ -21,6 +21,7 @@ module.exports = {
         MAX_SPEED: 26.00,
         MOVE_DELAY: 750, // delay before moving; in ms
     },
+    BLOCK_COOLDOWN: 1000, // cooldown duration in ms
     TICK_FAST_INTERVAL: 50,
     WINNING_SCORE: 7,
     WIN_SCREEN_TIMEOUT: 7000,  // time that the player stays on the win/loss scree before starting new game

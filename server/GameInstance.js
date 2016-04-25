@@ -1,10 +1,10 @@
-var NODEJS = typeof module !== 'undefined' && module.exports;
-
+var _         = require('lodash');
 var uuid      = require('node-uuid');
+
 var GameState = require('./GameState.js');
 var config    = require('./config');
 var Sim       = require('./Sim');
-var _         = require('lodash');
+var Cooldown  = require('./Cooldown');
 
 function GameInstance(player_a, player_b) {
     var self = this;
@@ -23,6 +23,9 @@ function GameInstance(player_a, player_b) {
 
     self.player_a.score = 0;
     self.player_b.score = 0;
+
+    self.player_a.cooldowns = new Cooldown();
+    self.player_b.cooldowns = new Cooldown();
 
     self.player_a.blocks = [];
     self.player_b.blocks = [];
@@ -92,16 +95,23 @@ function GameInstance(player_a, player_b) {
 
 GameInstance.prototype.tick = function gameInstanceTick() {
 
+    this.player_a.cooldowns.tick();
+    this.player_b.cooldowns.tick();
+
     this.checkPlayerActivity();
 
     this.gameState.scores.you = this.player_a.score;
     this.gameState.scores.enemy = this.player_b.score;
+    this.gameState.cooldowns.you = this.player_a.cooldowns.timers;
+    this.gameState.cooldowns.enemy = this.player_b.cooldowns.timers;
     this.gameState.hover_block = this.player_b.hover_block;
     this.gameState.pos = 1;
     this.player_a.socket.emit("instance_tick", this.gameState);
 
     this.gameState.scores.you = this.player_b.score;
     this.gameState.scores.enemy = this.player_a.score;
+    this.gameState.cooldowns.you = this.player_b.cooldowns.timers;
+    this.gameState.cooldowns.enemy = this.player_a.cooldowns.timers;
     this.gameState.hover_block = this.player_a.hover_block;
     this.gameState.disc.pos.y *= -1;
     this.gameState.disc.vel.y *= -1;
@@ -140,9 +150,13 @@ GameInstance.prototype.addScore = function gameInstanceAddScore(player_letter) {
     scoringPlayer.score += 1;
 
     this.sim.reset();
+
     // cheap way to reinstantiate grid
     this.gameState.grid = GameState().grid;
     this.gameState.score = true;
+
+    this.player_a.cooldowns = new Cooldown();
+    this.player_b.cooldowns = new Cooldown();
 
     this.player_a.blocks = [];
     this.player_b.blocks = [];
@@ -229,15 +243,18 @@ GameInstance.prototype.isValidBlock = function gameInstanceIsValidBlock(grid_x, 
 };
 
 GameInstance.prototype.handleClick = function gameInstanceHandleClick(player, grid_x, grid_y, player_letter) {
-    this['player_' + player_letter].lastActionTime = Date.now();
+    var p = this['player_' + player_letter];
+    p.lastActionTime = Date.now();
+    var cooledOff = p.cooldowns.anyFree();
 
-    if (this.isValidBlock(grid_x, grid_y, player_letter)) {
+    if (cooledOff && this.isValidBlock(grid_x, grid_y, player_letter)) {
 
         // add the latest block
         var addedBlock = this.sim.addBlock(grid_x, grid_y, player_letter);
 
         if (addedBlock) {
-            player.blocks.push({x: grid_x, y: grid_y});
+            player.blocks.push({ x: grid_x, y: grid_y });
+            p.cooldowns.use();
             if (player.blocks.length > config.MAX_PLACED_BLOCKS) {
                 // remove oldest block
                 var removed_block = player.blocks.shift();
@@ -248,4 +265,4 @@ GameInstance.prototype.handleClick = function gameInstanceHandleClick(player, gr
     }
 };
 
-if (NODEJS) module.exports = GameInstance;
+module.exports = GameInstance;

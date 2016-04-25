@@ -26,6 +26,10 @@ module.exports = function GameState() {
             you: 0,
             enemy: 0,
         },
+        cooldowns: {
+            you: [0, 0, 0],
+            enemy: [0, 0, 0],
+        },
         pos: 1,
         bounce: false, // did the disc bounce?
         blockPlaced: false, // was a block placed?
