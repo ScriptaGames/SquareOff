@@ -2,6 +2,8 @@
 
 A game we built for Ludum Dare 35!  Play now at [sqoff.com](http://sqoff.com).
 
+Also see the [making of](http://scripta.co/articles/squareoff-ld35/) blog post.
+
 ## Usage
 ```
 npm install
