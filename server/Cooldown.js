@@ -1,13 +1,14 @@
 var _ = require('lodash');
 var config = require('./config');
 
-function Cooldown() {
-    this.timers = _.fill(new Array(config.MAX_PLACED_BLOCKS), 0, 0, config.MAX_PLACED_BLOCKS);
-    this.duration = config.BLOCK_COOLDOWN;
+function Cooldown(count, cooldown, interval) {
+    this.timers = _.fill(new Array(count), 0, 0, count);
+    this.duration = cooldown;
+    this.interval = interval;
 }
 
 Cooldown.prototype.tick = function CooldownTick() {
-    this.timers.forEach(dec);
+    this.timers.forEach(this._dec.bind(this));
 };
 
 Cooldown.prototype.anyFree = function CooldownAnyFree() {
@@ -27,29 +28,35 @@ Cooldown.prototype.use = function CooldownUse() {
     return this.duration;
 };
 
-function dec(v, i, a) {
-    a[i] = Math.max(0, v - config.TICK_FAST_INTERVAL);
-}
+Cooldown.prototype._dec = function dec(value, index, collection) {
+    collection[index] = Math.max(0, value - this.interval);
+};
 
 module.exports = Cooldown;
 
-if (!module.parent) {
-    var c = new Cooldown();
-    console.log('cooldown: ' + c.timers);
-    console.log('any free? ' + c.anyFree());
-    console.log('using blocks...');
-    console.log(c.use()); c.tick();
-    console.log(c.use()); c.tick();
-    console.log(c.use()); c.tick();
-    console.log(c.use()); c.tick();
-    console.log('ran out!');
-    console.log('tick tick tick');
-    while (!c.anyFree()) {
+function test() {
+    var c = new Cooldown(config.MAX_PLACED_BLOCKS, config.BLOCK_COOLDOWN, config.TICK_FAST_INTERVAL);
+
+    var actions = [
+        c.use.bind(c),
+        _.noop,
+        _.noop,
+        _.noop,
+    ];
+
+    // start one loop that either tries to claim a block, or just waits
+    setInterval(() => {
+        _.sample(actions)(c);
+        console.log('   ' + c.timers[0] + '\t' + c.timers[1] + '\t' + c.timers[2]);
+    }, 80);
+
+    // start another loop that runs the cooldown ticks
+    setInterval(() => {
         c.tick();
-        console.log(c.timers);
-    }
-    console.log('one freed up!');
-    console.log(c.use());
-    console.log(c.timers);
-    console.log('got it!');
+    }, 50);
+
+}
+
+if (require.main === module) {
+    test();
 }

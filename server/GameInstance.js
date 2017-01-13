@@ -24,8 +24,8 @@ function GameInstance(player_a, player_b) {
     self.player_a.score = 0;
     self.player_b.score = 0;
 
-    self.player_a.cooldowns = new Cooldown();
-    self.player_b.cooldowns = new Cooldown();
+    self.player_a.cooldowns = new Cooldown(config.MAX_PLACED_BLOCKS, config.BLOCK_COOLDOWN, config.TICK_FAST_INTERVAL);
+    self.player_b.cooldowns = new Cooldown(config.MAX_PLACED_BLOCKS, config.BLOCK_COOLDOWN, config.TICK_FAST_INTERVAL);
 
     self.player_a.blocks = [];
     self.player_b.blocks = [];
@@ -155,8 +155,8 @@ GameInstance.prototype.addScore = function gameInstanceAddScore(player_letter) {
     this.gameState.grid = GameState().grid;
     this.gameState.score = true;
 
-    this.player_a.cooldowns = new Cooldown();
-    this.player_b.cooldowns = new Cooldown();
+    this.player_a.cooldowns = new Cooldown(config.MAX_PLACED_BLOCKS, config.BLOCK_COOLDOWN, config.TICK_FAST_INTERVAL);
+    this.player_b.cooldowns = new Cooldown(config.MAX_PLACED_BLOCKS, config.BLOCK_COOLDOWN, config.TICK_FAST_INTERVAL);
 
     this.player_a.blocks = [];
     this.player_b.blocks = [];
