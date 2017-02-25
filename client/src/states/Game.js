@@ -109,7 +109,7 @@ class GameState extends Phaser.State {
                     (x,y) => {
                         // move the hover sprite to this location
                         this.hover_sprite_player.position.copyFrom(this.hover_buttons[y][x].position);
-                        tihs.hover_sprite_player.position.add(0.5, 0.5);
+                        this.hover_sprite_player.position.add(0.5, 0.5);
                     }
                 );
                 this.hover_buttons[i].push(buttonObject);
