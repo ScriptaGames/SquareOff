@@ -45,6 +45,15 @@ input, button {
 #waiting {
     text-align: center;
 }
+#waiting .status {
+    font-size: 1rem;
+    color: grey;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+#waiting .invite {
+    display: block;
+}
 
 @keyframes spin {
     from { transform: rotate(0deg); }

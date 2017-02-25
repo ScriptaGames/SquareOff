@@ -15,7 +15,12 @@ class WaitState extends Phaser.State {
     create() {
         var self = this;
 
-        document.getElementById('waiting').style.display = 'block';
+        this.socket.on('game_status', (status) => {
+            document.querySelector('#waiting .players').textContent = status.player_count + ' player' + (status.player_count === 1 ? '' : 's');
+            document.querySelector('#waiting .games').textContent = status.game_count + ' game' + (status.game_count === 1 ? '' : 's');
+        });
+
+        document.querySelector('#waiting').style.display = 'block';
 
         console.log('Wait state create');
 
