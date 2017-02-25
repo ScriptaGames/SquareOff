@@ -8,7 +8,7 @@ class PreloadState extends Phaser.State {
         this.game.load.image('disc-sprite'   , 'assets/images/disc-sprite.png');
         this.game.load.image('block-sprite'  , 'assets/images/block-sprite.png');
 
-        this.game.load.spritesheet('hover-sprite', 'assets/images/hover-sprite.png', 200, 200);
+        this.game.load.spritesheet('hover-sprite', 'assets/images/hover-sprite.png', 200, 200, 1);
 
         // load sounds
 

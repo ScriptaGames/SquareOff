@@ -49,7 +49,11 @@ class GameState extends Phaser.State {
 
         var self = this;
 
-        document.querySelector('#phaser-canvas').style.display = 'block';
+        // Resize canvas, and resize again if window is resized
+        // this.game.scale.maxWidth = config.CANVAS.WIDTH;
+        // this.game.scale.maxHeight = config.CANVAS.HEIGHT;
+        this.updateCanvasSize();
+        window.addEventListener('resize', this.updateCanvasSize.bind(this));
 
         // start network code
 
@@ -91,9 +95,9 @@ class GameState extends Phaser.State {
 
         // add grid buttons for capturing mouse events
         this.hover_buttons = [];
-        this.hover_sprite_player = this.game.add.sprite(0, 0, 'hover-sprite', 1);
-        this.hover_sprite_player.width = this.grid.blockWidth;
-        this.hover_sprite_player.height = this.grid.blockWidth;
+        this.hover_sprite_player = this.game.add.sprite(-1000, -1000, 'hover-sprite', 1);
+        this.hover_sprite_player.width = this.grid.blockWidth;// - config.GRID.LINE_WIDTH;
+        this.hover_sprite_player.height = this.grid.blockWidth;// - config.GRID.LINE_WIDTH/2;
         this.hover_sprite_player.tint = this.player_color;
         for (var i = 0; i < config.GRID.HEIGHT; i++) {
             this.hover_buttons.push([]);
@@ -109,29 +113,32 @@ class GameState extends Phaser.State {
                     (x,y) => {
                         // move the hover sprite to this location
                         this.hover_sprite_player.position.copyFrom(this.hover_buttons[y][x].position);
-                        this.hover_sprite_player.position.add(0.5, 0.5);
+                        this.hover_sprite_player.position.add(-0.5, 0.5);
                     }
                 );
                 this.hover_buttons[i].push(buttonObject);
                 this.game.buttonGroup.add(buttonObject);
             }
         }
+        this.hover_sprite_player.bringToTop();
 
         // add sprite for showing enemy hover position
 
-        this.hover_sprite_enemy = this.game.add.sprite(0, 0, 'hover-sprite', 1);
+        this.hover_sprite_enemy = this.game.add.sprite(-1000, -1000, 'hover-sprite', 1);
+        this.hover_sprite_enemy.tint = this.enemy_color;
         this.hover_sprite_enemy.width = this.grid.blockWidth;
         this.hover_sprite_enemy.height = this.grid.blockWidth;
+        this.hover_sprite_enemy.bringToTop();
 
         // add score text
 
         const textSize = 35;
-        let enemyNameText    = new ScoreText(this.game, center.x - this.grid.gridWidth/2 - textSize, 0, this.enemy_nick, this.enemy_color, textSize);
-        let playerNameText   = new ScoreText(this.game, center.x - this.grid.gridWidth/2 - textSize, center.y + this.grid.gridHeight/2, this.player_nick, this.player_color, textSize);
-        this.enemyScoreText  = new ScoreText(this.game, center.x - this.grid.gridWidth/2 - textSize, 0 + textSize*2, '', this.enemy_color, 3*textSize);
-        this.playerScoreText = new ScoreText(this.game, center.x - this.grid.gridWidth/2 - textSize, center.y + this.grid.gridHeight/2 - textSize*2, '', this.player_color, 3*textSize);
-        enemyNameText.anchor.set(1.0, 0.0);
-        playerNameText.anchor.set(1.0, 1.0);
+        let enemyNameText    = new ScoreText(this.game, center.x + 2, 0, this.enemy_nick, this.enemy_color, textSize);
+        let playerNameText   = new ScoreText(this.game, center.x - 2, center.y + this.grid.gridHeight/2, this.player_nick, this.player_color, textSize);
+        this.enemyScoreText  = new ScoreText(this.game, center.x - this.grid.gridWidth/2 - textSize, 2, '', this.enemy_color, 3*textSize);
+        this.playerScoreText = new ScoreText(this.game, center.x - this.grid.gridWidth/2 - textSize, this.game.world.height - 2, '', this.player_color, 3*textSize);
+        enemyNameText.anchor.set(0.5, 0.0);
+        playerNameText.anchor.set(0.5, 1.0);
         this.enemyScoreText.anchor.set(1.0, 0.0);
         this.playerScoreText.anchor.set(1.0, 1.0);
         this.game.uiGroup.add(enemyNameText);
@@ -166,7 +173,10 @@ class GameState extends Phaser.State {
         this.game.buttonGroup.destroy(true);
         this.game.uiGroup.destroy(true);
 
-        document.querySelector('#phaser-canvas').style.display = 'none';
+        this.hover_sprite_enemy.destroy();
+        this.hover_sprite_player.destroy();
+
+        this.game.canvas.style.display = 'none';
     }
 
     applyGameState(gameState) {
@@ -221,9 +231,11 @@ class GameState extends Phaser.State {
         this.playerScoreText.text = gameState.scores.you;
 
         // add enemy hover
-        let hover_block = gameState.hover_block;
-        this.hover_sprite_enemy.tint = this.enemy_color;
-        this.hover_sprite_enemy.position.copyFrom(this.hover_buttons[hover_block.y][hover_block.x].position);
+        const hover_block = gameState.hover_block;
+        // if a hover has occurred, move the hover sprite to that position
+        if (hover_block.x >= 0 && hover_block.y >= 0) {
+            this.hover_sprite_enemy.position.copyFrom(this.hover_buttons[hover_block.y][hover_block.x].position);
+        }
 
         _.each(gameState.grid, _.curry(this.addGridRow.bind(this))(gameState.pos));
     }
@@ -262,6 +274,12 @@ class GameState extends Phaser.State {
         var style = { font: "bold 48px Bowlby One SC", fill: colorString, boundsAlignH: "center", boundsAlignV: "middle" };
         this.end_text = this.game.add.text(this.game.world.centerX, this.game.world.centerY, msg, style);
         this.end_text.anchor.set(0.5, 0.5);
+    }
+
+    updateCanvasSize() {
+        this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        this.game.scale.updateLayout();
+        console.log(`[boot] resized canvas`);
     }
 }
 

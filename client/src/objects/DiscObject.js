@@ -26,22 +26,27 @@ class DiscObject extends Phaser.Sprite {
 
         this.emitter.makeParticles( ['disc-particle'] );
 
+        this.emitter.frequency = 100;
         this.emitter.gravity = 0;
-        this.emitter.setAlpha(0.2, 0, 5000);
-        this.emitter.setScale(0.4, 0, 0.5, 0, 5000);
-        this.emitter.minParticleSpeed = new Phaser.Point(-38, -38);
-        this.emitter.maxParticleSpeed = new Phaser.Point(38, 38);
+        this.emitter.width = 0;// config.DISC.DIAMETER * blockSize * 2/3;
+        this.emitter.height = 0;// config.DISC.DIAMETER * blockSize * 2/3;
+        this.emitter.setAlpha(0.5, 0, 1600);
+        this.emitter.setRotation(0, 0);
+        // this.emitter.setScale(config.DISC.DIAMETER, config.DISC.DIAMETER, config.DISC.DIAMETER, config.DISC.DIAMETER, 1600);
+        this.emitter.minParticleScale = config.DISC.DIAMETER * 0.82;
+        this.emitter.maxParticleScale = config.DISC.DIAMETER * 0.82;
+        this.emitter.minParticleSpeed = new Phaser.Point(0, 0);
+        this.emitter.maxParticleSpeed = new Phaser.Point(0, 0);
 
-        this.emitter.start(false, 5000, 15);
-
+        this.emitter.start(false, 1600, 140);
     }
 
     explode(direction) {
         this.exploding = true;
-        this.emitter.explode(2000, 200)
-        this.emitter.minParticleSpeed = new Phaser.Point(-75, -150);
-        this.emitter.maxParticleSpeed = new Phaser.Point(75, 150);
-        this.emitter.setYSpeed( direction * 200, direction * 350 );
+        this.emitter.minParticleSpeed = new Phaser.Point(-400, -400);
+        this.emitter.maxParticleSpeed = new Phaser.Point(400, 400);
+        this.emitter.explode(1000, 200)
+        // this.emitter.setYSpeed( direction * 200, direction * 350 );
         let timer = this.game.time.create(true);
         timer.add( 618, this.stopExplode, this );
         timer.start();
@@ -49,9 +54,9 @@ class DiscObject extends Phaser.Sprite {
 
     stopExplode() {
         this.exploding = false;
-        this.emitter.minParticleSpeed = new Phaser.Point(-38, -38);
-        this.emitter.maxParticleSpeed = new Phaser.Point(38, 38);
-        this.emitter.frequency = 15;
+        this.emitter.minParticleSpeed = new Phaser.Point(0, 0);
+        this.emitter.maxParticleSpeed = new Phaser.Point(0, 0);
+        this.emitter.frequency = 140;
     }
 
     update() {

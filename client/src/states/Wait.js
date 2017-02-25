@@ -17,7 +17,7 @@ class WaitState extends Phaser.State {
 
         document.getElementById('waiting').style.display = 'block';
 
-        console.log('Wate state create');
+        console.log('Wait state create');
 
         // Inform the server the player is ready to join a game
         this.socket.emit('player_ready', this.player_nick, this.player_color);
@@ -36,7 +36,8 @@ class WaitState extends Phaser.State {
     }
 
     shutdown() {
-        document.getElementById('waiting').style.display = 'none';
+        document.querySelector('#waiting').style.display = 'none';
+        this.game.canvas.style.display = 'block';
     }
 }
 

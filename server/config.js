@@ -1,5 +1,9 @@
 module.exports = {
     PORT: 3100,
+    CANVAS: {
+        WIDTH: 1440,
+        HEIGHT: 2000,
+    },
     GRID: {
         WIDTH: 12,
         HEIGHT: 20,
@@ -7,7 +11,7 @@ module.exports = {
             VERTICAL: 10,
             HORIZONTAL: 10,
         },
-        LINE_WIDTH: 1,
+        LINE_WIDTH: 4,
         WALL_DEPTH: 100,
     },
     GOAL: {

@@ -15,8 +15,8 @@ function GameInstance(player_a, player_b) {
     self.player_a_connected = true;
     self.player_b_connected = true;
 
-    self.player_a.hover_block = {x: 0, y: 0};
-    self.player_b.hover_block = {x: 0, y: config.GRID.HEIGHT - 1};
+    self.player_a.hover_block = {x: -1, y: -1};
+    self.player_b.hover_block = {x: -1, y: -1};
 
     self.player_a.lastActionTime = Date.now();
     self.player_b.lastActionTime = Date.now();

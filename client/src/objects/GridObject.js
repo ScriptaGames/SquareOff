@@ -16,7 +16,7 @@ class GridObject extends Phaser.Graphics {
         this.gridHeight = HEIGHT;
         this.lineWidth = config.GRID.LINE_WIDTH;
 
-        this.lineStyle( config.GRID.LINE_WIDTH, 0x444444, 1.0);
+        this.lineStyle( config.GRID.LINE_WIDTH, 0x222222, 1.0);
 
         for( let gridX = 0; gridX <= config.GRID.WIDTH; gridX += 1 ) {
             let x = gridX * this.blockWidth;
@@ -33,7 +33,7 @@ class GridObject extends Phaser.Graphics {
                 this.lineStyle( config.GRID.LINE_WIDTH, enemy_color, 0.6);
             }
             else {
-                this.lineStyle( config.GRID.LINE_WIDTH, 0x444444, 1.0);
+                this.lineStyle( config.GRID.LINE_WIDTH, 0x222222, 1.0);
             }
             this.moveTo(0 - hlw*2 - hw, y - hh);
             this.lineTo(WIDTH - hw, y - hh);
