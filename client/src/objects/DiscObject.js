@@ -6,7 +6,7 @@ class DiscObject extends Phaser.Sprite {
 
         this.game = game;
 
-        this.data.velocity = new Phaser.Point();
+        this.initVelocityData();
 
         this.anchor.x = 0.5;
         this.anchor.y = 0.5;
@@ -73,6 +73,11 @@ class DiscObject extends Phaser.Sprite {
     destroy(destroyChildren) {
         super.destroy();
         this.emitter.destroy();
+        this.initVelocityData();
+    }
+
+    initVelocityData() {
+        this.data.velocity = new Phaser.Point();
     }
 }
 
