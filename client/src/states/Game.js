@@ -91,14 +91,37 @@ class GameState extends Phaser.State {
 
         // add grid buttons for capturing mouse events
         this.hover_buttons = [];
+        this.hover_sprite_player = this.game.add.sprite(0, 0, 'hover-sprite', 1);
+        this.hover_sprite_player.width = this.grid.blockWidth;
+        this.hover_sprite_player.height = this.grid.blockWidth;
+        this.hover_sprite_player.tint = this.player_color;
         for (var i = 0; i < config.GRID.HEIGHT; i++) {
             this.hover_buttons.push([]);
             for (var j = 0; j < config.GRID.WIDTH; j++) {
-                let buttonObject = new ButtonObject(this.game, this.grid, j, i, this.grid.blockWidth, this.socket, this.player_color);
+                let buttonObject = new ButtonObject(
+                    this.game,
+                    this.grid,
+                    j,
+                    i,
+                    this.grid.blockWidth,
+                    this.socket,
+                    this.player_color,
+                    (x,y) => {
+                        // move the hover sprite to this location
+                        this.hover_sprite_player.position.copyFrom(this.hover_buttons[y][x].position);
+                        tihs.hover_sprite_player.position.add(0.5, 0.5);
+                    }
+                );
                 this.hover_buttons[i].push(buttonObject);
                 this.game.buttonGroup.add(buttonObject);
             }
         }
+
+        // add sprite for showing enemy hover position
+
+        this.hover_sprite_enemy = this.game.add.sprite(0, 0, 'hover-sprite', 1);
+        this.hover_sprite_enemy.width = this.grid.blockWidth;
+        this.hover_sprite_enemy.height = this.grid.blockWidth;
 
         // add score text
 
@@ -199,29 +222,8 @@ class GameState extends Phaser.State {
 
         // add enemy hover
         let hover_block = gameState.hover_block;
-        if (hover_block && hover_block.x && hover_block.y) {
-            let new_hover_button = this.hover_buttons[hover_block.y][hover_block.x];
-            if (!this.current_hover_button && new_hover_button) {
-                this.current_hover_button = {x: hover_block.x, y: hover_block.y};
-            }
-            if (new_hover_button) {
-                let button_changed = (hover_block.x != this.current_hover_button.x || hover_block.y != this.current_hover_button.y);
-
-                if (button_changed) {
-                    // reset the image for the old hover button
-                    let curButton = this.hover_buttons[this.current_hover_button.y][this.current_hover_button.x];
-                    curButton.setFrames(1, 0, 0, 0);
-                    curButton.tint = this.player_color;
-
-                    // set the button to hover frame
-                    new_hover_button.setFrames(0, 1, 1, 1);
-                    new_hover_button.tint = this.enemy_color;
-
-                    // save current hover position
-                    this.current_hover_button = {x: hover_block.x, y: hover_block.y};
-                }
-            }
-        }
+        this.hover_sprite_enemy.tint = this.enemy_color;
+        this.hover_sprite_enemy.position.copyFrom(this.hover_buttons[hover_block.y][hover_block.x].position);
 
         _.each(gameState.grid, _.curry(this.addGridRow.bind(this))(gameState.pos));
     }
