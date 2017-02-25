@@ -186,9 +186,9 @@ class GameState extends Phaser.State {
         // center.  translate to phaser coordinate system
         var px = gameState.disc.pos.x * this.grid.gridWidth / config.GRID.WIDTH + this.game.width / 2;
         var py = gameState.disc.pos.y * this.grid.gridHeight / config.GRID.HEIGHT + this.game.height / 2;
+
         this.disc.position.set( px, py );
-        // this.disc.body.velocity.x = gameState.disc.vel.x * this.grid.gridWidth / config.GRID.WIDTH;
-        // this.disc.body.velocity.y = gameState.disc.vel.y * this.grid.gridHeight / config.GRID.HEIGHT;
+        this.disc.data.velocity.set( gameState.disc.vel.x * 0.833335, gameState.disc.vel.y * 0.833335 );
 
         // this.disc.body.data.position[0] = px; // doesn't work
         // this.disc.body.data.position[1] = py; // doesn't work

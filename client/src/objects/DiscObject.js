@@ -6,6 +6,8 @@ class DiscObject extends Phaser.Sprite {
 
         this.game = game;
 
+        this.data.velocity = new Phaser.Point();
+
         this.anchor.x = 0.5;
         this.anchor.y = 0.5;
         this.exploding = false;
@@ -64,6 +66,7 @@ class DiscObject extends Phaser.Sprite {
         if (!this.exploding) {
             this.emitter.emitX = this.position.x;
             this.emitter.emitY = this.position.y;
+            this.position.add(this.data.velocity.x, this.data.velocity.y);
         }
     }
 
