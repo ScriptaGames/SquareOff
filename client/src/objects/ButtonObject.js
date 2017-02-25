@@ -6,9 +6,10 @@ class ButtonObject extends Phaser.Button {
         const y = game.world.centerY - grid.gridHeight / 2 + grid_y*grid.blockHeight;
 
         // configure button
-        super(game, x, y, null, function () {
+        super(game, x, y, null, null, null, 1, 0, 0, 0);
+        this.onInputDown.add(function () {
             socket.emit("mouse_click", grid_x, grid_y);
-        }, null, 1, 0, 0, 0);
+        });
         this.onInputOver.add(function () {
             socket.emit("hover_change", grid_x, grid_y);
             hoverCallback(grid_x, grid_y);
