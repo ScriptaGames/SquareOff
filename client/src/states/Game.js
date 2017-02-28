@@ -5,6 +5,7 @@ import BlockObject from 'objects/BlockObject';
 import ButtonObject from 'objects/ButtonObject';
 import _ from 'lodash';
 import config from '../config';
+import sp from 'schemapack';
 
 class GameState extends Phaser.State {
 
@@ -81,6 +82,36 @@ class GameState extends Phaser.State {
             //TODO: stay in same game if playing a friend
 
             self.leaveGameTimout();
+        });
+
+        this.socket.on('binTick', function (buffer) {
+            var vec2 = {
+                x: 'float32',
+                y: 'float32',
+            };
+            var tickSchema = sp.build({
+                grid: [[ 'uint8' ]],
+                disk: {
+                    pos: vec2,
+                    vel: vec2,
+                    angle: 'float32',
+                },
+                hover_block: {
+                    x: 'int16',
+                    y: 'int16',
+                },
+                scores: {
+                    you: 'uint8',
+                    enemy: 'uint8',
+                },
+                pos: 'uint8',
+                bounce: 'bool',
+                blockPlaced: 'bool',
+                score: 'bool',
+            });
+
+            var btick = tickSchema.decode(buffer);
+            console.log("binTick: ", btick);
         });
 
         // end network code
