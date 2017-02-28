@@ -188,7 +188,8 @@ class GameState extends Phaser.State {
         var py = gameState.disc.pos.y * this.grid.gridHeight / config.GRID.HEIGHT + this.game.height / 2;
 
         this.disc.position.set( px, py );
-        this.disc.data.velocity.set( gameState.disc.vel.x * 0.833335, gameState.disc.vel.y * 0.833335 );
+        const velScale = 2.0;
+        this.disc.data.velocity.set( gameState.disc.vel.x*velScale, gameState.disc.vel.y*velScale );
 
         // this.disc.body.data.position[0] = px; // doesn't work
         // this.disc.body.data.position[1] = py; // doesn't work
