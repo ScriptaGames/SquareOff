@@ -5,7 +5,7 @@ var GameState = require('./GameState.js');
 var config    = require('./config');
 var Sim       = require('./Sim');
 var _         = require('lodash');
-var sp        = require('schemapack');
+var schema    = require('../common/schema');
 
 function GameInstance(player_a, player_b) {
     var self = this;
@@ -99,7 +99,9 @@ GameInstance.prototype.tick = function gameInstanceTick() {
     this.gameState.scores.enemy = this.player_b.score;
     this.gameState.hover_block = this.player_b.hover_block;
     this.gameState.pos = 1;
-    this.player_a.socket.emit("instance_tick", this.gameState);
+
+    // Send game state to client a
+    this.player_a.socket.emit("instance_tick", schema.tickSchema.encode(this.gameState));
 
     this.gameState.scores.you = this.player_b.score;
     this.gameState.scores.enemy = this.player_a.score;
@@ -108,7 +110,10 @@ GameInstance.prototype.tick = function gameInstanceTick() {
     this.gameState.disc.vel.y *= -1;
     this.gameState.grid.reverse();
     this.gameState.pos = 2;
-    this.player_b.socket.emit("instance_tick", this.gameState);
+
+    // send game state to client b
+    this.player_b.socket.emit("instance_tick", schema.tickSchema.encode(this.gameState));
+
     this.gameState.grid.reverse();
     this.gameState.disc.pos.y *= -1;
     this.gameState.disc.vel.y *= -1;
@@ -116,57 +121,6 @@ GameInstance.prototype.tick = function gameInstanceTick() {
     this.gameState.bounce = false;
     this.gameState.blockPlaced = false;
     this.gameState.score = false;
-
-    var vec2 = {
-        x: 'float32',
-        y: 'float32',
-    };
-    var tickSchema = sp.build({
-        grid: [[ 'uint8' ]],
-        disk: {
-            pos: vec2,
-            vel: vec2,
-            angle: 'float32',
-        },
-        hover_block: {
-            x: 'int16',
-            y: 'int16',
-        },
-        scores: {
-            you: 'uint8',
-            enemy: 'uint8',
-        },
-        pos: 'uint8',
-        bounce: 'bool',
-        blockPlaced: 'bool',
-        score: 'bool',
-    });
-
-    var myState = {
-        grid: [[0, 0, 0], [0, 0, 1], [1, 1, 1]],
-        disk: {
-            pos: {x: 4.4444, y: 5.555},
-            vel: {x: 6.66666, y: 7.7777},
-            angle: 0.0,
-        },
-        hover_block: {
-            x: 1,
-            y: 2,
-        },
-        scores: {
-            you: 5,
-            enemy: 6
-        },
-        pos: 1,
-        bounce: true,
-        blockPlaced: true,
-        score: false
-    };
-
-    var buffer = tickSchema.encode(myState);
-
-    this.player_a.socket.emit('binTick', buffer);
-    this.player_b.socket.emit('binTick', buffer);
 
     this.sim.update();
 };
