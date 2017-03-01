@@ -4,6 +4,7 @@ import GameState from 'states/Game';
 import MainmenuState from 'states/Mainmenu';
 import WaitState from 'states/Wait';
 import config from 'config';
+import registerServiceWorker from 'register-service-worker';
 
 class Game extends Phaser.Game {
 
@@ -22,4 +23,5 @@ class Game extends Phaser.Game {
     }
 }
 
+registerServiceWorker();
 new Game();

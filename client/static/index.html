@@ -11,6 +11,15 @@
     <title>Square Off!</title>
     <link href='https://fonts.googleapis.com/css?family=Bowlby+One+SC' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="styles/main.css">
+    <script>
+    
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js', {
+            scope: '/'
+        });
+    }
+    
+    </script>
 </head>
 <body>
 
@@ -27,7 +36,7 @@
         <div data-color="#16E1E1" class="blue"></div>
     </div>
 
-    <button disabled name="button" id="enter_queue_button">PLAY</button>
+    <button disabled name="button" id="enter_queue_button">Connecting...</button>
     <!--<button disabled name="button" id="invite_friend_button">VS FRIEND</button>-->
 
     <div id="show-about">&nbsp;?&nbsp;</div>

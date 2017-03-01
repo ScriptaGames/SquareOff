@@ -63,11 +63,19 @@ function cleanBuild() {
 }
 
 /**
+ * Copies the service worker into the root path.
+ */
+function copySW() {
+    return gulp.src(STATIC_PATH + '/**/*')
+        .pipe(gulp.dest(BUILD_PATH));
+}
+
+/**
  * Copies the content of the './static' folder into the '/build' folder.
  * Check out README.md for more info on the '/static' folder.
  */
 function copyStatic() {
-    return gulp.src(STATIC_PATH + '/**/*')
+    return gulp.src(SOURCE_PATH + '/service-worker.js')
         .pipe(gulp.dest(BUILD_PATH));
 }
 
@@ -172,12 +180,13 @@ function serve() {
 gulp.task('cleanBuild', cleanBuild);
 gulp.task('clean', cleanBuild);
 gulp.task('copyStatic', ['cleanBuild'], copyStatic);
+gulp.task('copySW', copySW);
 gulp.task('copyPhaser', ['copyStatic'], copyPhaser);
 gulp.task('copyPhaserDebug', ['copyStatic'], copyPhaserDebug);
-gulp.task('build', ['copyPhaser','copyPhaserDebug'], build);
+gulp.task('build', ['copySW', 'copyPhaser','copyPhaserDebug'], build);
 gulp.task('fastBuild', build);
 gulp.task('serve', ['build'], serve);
-gulp.task('watch-js', ['fastBuild'], browserSync.reload); // Rebuilds and reloads the project when executed.
+gulp.task('watch-js', ['copySW', 'fastBuild'], browserSync.reload); // Rebuilds and reloads the project when executed.
 gulp.task('watch-static', ['copyPhaser'], browserSync.reload);
 
 /**

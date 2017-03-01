@@ -74,12 +74,20 @@ input, button {
 
 #enter_queue_button {
     margin: 10px auto;
-    width: 20vh;
+    width: 100%;
     height: 20vh;
     display: block;
-    background: white;
+    background: black;
+    color: white;
     border: none;
+    font-size: 1rem;
+    transition: background-color ease-out 0.3s, color ease-out 0.3s;
+    cursor: default;
+}
+#enter_queue_button.ready {
     font-size: 5vh;
+    background-color: white;
+    color: black;
 }
 
 .color-picker {

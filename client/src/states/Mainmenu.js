@@ -44,17 +44,25 @@ class MainmenuState extends Phaser.State {
             }
         });
 
-        this.socket = io("http://localhost:3100");
+        this.socket = io("http://192.168.1.130:3100");
 
         this.socket.on('connect', () => {
             console.log("WebSocket connection established and ready.");
-            this.enableButtons(true);
+            this.updateButtons(true);
         });
 
         this.socket.on('disconnect', status => {
             console.log("Server connection lost! :(");
-            this.enableButtons(false);
+            // if we get disconnected from the server, change the button states.  however, a refresh also causes disconnect, so ignore disconnects due to refresh.
+            if (!this.unloading) {
+                this.updateButtons(false);
+            }
             this.state.start('MainmenuState');
+        });
+
+        window.addEventListener('beforeunload', () => {
+            console.log('unloading true');
+            this.unloading = true;
         });
 
         this.socket.on('game_status', (status) => {
@@ -80,10 +88,20 @@ class MainmenuState extends Phaser.State {
         this.state.start('WaitState', false, false, this.socket, nick, this.player_color);
     }
 
-    enableButtons(bool) {
+    updateButtons(bool) {
         // enable the play buttons
-        let buttons = document.querySelectorAll('#main-menu button');
-        _.each(_.toArray(buttons), el => { el.disabled = false } );
+        const buttons = document.querySelectorAll('#main-menu button');
+        _.each(_.toArray(buttons), el => {
+            el.disabled = !bool
+        } );
+        if (bool) {
+            document.querySelector('#enter_queue_button ').textContent = 'PLAY';
+            document.querySelector('#enter_queue_button ').classList.add('ready');
+        }
+        else {
+            document.querySelector('#enter_queue_button ').textContent = 'Connection lost, reconnecting...';
+            document.querySelector('#enter_queue_button ').classList.remove('ready');
+        }
     }
 
     shutdown() {
