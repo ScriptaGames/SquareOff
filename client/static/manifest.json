@@ -1,0 +1,38 @@
+{
+    "name": "Square Off!",
+    "short_name": "Square Off!",
+    "icons": [
+        {
+            "src": "assets/images/icon-96.png",
+            "sizes": "96x96",
+            "type": "image/png"
+        },
+        {
+            "src": "assets/images/icon-144.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        },
+        {
+            "src": "assets/images/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "assets/images/icon-256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "/index.html",
+    "display": "fullscreen",
+    "orientation": "portrait",
+    "background-color": "#000000",
+    "theme-color": "#000000",
+    "xwalk_launch_screen": {
+        "ready_when": "complete",
+        "portrait": {
+            "background_color": "#000000",
+            "image": "./assets/images/icon-256.png 1x, ./assets/images/icon-256.png 2x"
+        }
+    }
+}

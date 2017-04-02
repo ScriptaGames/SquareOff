@@ -2,6 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#000000">
+    <meta name="msapplication-navbutton-color" content="#000000">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#000000">
+    <link rel="manifest" href="./manifest.json">
+
     <title>Square Off!</title>
     <link href='https://fonts.googleapis.com/css?family=Bowlby+One+SC' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="styles/main.css">
@@ -60,11 +66,14 @@
 
 <div id="waiting">
     <div class="loading-spinner"></div>
-    <p>Searching...</p>
+    <p>Finding an opponent...</p>
+    <p class="status">
+        <span class="players"></span> online.
+        <span class="games"></span> in progress.
+        <span class="invite">Share <u>sqoff.com</u> with a friend to play against them!</span>
+    </p>
 </div>
 
-
-<div id="phaser-canvas"></div>
 
 <script src="scripts/phaser.min.js"></script>
 

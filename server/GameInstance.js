@@ -5,6 +5,7 @@ var GameState = require('./GameState.js');
 var config    = require('./config');
 var Sim       = require('./Sim');
 var Cooldown  = require('./Cooldown');
+var schema    = require('../common/schema');
 
 function GameInstance(player_a, player_b) {
     var self = this;
@@ -15,8 +16,8 @@ function GameInstance(player_a, player_b) {
     self.player_a_connected = true;
     self.player_b_connected = true;
 
-    self.player_a.hover_block = {x: 0, y: 0};
-    self.player_b.hover_block = {x: 0, y: config.GRID.HEIGHT - 1};
+    self.player_a.hover_block = {x: -1, y: -1};
+    self.player_b.hover_block = {x: -1, y: -1};
 
     self.player_a.lastActionTime = Date.now();
     self.player_b.lastActionTime = Date.now();
@@ -106,7 +107,9 @@ GameInstance.prototype.tick = function gameInstanceTick() {
     this.gameState.cooldowns.enemy = this.player_b.cooldowns.timers;
     this.gameState.hover_block = this.player_b.hover_block;
     this.gameState.pos = 1;
-    this.player_a.socket.emit("instance_tick", this.gameState);
+
+    // Send game state to client a
+    this.player_a.socket.emit("instance_tick", schema.tickSchema.encode(this.gameState));
 
     this.gameState.scores.you = this.player_b.score;
     this.gameState.scores.enemy = this.player_a.score;
@@ -117,7 +120,10 @@ GameInstance.prototype.tick = function gameInstanceTick() {
     this.gameState.disc.vel.y *= -1;
     this.gameState.grid.reverse();
     this.gameState.pos = 2;
-    this.player_b.socket.emit("instance_tick", this.gameState);
+
+    // send game state to client b
+    this.player_b.socket.emit("instance_tick", schema.tickSchema.encode(this.gameState));
+
     this.gameState.grid.reverse();
     this.gameState.disc.pos.y *= -1;
     this.gameState.disc.vel.y *= -1;

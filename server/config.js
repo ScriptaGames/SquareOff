@@ -1,5 +1,9 @@
 module.exports = {
     PORT: 3100,
+    CANVAS: {
+        WIDTH: 1440,
+        HEIGHT: 2000,
+    },
     GRID: {
         WIDTH: 12,
         HEIGHT: 20,
@@ -7,12 +11,12 @@ module.exports = {
             VERTICAL: 10,
             HORIZONTAL: 10,
         },
-        LINE_WIDTH: 1,
+        LINE_WIDTH: 8,
         WALL_DEPTH: 100,
     },
     GOAL: {
         WIDTH: 8, // number of grid squares
-        SAFE_ZONE: 5,
+        SAFE_ZONE: 6,
     },
     DISC: {
         DIAMETER: 1.95, // as a percentage of block height/width

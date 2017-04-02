@@ -22,10 +22,6 @@ var AppServer = function (io) {
 
         console.log('Client connected headers:', JSON.stringify(socket.handshake));
 
-        // Send server status how many people and games to display on main menu
-        var status = {player_count: Object.keys(self.players).length, game_count: self.game_instances.length};
-        socket.emit('game_status', status);
-
         var current_player = {id: socket.id, socket: socket};
 
         socket.on('player_ready', function (nick, color) {
@@ -48,6 +44,11 @@ var AppServer = function (io) {
             else {
                 self.waiting_players.push(current_player);
             }
+
+            // send game status to waiting players
+            // Send server status how many people and games to display on main menu
+            var status = {player_count: Object.keys(self.players).length, game_count: self.game_instances.length};
+            socket.emit('game_status', status);
 
             console.log("Num players: ", Object.keys(self.players).length);
             console.log("Wait queue length: ", self.waiting_players.length);

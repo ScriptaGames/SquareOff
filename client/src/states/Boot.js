@@ -1,3 +1,5 @@
+import config from '../config';
+
 class BootState extends Phaser.State {
 
     preload(){
@@ -21,6 +23,9 @@ class BootState extends Phaser.State {
 
         // Call this, when you're ready to move on from BootState
         this.state.start('PreloadState');
+
+        // hide the canvas, for now
+        this.game.canvas.style.display = 'none';
     }
 }
 
