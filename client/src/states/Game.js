@@ -229,8 +229,8 @@ class GameState extends Phaser.State {
         this.lastPlayerScore = gameState.scores.you;
         this.lastEnemyScore = gameState.scores.enemy;
 
-        this.enemyScoreText.text = gameState.scores.enemy;
-        this.playerScoreText.text = gameState.scores.you;
+        this.enemyScoreText.setText(gameState.scores.enemy);
+        this.playerScoreText.setText(gameState.scores.you);
 
         // add enemy hover
         const hover_block = gameState.hover_block;
