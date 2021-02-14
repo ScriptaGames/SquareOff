@@ -36,6 +36,7 @@
     "gulp-buffer": "^0.0.2",
     "gulp-if": "^3.0.0",
     "gulp-string-replace": "^1.1.2",
+    "gulp-tap": "^2.0.0",
     "gulp-terser": "^2.0.1",
     "gulp-util": "^3.0.8",
     "vinyl-source-stream": "^2.0.0",

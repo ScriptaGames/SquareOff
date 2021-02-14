@@ -12,6 +12,7 @@ const exorcist = require('exorcist');
 const babelify = require('babelify');
 const browserify = require('browserify');
 const replace = require('gulp-string-replace');
+const tap = require('gulp-tap');
 
 
 /**
@@ -61,6 +62,12 @@ async function cleanBuild() {
     }
 }
 
+async function isProductionIndex(file, t) {
+    if (isProduction() && path.extname(file.path) === '.html') {
+        return t.through(replace, ["SO_ENV = 'dev'", "SO_ENV = 'prod'"])
+    }
+}
+
 /**
  * Copies the content of the './static' folder into the '/build' folder.
  * Also set the global SO_ENV variable in the index.html to load the proper settings based on environment
@@ -68,7 +75,7 @@ async function cleanBuild() {
  */
 async function copyStatic() {
     return gulp.src(STATIC_PATH + '/**/*')
-        .pipe(gulpif(isProduction(), replace("SO_ENV = 'dev'", "SO_ENV = 'prod'")))
+        .pipe(tap(isProductionIndex))
         .pipe(gulp.dest(BUILD_PATH));
 }
 
