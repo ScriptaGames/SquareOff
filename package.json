@@ -1,6 +1,6 @@
 {
   "name": "square-off",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "build": "1",
   "description": "A game we're building for Ludum Dare 35!",
   "keywords": [
