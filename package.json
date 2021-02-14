@@ -29,7 +29,6 @@
     "@babel/core": "^7.12.16",
     "@babel/preset-env": "^7.12.16",
     "babelify": "^10.0.0",
-    "browser-sync": "^2.26.14",
     "browserify": "^17.0.0",
     "del": "^6.0.0",
     "exorcist": "^1.0.1",
@@ -51,6 +50,7 @@
   "scripts": {
     "start": "node server/server.js",
     "build": "gulp build --production",
-    "build-dev": "gulp build"
+    "build-dev": "gulp build",
+    "build-dev-fast": "gulp fastBuild"
   }
 }
