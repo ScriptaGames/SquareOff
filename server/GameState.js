@@ -1,6 +1,6 @@
 var _ = require('lodash');
 
-var config = require('./config');
+var config = require('../common/config');
 
 /**
  * @example

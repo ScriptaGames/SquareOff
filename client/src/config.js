@@ -1,1 +1,1 @@
-../../server/config.js
+../../common/config.js

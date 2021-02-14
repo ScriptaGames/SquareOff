@@ -1,4 +1,4 @@
-import config from '../config';
+import config from '../../../common/config';
 
 class GridObject extends Phaser.Graphics {
     constructor(game, center_x, center_y, player_color, enemy_color) {

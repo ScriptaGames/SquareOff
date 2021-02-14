@@ -1,4 +1,4 @@
-import config from '../config';
+import config from '../../../common/config';
 
 class BootState extends Phaser.State {
 

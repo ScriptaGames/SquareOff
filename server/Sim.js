@@ -1,6 +1,6 @@
 var p2 = require('p2');
 var _ = require('lodash');
-var config = require('./config');
+var config = require('../common/config');
 
 function Sim(gameState) {
 

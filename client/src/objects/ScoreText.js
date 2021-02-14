@@ -1,5 +1,3 @@
-import config from '../config';
-
 class ScoreText extends Phaser.Text {
 
     constructor(game, x, y, text, color, size) {

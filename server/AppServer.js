@@ -1,6 +1,6 @@
 var NODEJS = typeof module !== 'undefined' && module.exports;
 
-var config    = require('./config');
+var config    = require('../common/config');
 var gameLoop  = require('node-gameloop');
 var GameInstance = require('./GameInstance.js');
 

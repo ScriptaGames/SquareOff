@@ -2,7 +2,7 @@
 const http      = require('http');
 const path      = require('path');
 const express   = require('express');
-const config    = require('./config');
+const config    = require('../common/config');
 const AppServer = require('./AppServer.js');
 
 // Patch console.x methods in order to add timestamp information
@@ -26,7 +26,7 @@ var MainServer = function () {
      */
     self.setupVariables = function () {
         //  Set the environment variables we need.
-        self.port = process.env.PORT || config.PORT;
+        self.port = process.env.LISTEN_PORT || config.LISTEN_PORT;
     };
 
 
@@ -95,7 +95,7 @@ var MainServer = function () {
         const httpServer = http.createServer(app);
         const options = {
             cors: {
-                origin: "http://sqoff.com", //TODO: Make this configurable based on Environment variable and config
+                origin: "http://" + config.HOST,
                 methods: ["GET", "POST"]
             }
         };

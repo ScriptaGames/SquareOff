@@ -1,4 +1,4 @@
-import config from '../config';
+import config from '../../../common/config';
 
 class ButtonObject extends Phaser.Button {
     constructor(game, grid, grid_x, grid_y, blockSize, socket, color, hoverCallback=()=>{}) {

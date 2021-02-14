@@ -1,4 +1,4 @@
-import config from '../config';
+import config from '../../../common/config';
 
 class DiscObject extends Phaser.Sprite {
     constructor(game, x, y, key, blockSize) {

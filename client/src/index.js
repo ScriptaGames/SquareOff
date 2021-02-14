@@ -3,7 +3,7 @@ import BootState from 'states/Boot';
 import GameState from 'states/Game';
 import MainmenuState from 'states/Mainmenu';
 import WaitState from 'states/Wait';
-import config from 'config';
+import config from '../../common/config';
 
 class Game extends Phaser.Game {
 

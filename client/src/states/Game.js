@@ -4,7 +4,7 @@ import DiscObject from 'objects/DiscObject';
 import BlockObject from 'objects/BlockObject';
 import ButtonObject from 'objects/ButtonObject';
 import _ from 'lodash';
-import config from '../config';
+import config from '../../../common/config';
 import schema from '../../../common/schema.js';
 
 class GameState extends Phaser.State {

@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import io from 'socket.io-client';
+import config from '../config';
 
 class MainmenuState extends Phaser.State {
 
@@ -44,7 +45,8 @@ class MainmenuState extends Phaser.State {
             }
         });
 
-        this.socket = io("http://localhost:8080");  //TODO: get this from config based on environment variable
+        const connectUrl = `http://${config.HOST}:${config.CONNECT_PORT}`;
+        this.socket = io(connectUrl);
 
         this.socket.on('connect', () => {
             console.log("WebSocket connection established and ready.");

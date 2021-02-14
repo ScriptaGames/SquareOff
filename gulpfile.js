@@ -11,7 +11,7 @@ const terser = require('gulp-terser');
 const exorcist = require('exorcist');
 const babelify = require('babelify');
 const browserify = require('browserify');
-const browserSync = require('browser-sync');
+const replace = require('gulp-string-replace');
 
 
 /**
@@ -63,10 +63,12 @@ async function cleanBuild() {
 
 /**
  * Copies the content of the './static' folder into the '/build' folder.
+ * Also set the global SO_ENV variable in the index.html to load the proper settings based on environment
  * Check out README.md for more info on the '/static' folder.
  */
 async function copyStatic() {
     return gulp.src(STATIC_PATH + '/**/*')
+        .pipe(gulpif(isProduction(), replace("SO_ENV = 'dev'", "SO_ENV = 'prod'")))
         .pipe(gulp.dest(BUILD_PATH));
 }
 
@@ -106,20 +108,20 @@ async function build() {
     logBuildMode();
 
     return browserify({
-        paths: [ path.join(__dirname, SOURCE_PATH) ],
+        paths: [path.join(__dirname, SOURCE_PATH)],
         entries: ENTRY_FILE,
         debug: true
     })
-    .transform(babelify)
-    .bundle().on('error', function(error){
-          gutil.log(gutil.colors.red('[Build Error]', error.message));
-          this.emit('end');
-    })
-    .pipe(gulpif(!isProduction(), exorcist(sourcemapPath)))
-    .pipe(source(OUTPUT_FILE))
-    .pipe(buffer())
-    .pipe(gulpif(isProduction(), terser()))
-    .pipe(gulp.dest(SCRIPTS_PATH));
+        .transform(babelify)
+        .bundle().on('error', function (error) {
+            gutil.log(gutil.colors.red('[Build Error]', error.message));
+            this.emit('end');
+        })
+        .pipe(gulpif(!isProduction(), exorcist(sourcemapPath)))
+        .pipe(source(OUTPUT_FILE))
+        .pipe(buffer())
+        .pipe(gulpif(isProduction(), terser()))
+        .pipe(gulp.dest(SCRIPTS_PATH));
 }
 
 gulp.task('cleanBuild', cleanBuild);

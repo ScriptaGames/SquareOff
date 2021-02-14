@@ -1,5 +1,23 @@
-module.exports = {
-    PORT: 8080,
+let host;
+let connect_port;
+let listen_port;
+const so_env = process.env.SO_ENV || SO_ENV;
+console.log('SO_ENV:', so_env);
+
+if (so_env === 'dev') {
+    host = 'localhost';
+    listen_port = connect_port = 8080;
+}
+else if (so_env === 'prod' ) {
+    host = 'sqoff.com';
+    listen_port = 8080;
+    connect_port = 80;
+}
+
+const config = {
+    HOST: host,
+    CONNECT_PORT: connect_port,
+    LISTEN_PORT: listen_port,
     CANVAS: {
         WIDTH: 1440,
         HEIGHT: 2000,
@@ -31,3 +49,5 @@ module.exports = {
     MAX_PLACED_BLOCKS: 3,
     MAX_INACTIVE_TIME: 45000,
 };
+
+module.exports = config;

@@ -1,4 +1,4 @@
-import config from '../config';
+import config from '../../../common/config';
 
 class BlockObject extends Phaser.Sprite {
     constructor(game, grid, grid_x, grid_y, key, blockSize, color) {

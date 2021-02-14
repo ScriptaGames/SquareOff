@@ -2,7 +2,7 @@ var NODEJS = typeof module !== 'undefined' && module.exports;
 
 var uuid      = require('node-uuid');
 var GameState = require('./GameState.js');
-var config    = require('./config');
+var config    = require('../common/config');
 var Sim       = require('./Sim');
 var _         = require('lodash');
 var schema    = require('../common/schema');
