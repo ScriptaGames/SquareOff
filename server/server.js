@@ -87,7 +87,12 @@ var MainServer = function () {
      */
     self.start = function () {
         console.log("SquareOff listening for WebSocket connetions on port: ", self.port);
-        self.io = require('socket.io')(self.port);
+        self.io = require('socket.io')(self.port, {
+            cors: {
+                origin: "http://localhost:3000", //TODO: Make this configurable based on Environment variable and config
+                methods: ["GET", "POST"]
+            }
+        });
 
         // The app server contains all the logic and state of the WebSocket app
         self.appServer = new AppServer(self.io);
