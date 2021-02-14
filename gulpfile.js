@@ -1,32 +1,31 @@
 /* jshint node: true */
-var del = require('del');
-var gulp = require('gulp');
-var path = require('path');
-var argv = require('yargs').argv;
-var gutil = require('gulp-util');
-var source = require('vinyl-source-stream');
-var buffer = require('gulp-buffer');
-var uglify = require('gulp-uglify');
-var gulpif = require('gulp-if');
+const del = require('del');
+const gulp = require('gulp');
+const path = require('path');
+const argv = require('yargs').argv;
+const gutil = require('gulp-util');
+const source = require('vinyl-source-stream');
+const buffer = require('gulp-buffer');
+const gulpif = require('gulp-if');
 const terser = require('gulp-terser');
-var exorcist = require('exorcist');
-var babelify = require('babelify');
-var browserify = require('browserify');
-var browserSync = require('browser-sync');
+const exorcist = require('exorcist');
+const babelify = require('babelify');
+const browserify = require('browserify');
+const browserSync = require('browser-sync');
 
 
 /**
  * Using different folders/file names? Change these constants:
  */
-var PHASER_PATH = './node_modules/phaser/build/';
-var BUILD_PATH = './build';
-var SCRIPTS_PATH = BUILD_PATH + '/scripts';
-var SOURCE_PATH = './client/src';
-var STATIC_PATH = './client/static';
-var ENTRY_FILE = SOURCE_PATH + '/index.js';
-var OUTPUT_FILE = 'game.js';
+const PHASER_PATH = './node_modules/phaser/build/';
+const BUILD_PATH = './build';
+const SCRIPTS_PATH = BUILD_PATH + '/scripts';
+const SOURCE_PATH = './client/src';
+const STATIC_PATH = './client/static';
+const ENTRY_FILE = SOURCE_PATH + '/index.js';
+const OUTPUT_FILE = 'game.js';
 
-var keepFiles = false;
+let keepFiles = false;
 
 /**
  * Simple way to check for development/production mode.
@@ -77,7 +76,7 @@ async function copyStatic() {
  */
 async function copyPhaser() {
 
-    var srcList = ['phaser.min.js'];
+    let srcList = ['phaser.min.js'];
 
     if (!isProduction()) {
         srcList.push('phaser.map', 'phaser.js');
@@ -103,7 +102,7 @@ async function copyPhaser() {
  */
 async function build() {
 
-    var sourcemapPath = SCRIPTS_PATH + '/' + OUTPUT_FILE + '.map';
+    const sourcemapPath = SCRIPTS_PATH + '/' + OUTPUT_FILE + '.map';
     logBuildMode();
 
     return browserify({
@@ -123,51 +122,18 @@ async function build() {
     .pipe(gulp.dest(SCRIPTS_PATH));
 }
 
-/**
- * Starts the Browsersync server.
- * Watches for file changes in the 'src' folder.
- */
-async function serve() {
-
-    var options = {
-        ghostMode: false,
-        ui: {
-          port: 3001
-        },
-        server: {
-            baseDir: BUILD_PATH,
-            port: 3000
-        },
-        open: false // Change it to true if you wish to allow Browsersync to open a browser window.
-    };
-
-    browserSync(options);
-
-    // Watches for changes in files inside the './src' folder.
-    gulp.watch(SOURCE_PATH + '/**/*', gulp.parallel('watch-js'));
-
-    // Watches for changes in files inside the './static' folder. Also sets 'keepFiles' to true (see cleanBuild()).
-    gulp.watch(STATIC_PATH + '/**/*', gulp.parallel('watch-static')).on('change', function() {
-        keepFiles = true;
-    });
-}
-
-
 gulp.task('cleanBuild', cleanBuild);
 gulp.task('clean', cleanBuild);
 gulp.task('copyStatic', gulp.series('cleanBuild', copyStatic));
 gulp.task('copyPhaser', gulp.series('copyStatic', copyPhaser));
 gulp.task('build', gulp.series('copyPhaser', build));
 gulp.task('fastBuild', build);
-gulp.task('serve', gulp.series('build', serve));
-gulp.task('watch-js', gulp.series('fastBuild', browserSync.reload)); // Rebuilds and reloads the project when executed.
-gulp.task('watch-static', gulp.series('copyPhaser', browserSync.reload));
 
 /**
  * The tasks are executed in the following order:
- * 'cleanBuild' -> 'copyStatic' -> 'copyPhaser' -> 'build' -> 'serve'
+ * 'cleanBuild' -> 'copyStatic' -> 'copyPhaser' -> 'build'
  *
  * Read more about task dependencies in Gulp:
  * https://medium.com/@dave_lunny/task-dependencies-in-gulp-b885c1ab48f0
  */
-gulp.task('default', gulp.series('serve'));
+gulp.task('default', gulp.series('build'));

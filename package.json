@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "console-stamp": "^0.2.9",
+    "express": "^4.17.1",
     "lodash": "^4.17.20",
     "lodash.template": "^4.5.0",
     "node-gameloop": "^0.1.4",
@@ -48,8 +49,8 @@
     "url": "https://github.com/ScriptaGames/SquareOff/issues"
   },
   "scripts": {
-    "start": "gulp & node server/server.js",
-    "build": "gulp build",
-    "production": "gulp --production"
+    "start": "node server/server.js",
+    "build": "gulp build --production",
+    "build-dev": "gulp build"
   }
 }

@@ -1,5 +1,5 @@
 module.exports = {
-    PORT: 3100,
+    PORT: 8080,
     CANVAS: {
         WIDTH: 1440,
         HEIGHT: 2000,

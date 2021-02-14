@@ -44,7 +44,7 @@ class MainmenuState extends Phaser.State {
             }
         });
 
-        this.socket = io("http://localhost:3100");
+        this.socket = io("http://localhost:8080");  //TODO: get this from config based on environment variable
 
         this.socket.on('connect', () => {
             console.log("WebSocket connection established and ready.");

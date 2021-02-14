@@ -1,7 +1,9 @@
 #!/bin/env node
-//  Sample Node.js WebSocket Client-Server application
-var config    = require('./config');
-var AppServer = require('./AppServer.js');
+const http      = require('http');
+const path      = require('path');
+const express   = require('express');
+const config    = require('./config');
+const AppServer = require('./AppServer.js');
 
 // Patch console.x methods in order to add timestamp information
 require("console-stamp")(console, {pattern: "mm/dd/yyyy HH:MM:ss.l"});
@@ -86,16 +88,26 @@ var MainServer = function () {
      *  Start the server
      */
     self.start = function () {
-        console.log("SquareOff listening for WebSocket connetions on port: ", self.port);
-        self.io = require('socket.io')(self.port, {
+        // Configure express
+        const app = express();
+        app.use(express.static(path.join(__dirname, '../build')));
+
+        const httpServer = http.createServer(app);
+        const options = {
             cors: {
-                origin: "http://localhost:3000", //TODO: Make this configurable based on Environment variable and config
+                origin: "http://sqoff.com", //TODO: Make this configurable based on Environment variable and config
                 methods: ["GET", "POST"]
             }
-        });
+        };
 
-        // The app server contains all the logic and state of the WebSocket app
+        self.io = require('socket.io')(httpServer, options);
+
+        // The app httpServer contains all the logic and state of the WebSocket app
         self.appServer = new AppServer(self.io);
+
+        httpServer.listen(self.port);
+
+        console.log("SquareOff listening for connections on port: ", self.port);
     };
 };
 
