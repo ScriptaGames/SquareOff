@@ -15,6 +15,7 @@
   "dependencies": {
     "console-stamp": "^0.2.9",
     "lodash": "^4.17.20",
+    "lodash.template": "^4.5.0",
     "node-gameloop": "^0.1.4",
     "node-uuid": "^1.4.8",
     "p2": "^0.7.1",
