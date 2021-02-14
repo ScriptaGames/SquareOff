@@ -8,6 +8,7 @@ var source = require('vinyl-source-stream');
 var buffer = require('gulp-buffer');
 var uglify = require('gulp-uglify');
 var gulpif = require('gulp-if');
+const terser = require('gulp-terser');
 var exorcist = require('exorcist');
 var babelify = require('babelify');
 var browserify = require('browserify');
@@ -118,16 +119,15 @@ async function build() {
     .pipe(gulpif(!isProduction(), exorcist(sourcemapPath)))
     .pipe(source(OUTPUT_FILE))
     .pipe(buffer())
-    .pipe(gulpif(isProduction(), uglify()))
+    .pipe(gulpif(isProduction(), terser()))
     .pipe(gulp.dest(SCRIPTS_PATH));
-
 }
 
 /**
  * Starts the Browsersync server.
  * Watches for file changes in the 'src' folder.
  */
-function serve() {
+async function serve() {
 
     var options = {
         ghostMode: false,
