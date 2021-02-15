@@ -9,7 +9,7 @@ if (so_env === 'dev') {
     listen_port = connect_port = 8080;
 }
 else if (so_env === 'prod' ) {
-    host = 'square-off-prod-prod-arcade-rh-com.apps.ospo-osci.z3b1.p1.openshiftapps.com';
+    host = 'sqoff.com';
     listen_port = 8080;
     connect_port = 80;
 }
