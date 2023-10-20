@@ -95,7 +95,7 @@ var MainServer = function () {
         const httpServer = http.createServer(app);
         const options = {
             cors: {
-                origin: "http://" + config.HOST,
+                origin: (process.env.ENV == 'prod' ? 'https://' : "http://") + config.HOST,
                 methods: ["GET", "POST"]
             }
         };

@@ -127,6 +127,8 @@ async function build() {
         .pipe(gulpif(!isProduction(), exorcist(sourcemapPath)))
         .pipe(source(OUTPUT_FILE))
         .pipe(buffer())
+        .pipe(gulpif(isProduction(),replace('process.env.HOST', JSON.stringify(process.env.HOST || 'sqoff.com'))))
+        .pipe(gulpif(isProduction(),replace('process.env.ENV', JSON.stringify(process.env.ENV || 'dev'))))
         .pipe(gulpif(isProduction(), terser()))
         .pipe(gulp.dest(SCRIPTS_PATH));
 }
