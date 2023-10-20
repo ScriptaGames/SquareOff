@@ -45,7 +45,7 @@ class MainmenuState extends Phaser.State {
             }
         });
 
-        const connectUrl = `http://${config.HOST}:${config.CONNECT_PORT}`;
+        const connectUrl = (process.env.ENV == 'prod' ? 'https://' : "http://") + `${config.HOST}:${config.CONNECT_PORT}`;
         this.socket = io(connectUrl);
 
         this.socket.on('connect', () => {

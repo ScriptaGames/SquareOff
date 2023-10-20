@@ -3,15 +3,16 @@ let connect_port;
 let listen_port;
 const so_env = process.env.SO_ENV || SO_ENV;
 console.log('SO_ENV:', so_env);
+console.log('HOST is ', process.env.HOST || 'localhost');
 
 if (so_env === 'dev') {
     host = 'localhost';
     listen_port = connect_port = 8080;
 }
 else if (so_env === 'prod' ) {
-    host = 'sqoff.com';
+    host = process.env.HOST || 'sqoff.com';
     listen_port = 8080;
-    connect_port = 80;
+    connect_port = 443;
 }
 
 const config = {
